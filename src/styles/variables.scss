@@ -1,0 +1,42 @@
+$--font-path: '~element-ui/lib/theme-chalk/fonts';
+@import "~element-ui/packages/theme-chalk/src/index";
+
+// 定义颜色
+// $--color-primary: red;
+// $--color-primary-light-1: red;
+// $--color-primary-light-2: red;
+// $--color-primary-light-3: red;
+// $--color-primary-light-4: red;
+// $--color-primary-light-5: red;
+// $--color-primary-light-6: red;
+// $--color-primary-light-7: red;
+// $--color-primary-light-8: red;
+// $--color-primary-light-9: red;
+$--color-primary-mix: mix($--color-black, $--color-primary, $--button-active-shade-percent);
+
+$headerHeight: 50px;
+$sideBarWidth: 180px;
+$miniSideBarWidth: 36px;
+
+// the :export directive is the magic sauce for webpack
+:export {
+  colorPrimary: $--color-primary;
+  colorPrimaryLight1: $--color-primary-light-1;
+  colorPrimaryLight2: $--color-primary-light-2;
+  colorPrimaryLight3: $--color-primary-light-3;
+  colorPrimaryLight4: $--color-primary-light-4;
+  colorPrimaryLight5: $--color-primary-light-5;
+  colorPrimaryLight6: $--color-primary-light-6;
+  colorPrimaryLight7: $--color-primary-light-7;
+  colorPrimaryLight8: $--color-primary-light-8;
+  colorPrimaryLight9: $--color-primary-light-9;
+  colorPrimaryMix: $--color-primary-mix;
+
+  colorTextPrimary: $--color-text-primary;
+  linkColor: $--link-color;
+  linkHoverColor: $--link-hover-color;
+
+  headerHeight: $headerHeight;
+  sideBarWidth: $sideBarWidth;
+  miniSideBarWidth: $miniSideBarWidth;
+}
