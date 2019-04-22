@@ -58,23 +58,23 @@ function filterAsyncRouter(routes, userRoutes, parent) {
 
   return res
 }*/
-function filterAsyncRouter(routes, subRoutes) {
-  const res = []
-  routes.forEach(route => {
-    const tmp = {
-      ...route
-    }
-    subRoutes.forEach(subRoute => {
-      if (tmp.name === subRoute.name) {
-        if (subRoute.children) {
-          tmp.children = filterAsyncRouter(tmp.children, subRoute.children)
-        }
-        res.push(tmp)
-      }
-    })
-  })
-  return res
-}
+// function filterAsyncRouter(routes, subRoutes) {
+//   const res = []
+//   routes.forEach(route => {
+//     const tmp = {
+//       ...route
+//     }
+//     subRoutes.forEach(subRoute => {
+//       if (tmp.name === subRoute.name) {
+//         if (subRoute.children) {
+//           tmp.children = filterAsyncRouter(tmp.children, subRoute.children)
+//         }
+//         res.push(tmp)
+//       }
+//     })
+//   })
+//   return res
+// }
 
 const permission = {
   state: {
@@ -88,7 +88,7 @@ const permission = {
     }
   },
   actions: {
-    GenerateRoutes({ commit }, data) {
+    GenerateRoutes({ commit }) {
       return new Promise(resolve => {
         //const { routes } = data
         /*let accessedRouters

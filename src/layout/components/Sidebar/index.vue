@@ -9,7 +9,7 @@
         mode="vertical"
         :collapse-transition="false"
       >
-        <sidebar-item v-for="route in permission_routers" :key="route.path" :item="route" :base-path="route.path"/>
+        <sidebar-item v-for="route in permission_routers" :key="route.path" :item="route" :base-path="route.path" />
       </el-menu>
     </el-aside>
   </bv-scrollbar>

@@ -190,7 +190,7 @@
           this.items.splice(this.items.findIndex(item => item.code === row.code), 1)
         })
       },
-      startGrant(dialog) {
+      startGrant() {
         // 授权
         this.dialogGrantVisible = true
       },
