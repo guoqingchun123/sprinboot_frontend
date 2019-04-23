@@ -8,8 +8,8 @@ import {
   Form, FormItem, Table, TableColumn, Pagination,
   Upload, Tree,
   Card, Row, Col,
-  Dropdown, DropdownMenu, DropdownItem, Tag, ColorPicker,
-  Loading, Message } from 'element-ui'
+  Dropdown, DropdownMenu, DropdownItem, Tag, ColorPicker,DatePicker,TimePicker,Autocomplete,Steps,Step,Cascader,
+  Loading, Message,MessageBox,Transfer } from 'element-ui'
 import Cookies from 'js-cookie'
 
 Vue.prototype.$ELEMENT = { size: Cookies.get('size') || 'medium' }
@@ -55,7 +55,26 @@ Vue.use(DropdownMenu)
 Vue.use(DropdownItem)
 Vue.use(Tag)
 Vue.use(ColorPicker)
-
+Vue.use(DatePicker)
+Vue.use(TimePicker)
+Vue.use(Autocomplete)
+Vue.use(Steps)
+Vue.use(Step)
+Vue.use(Cascader)
 Vue.use(Loading.directive)
+Vue.use(Transfer)
 //Vue.prototype.$loading = Loading.service
 Vue.prototype.$message = Message
+const MsgBox = MessageBox;
+Vue.prototype.$msgbox = MsgBox;
+Vue.prototype.$alert = MsgBox.alert;
+Vue.prototype.$confirm = (message, title, options) => {
+  if (!options) {
+    options = {}
+  }
+  options.cancelButtonClass = 'confirm-cancel-normal'
+  options.closeOnClickModal = false
+  options.closeOnPressEscape = false
+  return MsgBox.confirm(message, title, options)
+};
+Vue.prototype.$prompt = MsgBox.prompt;

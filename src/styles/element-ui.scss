@@ -47,9 +47,9 @@
 }
 
 // 修改弹窗滚动条显示位置
-#app .el-dialog__wrapper {
+/*#app .el-dialog__wrapper {
   overflow: hidden;
-}
+}*/
 //暂时性解决dialog 问题 https://github.com/ElemeFE/element/issues/2461
 .el-dialog {
   transform: none;
@@ -58,16 +58,16 @@
   margin: 0 auto;
 
   // 修改弹窗滚动条显示位置
-  max-height: calc(100% - 16vh);
+  // max-height: calc(100% - 16vh);
   display: flex;
   flex-direction: column;
 
-  > .el-dialog__body {
+  /*> .el-dialog__body {
     display: flex;
     > .scrollbar {
       width: 100%;
     }
-  }
+  }*/
 }
 
 //文章页textarea修改样式
@@ -97,5 +97,51 @@
 .el-dropdown-menu {
   a {
     display: block
+  }
+}
+
+// form默认宽度100%
+.el-form {
+  width: 100%;
+  padding: 0 10px;
+}
+// confirm弹窗调整确定、取消按钮位置
+.el-button.confirm-cancel-normal {
+  float: right;
+  margin-left: 10px;
+}
+
+// 避免横向滚动条
+#app .el-scrollbar__wrap {
+  // overflow: auto;
+  overflow-x: hidden;
+}
+
+// 对话框修改
+.el-dialog__body {
+  > .el-scrollbar {
+    width: 100%;
+  }
+}
+
+/*.el-scrollbar.not-scrolled {
+  > .el-scrollbar__wrap {
+    margin-right: 0 !important;
+  }
+}*/
+
+// 避免弹窗引起右侧出现空白区域
+.el-popup-parent--hidden {
+  padding-right: 0 !important;
+}
+
+.tree-node-operates {
+  display: flex;
+  width: 100%;
+  padding-right: 15px;
+  justify-content: space-between;
+
+  > .operates-container {
+    display: flex;
   }
 }

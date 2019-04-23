@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { generateTitle } from '@/utils/i18n'
+import { i18n } from '@bestvike/utils'
 import pathToRegexp from 'path-to-regexp'
 
 export default {
@@ -28,7 +28,7 @@ export default {
     this.getBreadcrumb()
   },
   methods: {
-    generateTitle,
+    generateTitle: i18n.generateTitle,
     getBreadcrumb() {
       let matched = this.$route.matched//.filter(item => item.name)
 
@@ -57,7 +57,7 @@ export default {
 }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="scss" scoped>
   @import '../../styles/variables.scss';
 
   .app-breadcrumb.el-breadcrumb {

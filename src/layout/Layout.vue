@@ -1,39 +1,53 @@
 <template>
   <el-container :class="classObj" class="app-wrapper">
     <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside" />
-    <bv-navbar />
-    <el-container>
-      <div class="sidebar-container">
-        <bv-sidebar />
-      </div>
-      <el-container class="main-container">
-        <bv-view />
+    <bv-sidebar class="sidebar-container" />
+    <bv-scrollbar v-if="!fixedHeader" ref="scrollbar">
+      <div :class="{'has-tags-view': needTagsView, 'fixed-header':fixedHeader}" class="main-container">
+        <bv-navbar />
+        <bv-tags-view v-if="needTagsView" />
         <bv-main class="app-main-container" />
-      </el-container>
-    </el-container>
+        <bv-right-panel v-if="showSettings">
+          <bv-settings />
+        </bv-right-panel>
+      </div>
+    </bv-scrollbar>
+    <div v-else :class="{'has-tags-view': needTagsView, 'fixed-header':fixedHeader}" class="main-container">
+      <bv-navbar />
+      <bv-tags-view v-if="needTagsView" />
+      <bv-main class="app-main-container" />
+      <bv-right-panel v-if="showSettings">
+        <bv-settings />
+      </bv-right-panel>
+    </div>
   </el-container>
 </template>
 
 <script>
-import { BvNavbar, BvSidebar, BvMain, BvView } from './components'
+import BvRightPanel from '@/components/RightPanel'
+import { BvNavbar, BvSidebar, BvMain, BvTagsView, BvSettings } from './components'
 import ResizeMixin from './mixin/ResizeHandler'
+import { mapState } from 'vuex'
 
 export default {
   name: 'Layout',
   components: {
+    BvRightPanel,
     BvSidebar,
     BvNavbar,
     BvMain,
-    BvView
+    BvTagsView,
+    BvSettings
   },
   mixins: [ResizeMixin],
   computed: {
-    sidebar() {
-      return this.$store.state.app.sidebar
-    },
-    device() {
-      return this.$store.state.app.device
-    },
+    ...mapState({
+      sidebar: state => state.app.sidebar,
+      device: state => state.app.device,
+      showSettings: state => state.settings.showSettings,
+      needTagsView: state => state.settings.tagsView,
+      fixedHeader: state => state.settings.fixedHeader
+    }),
     classObj() {
       return {
         'sidebar-mini': !this.sidebar.opened,
@@ -45,7 +59,7 @@ export default {
   },
   methods: {
     handleClickOutside() {
-      this.$store.dispatch('closeSideBar', { withoutAnimation: false })
+      this.$store.dispatch('app/closeSideBar', { withoutAnimation: false })
     }
   }
 }

@@ -22,7 +22,7 @@
 // make search results more in line with expectations
 import Fuse from 'fuse.js'
 import path from 'path'
-import i18n from '@/lang'
+// import i18n from '@/lang'
 
 export default {
   name: 'BvSearch',
@@ -36,8 +36,8 @@ export default {
     }
   },
   computed: {
-    routers() {
-      return this.$store.getters.permission_routers
+    routes() {
+      return this.$store.getters.permissionRoutes
     },
     lang() {
       return this.$store.getters.language
@@ -45,10 +45,10 @@ export default {
   },
   watch: {
     lang() {
-      this.searchPool = this.generateRouters(this.routers)
+      this.searchPool = this.generateRoutes(this.routes)
     },
-    routers() {
-      this.searchPool = this.generateRouters(this.routers)
+    routes() {
+      this.searchPool = this.generateRoutes(this.routes)
     },
     searchPool(list) {
       this.initFuse(list)
@@ -62,7 +62,7 @@ export default {
     }*/
   },
   mounted() {
-    this.searchPool = this.generateRouters(this.routers)
+    this.searchPool = this.generateRoutes(this.routes)
   },
   methods: {
     click() {
@@ -107,10 +107,10 @@ export default {
     },
     // Filter out the routes that can be displayed in the sidebar
     // And generate the internationalized title
-    generateRouters(routers, basePath = '/', prefixTitle = []) {
+    generateRoutes(routes, basePath = '/', prefixTitle = []) {
       let res = []
 
-      for (const router of routers) {
+      for (const router of routes) {
         // skip hidden router
         if (router.hidden) { continue }
 
@@ -119,15 +119,19 @@ export default {
           title: [...prefixTitle]
         }
 
-        if (router.meta && router.meta.title) {
+        if (!router.hidden && router.meta && router.meta.title) {
           // generate internationalized title
           // i18n---place
-          if (router.meta.title.indexOf('${') === 0 && router.meta.title.indexOf('}') === router.meta.title.length - 1 ) {
+          /*if (router.meta.title.indexOf('${') === 0 && router.meta.title.indexOf('}') === router.meta.title.length - 1 ) {
             const titleName = router.meta.title.substring(2, router.meta.title.length - 1)
             const i18ntitle = i18n.t(`route.${titleName}`)
 
             data.title = [...data.title, i18ntitle]
-          }
+          } else {
+            data.title = [...data.title, router.meta.title]
+          }*/
+
+          data.title = [...data.title, this.$filters.transTitle(router.meta)]
 
           if (router.redirect !== 'noredirect') {
             // only push the routes with title
@@ -136,11 +140,11 @@ export default {
           }
         }
 
-        // recursive child routers
+        // recursive child routes
         if (router.children) {
-          const tempRouters = this.generateRouters(router.children, data.path, data.title)
-          if (tempRouters.length >= 1) {
-            res = [...res, ...tempRouters]
+          const tempRoutes = this.generateRoutes(router.children, data.path, data.title)
+          if (tempRoutes.length >= 1) {
+            res = [...res, ...tempRoutes]
           }
         }
       }

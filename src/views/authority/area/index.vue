@@ -1,27 +1,25 @@
 <template>
-  <div class="app-container">
-    <el-row type="flex" class="fit-scroll">
-      <el-col>
-        <bv-scrollbar>
-          <el-tree :data="items" node-key="code" :props="defaultProps" :expand-on-click-node="false" accordion />
-        </bv-scrollbar>
-      </el-col>
-      <el-col>
-        safsdsdfsdfsdf
-      </el-col>
-    </el-row>
-  </div>
+  <el-row type="flex" class="fit-scroll">
+    <el-col>
+      <bv-scrollbar>
+        <el-tree :data="items" node-key="code" :props="defaultProps" :expand-on-click-node="false" accordion />
+      </bv-scrollbar>
+    </el-col>
+    <el-col>
+      safsdsdfsdfsdf
+    </el-col>
+  </el-row>
 </template>
 
 <script>
-  import BvScrollbar from '@/components/Scrollbar'
+  // import BvScrollbar from '@/components/Scrollbar'
   import { fetchAreas } from '@/api/authority'
 
   export default {
     name: 'ListArea',
-    components: {
+    /*components: {
       BvScrollbar
-    },
+    },*/
     data() {
       return {
         items: null,
@@ -32,10 +30,10 @@
       }
     },
     created() {
-      this.getList()
+      this.initItems()
     },
     methods: {
-      getList() {
+      initItems() {
         fetchAreas().then(response => {
           this.items = response.data
         })

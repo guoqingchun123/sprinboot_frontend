@@ -3,7 +3,7 @@
     用户中心
     <el-upload
       class="avatar-uploader"
-      action="http://172.10.11.111:22000/api/file/upload"
+      :action="fileServer + '/api/file/upload'"
       :show-file-list="false"
       :on-success="handleAvatarSuccess"
       :before-upload="beforeAvatarUpload"
@@ -11,7 +11,22 @@
       <img v-if="imageUrl" :src="imageUrl" class="avatar fit-cover">
       <i v-else class="el-icon-plus avatar-uploader-icon" />
     </el-upload>
-    <el-button @click="saveAvatar">保存</el-button>
+    <el-button @click="saveAvatar">保存头像</el-button>
+
+    <div>
+      <span>{{ $t('settings.tagsView') }}</span>
+      <el-switch v-model="tagsView" class="drawer-switch" />
+    </div>
+
+    <div>
+      <span>{{ $t('settings.fixedHeader') }}</span>
+      <el-switch v-model="fixedHeader" class="drawer-switch" @change="changeFixedHeader" />
+    </div>
+
+    <div>
+      <span>{{ $t('settings.sidebarLogo') }}</span>
+      <el-switch v-model="sidebarLogo" class="drawer-switch" />
+    </div>
   </div>
 </template>
   
@@ -22,14 +37,52 @@ export default {
   name: 'UserSetting',
   data() {
     return {
+      fileServer: process.env.VUE_APP_FILE_SERVER,
       imageUrl: this.$store.getters.avatar || '',
-      avatarUrl: null
+      avatarUrl: null,
+      fixedHeader: this.$store.state.settings.fixedHeader
+    }
+  },
+  computed: {
+    /*fixedHeader: {
+      get() {
+        return this.$store.state.settings.fixedHeader
+      },
+      // 目前会出现js错误
+      set(val) {
+        this.$store.dispatch('settings/changeSetting', {
+          key: 'fixedHeader',
+          value: val
+        })
+      }
+    },*/
+    tagsView: {
+      get() {
+        return this.$store.state.settings.tagsView
+      },
+      set(val) {
+        this.$store.dispatch('settings/changeSetting', {
+          key: 'tagsView',
+          value: val
+        })
+      }
+    },
+    sidebarLogo: {
+      get() {
+        return this.$store.state.settings.sidebarLogo
+      },
+      set(val) {
+        this.$store.dispatch('settings/changeSetting', {
+          key: 'sidebarLogo',
+          value: val
+        })
+      }
     }
   },
   methods: {
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw)
-      this.avatarUrl = 'http://172.10.11.111/' + res
+      this.avatarUrl = this.fileServer + '/' + res
     },
     beforeAvatarUpload(file) {
       const isPicture = file.type === 'image/jpeg' || file.type === 'image/png'
@@ -45,7 +98,15 @@ export default {
     },
     saveAvatar() {
       Cookies.set('avatar', this.avatarUrl)
-      this.$store.dispatch('SetAvatar', this.avatarUrl)
+      this.$store.dispatch('user/setAvatar', this.avatarUrl)
+    },
+    changeFixedHeader() {
+      this.$nextTick(() => {
+        this.$store.dispatch('settings/changeSetting', {
+          key: 'fixedHeader',
+          value: this.fixedHeader
+        })
+      })
     }
   }
 }

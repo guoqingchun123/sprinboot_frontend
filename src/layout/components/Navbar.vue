@@ -1,22 +1,16 @@
 <template>
   <el-header :height="variables.headerHeight" class="navbar">
-    <div class="logo-container">
-      <img :src="mainLogo">
-    </div>
-    <bv-hamburger :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
+    <bv-hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
 
-    <bv-breadcrumb class="breadcrumb-container" />
+    <bv-breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
 
     <div class="right-menu">
       <template v-if="device!=='mobile'">
         <el-tooltip :content="$t('navbar.search')" effect="dark" placement="bottom">
-          <bv-search class="right-menu-item" />
+          <bv-search id="header-search" class="right-menu-item header-search" />
         </el-tooltip>
-
-        <bv-error class="errLog-container right-menu-item hover-effect" />
-
-        <el-tooltip :content="$t('navbar.screenfull')" effect="dark" placement="bottom">
-          <bv-screenfull class="right-menu-item hover-effect" />
+        <el-tooltip :content="$store.getters.screenfull ? '退出全屏' : '全屏'" effect="dark" placement="bottom">
+          <bv-screenfull id="screenfull" class="right-menu-item hover-effect" />
         </el-tooltip>
       </template>
 
@@ -48,26 +42,16 @@
 <script>
 import { mapGetters } from 'vuex'
 import BvBreadcrumb from '@/components/Breadcrumb'
-import BvHamburger from '@/components/Hamburger'
-import BvError from '@/components/ErrorLog'
 import BvScreenfull from '@/components/Screenfull'
 import BvSearch from '@/components/HeaderSearch'
 import variables from '@/styles/variables.scss'
-import mainLogo from '@/assets/main-logo.png'
 
 export default {
   name: 'BvNavbar',
   components: {
     BvBreadcrumb,
-    BvHamburger,
-    BvError,
     BvScreenfull,
     BvSearch
-  },
-  data() {
-    return {
-      mainLogo
-    }
   },
   computed: {
     ...mapGetters([
@@ -82,49 +66,42 @@ export default {
   },
   methods: {
     toggleSideBar() {
-      this.$store.dispatch('toggleSideBar')
+      this.$store.dispatch('app/toggleSideBar')
     },
-    logout() {
-      this.$store.dispatch('LogOut').then(() => {
-        location.reload()// In order to re-instantiate the vue-router object to avoid bugs
-      })
+    async logout() {
+      await this.$store.dispatch('user/logout')
+      this.$router.push(`/login?redirect=${this.$route.fullPath}`)
     }
   }
 }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="scss" scoped>
 @import '../../styles/variables.scss';
 
 .navbar {
-  // height: 50px;
-  display: flex;
+  height: $headerHeight;
   overflow: hidden;
-
-  .logo-container {
-    width: 200px;
-    overflow: hidden;
-
-    > img {
-      height: 100%;
-    }
-  }
+  position: relative;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0,21,41,.08);
 
   .hamburger-container {
-    line-height: $headerHeight;
+    line-height: 46px;
     height: 100%;
-    // float: left;
+    float: left;
     cursor: pointer;
     transition: background .3s;
+    -webkit-tap-highlight-color:transparent;
 
     &:hover {
       background: rgba(0, 0, 0, .025)
     }
   }
 
-  /*.breadcrumb-container {
+  .breadcrumb-container {
     float: left;
-  }*/
+  }
 
   .errLog-container {
     display: inline-block;
@@ -132,11 +109,9 @@ export default {
   }
 
   .right-menu {
-    // float: right;
+    float: right;
     height: 100%;
-    line-height: $headerHeight;
-    flex: 1;
-    text-align: right;
+    line-height: 50px;
 
     &:focus {
       outline: none;
@@ -166,15 +141,16 @@ export default {
       .avatar-wrapper {
         margin-top: 5px;
         position: relative;
-        line-height: initial;
-        cursor: pointer;
+
         .user-avatar {
+          cursor: pointer;
           width: 40px;
           height: 40px;
           border-radius: 10px;
         }
 
         .el-icon-caret-bottom {
+          cursor: pointer;
           position: absolute;
           right: -20px;
           top: 25px;

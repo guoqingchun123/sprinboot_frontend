@@ -8,28 +8,41 @@ import Layout from '@/layout/Layout'
 
 /* Router Modules */
 import authorityRouters from './authority'
-
-/** note: sub-menu only appear when children.length>=1
- *  detail see  https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
- **/
+import projectRouter from './project'
+import employRouter from './employee'
+import sharedResourceRouter from './sharedResource'
+import serviceRouter from "./serviceManage";
+import customRouter from './custom'
+import remindRouter from './remind'
 
 /**
-* hidden: true                   if `hidden:true` will not show in the sidebar(default is false)
-* alwaysShow: true               if set true, will always show the root menu, whatever its child routes length
-*                                if not set alwaysShow, only more than one route under the children
-*                                it will becomes nested mode, otherwise not show the root menu
-* redirect: noredirect           if `redirect:noredirect` will no redirect in the breadcrumb
-* name:'router-name'             the name is used by <keep-alive> (must set!!!)
-* meta : {
-    roles: ['admin','editor']    will control the page roles (you can set multiple roles)
-    title: 'title'               the name show in sub-menu and breadcrumb (recommend set)
+ * Note: sub-menu only appear when route children.length >= 1
+ * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
+ *
+ * hidden: true                   if set true, item will not show in the sidebar(default is false)
+ * alwaysShow: true               if set true, will always show the root menu
+ *                                if not set alwaysShow, when item has more than one children route,
+ *                                it will becomes nested mode, otherwise not show the root menu
+ * redirect: noredirect           if `redirect:noredirect` will no redirect in the breadcrumb
+ * name:'router-name'             the name is used by <keep-alive> (must set!!!)
+ * meta : {
+    roles: ['admin','editor']    control the page roles (you can set multiple roles)
+    title: 'title'               the name show in sidebar and breadcrumb (recommend set)
     icon: 'svg-name'             the icon show in the sidebar
-    noCache: true                if true, the page will no be cached(default is false)
-    breadcrumb: false            if false, the item will hidden in breadcrumb(default is true)
-    affix: true                  if true, the tag will affix in the tags-view
+    noCache: true                if set true, the page will no be cached(default is false)
+    affix: true                  if set true, the tag will affix in the tags-view
+    breadcrumb: false            if set false, the item will hidden in breadcrumb(default is true)
+    activeMenu: '/example/list'  if set path, the sidebar will highlight the path you set
+    authority: ''                设置false则不校验权限
   }
-**/
-export const constantRouterMap = [
+ */
+
+/**
+ * constantRoutes
+ * a base page that does not have permission requirements
+ * all roles can be accessed
+ */
+export const constantRoutes = [
   {
     path: '/redirect',
     component: Layout,
@@ -48,7 +61,7 @@ export const constantRouterMap = [
   },
   {
     path: '/auth-redirect',
-    component: () => import('@/layout/login/authredirect'),
+    component: () => import('@/layout/login/authRedirect'),
     hidden: true
   },
   {
@@ -80,6 +93,7 @@ export const constantRouterMap = [
   {
     path: '',
     component: Layout,
+    hidden: true,
     redirect: 'dashboard',
     children: [
       {
@@ -89,30 +103,17 @@ export const constantRouterMap = [
         meta: { title: '${dashboard}', icon: 'dashboard', noCache: true, affix: true }
       }
     ]
-  },
-  {
-    path: '/guide',
-    component: Layout,
-    redirect: '/guide/index',
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/guide/index'),
-        name: 'Guide',
-        meta: { title: '${guide}', icon: 'guide', noCache: true, roles: ['example'] }
-      }
-    ]
   }
 ]
 
-export default new Router({
-  // mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
-  routes: constantRouterMap
-})
-
-export const asyncRouterMap = [
+/**
+ * asyncRoutes
+ * the routes that need to be dynamically loaded based on user roles
+*/
+export const asyncRoutes = [
   authorityRouters,
+  employRouter,
+  projectRouter,
   {
     path: '/error',
     component: Layout,
@@ -121,7 +122,8 @@ export const asyncRouterMap = [
     hidden: true,
     meta: {
       title: '${errorPages}',
-      icon: '404'
+      icon: '404',
+      authority: false
     },
     children: [
       {
@@ -138,20 +140,71 @@ export const asyncRouterMap = [
       }
     ]
   },
-
+  customRouter,
+  remindRouter,
+  {
+    path: '/meetingManage',
+    component: Layout,
+    // redirect: 'noredirect',
+    name: 'meetingManage',
+    meta: {
+      title: '会议管理',
+      // title: '${meetingManage}',
+      icon: 'list'
+    },
+    children: [
+      {
+        path: 'buildMeeting',
+        component: () => import('@/views/meetingManage/buildMeeting'),
+        name: 'buildMeeting',
+        meta: { title: '会议安排', noCache: true }
+      },
+      {
+        path: 'meetingSummary',
+        component: () => import('@/views/meetingManage/meetingSummary'),
+        name: 'meetingSummary',
+        meta: { title: '会议室预约', noCache: true }
+      },
+      {
+        path: 'meetingReminder',
+        component: () => import('@/views/meetingManage/meetingReminder'),
+        name: 'meetingReminder',
+        meta: { title: '会议纪要', noCache: true }
+      },
+    ]
+  },
+ serviceRouter,
+  sharedResourceRouter,
   {
     path: '/error-log',
     component: Layout,
+    hidden: true,
     redirect: 'noredirect',
     children: [
       {
         path: 'log',
         component: () => import('@/views/errorLog/index'),
         name: 'ErrorLog',
-        meta: { title: '${errorLog}', icon: 'bug' }
+        meta: { title: '${errorLog}', icon: 'bug', authority: false }
       }
     ]
   },
 
-  { path: '*', redirect: '/404', hidden: true }
+  { path: '*', redirect: '/404', hidden: true, meta: { authority: false } }
 ]
+
+const createRouter = () => new Router({
+  // mode: 'history', // require service support
+  scrollBehavior: () => ({ y: 0 }),
+  routes: constantRoutes
+})
+
+const router = createRouter()
+
+// Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
+export function resetRouter() {
+  const newRouter = createRouter()
+  router.matcher = newRouter.matcher // reset router
+}
+
+export default router

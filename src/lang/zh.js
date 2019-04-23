@@ -55,13 +55,36 @@ export default {
     zip: 'Zip',
     exportZip: 'Export Zip',
     theme: '换肤',
-    clipboardDemo: 'Clipboard',
     i18n: '国际化',
     externalLink: '外链',
     example: '开发用例',
     dynamicExample: '动态',
     ComplexExample: '复合',
-    authority: '权限管理'
+    authority: '权限管理',
+    projManage: '项目管理',
+    basicprojInfo: '项目信息管理',
+    projApproval: '项目审批',
+    projApprovalLog: '项目审批记录',
+    presaleProjInfo: '售前项目信息管理',
+    taskInfo:'任务管理',
+    customInfoManage:'客户管理',
+    customManage:'客户信息管理',
+    contractMessage:'销售合同管理',
+    customManageDetail:'客户详细信息',
+    customManageSchedule:'待办事项管理',
+    serviceDueRemind:'服务到期提醒',
+    inspectionVisitRemind:'巡检回访提醒',
+    contactCustomRemind:'联系客户提醒',
+    empContractRemind:'合同到期提醒',
+    myWork:'我的工作',
+    employee: '员工管理',
+    sharedResource: '共享资源',
+    isoFiles: '9000认证管理文件',
+    publicFiles: '共享资源文件',
+    fileManagement: '文件管理',
+    fileDownload: '文件下载',
+    fileOperate: '文件操作记录',
+    productList: '产品一览'
   },
   navbar: {
     logOut: '退出登录',
@@ -143,5 +166,12 @@ export default {
     close: '关闭',
     closeOthers: '关闭其它',
     closeAll: '关闭所有'
+  },
+  settings: {
+    title: '系统布局配置',
+    theme: '主题色',
+    tagsView: '开启 Tags-View',
+    fixedHeader: '固定 Header',
+    sidebarLogo: '侧边栏 Logo'
   }
 }

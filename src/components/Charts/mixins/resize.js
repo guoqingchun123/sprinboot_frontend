@@ -1,4 +1,4 @@
-import { debounce } from '@/utils'
+import { defaults as utils } from '@bestvike/utils'
 
 export default {
   data() {
@@ -7,7 +7,7 @@ export default {
     }
   },
   mounted() {
-    this.__resizeHandler = debounce(() => {
+    this.__resizeHandler = utils.debounce(() => {
       if (this.chart) {
         this.chart.resize()
       }

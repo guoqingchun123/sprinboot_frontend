@@ -1,11 +1,11 @@
 import axios from 'axios'
 import { Message } from 'element-ui'
 import store from '@/store'
-import { getToken } from '@/utils/auth'
+import { auth } from '@bestvike/utils'
 
 // create an axios instance
 const service = axios.create({
-  baseURL: (process.env.VUE_APP_ROOT === '/' ? '' : process.env.VUE_APP_ROOT) + process.env.VUE_APP_BASE_API, // api 的 base_url
+  baseURL: (process.env.VUE_APP_API_SERVER || '') + (process.env.VUE_APP_ROOT === '/' ? '' : process.env.VUE_APP_ROOT) + process.env.VUE_APP_BASE_API, // api 的 base_url
   withCredentials: true, // 跨域请求时发送 cookies
   timeout: 5000 // request timeout
 })
@@ -16,20 +16,24 @@ service.interceptors.request.use(
     // Do something before request is sent
     if (store.getters.token) {
       // 让每个请求携带token-- ['X-Token']为自定义key 请根据实际情况自行修改
-      config.headers['X-Token'] = getToken()
+      config.headers['X-Token'] = auth.getToken()
     }
     return config
   },
   error => {
     // Do something with request error
     console.log(error) // for debug
-    Promise.reject(error)
+    return Promise.reject(error)
   }
 )
 
 // response interceptor
 service.interceptors.response.use(
-  response => response,
+  /**
+   * If you want to get information such as headers or status
+   * Please return  response => response
+  */
+  response => response.data,
   /**
    * 下面的注释为通过在response里，自定义code来标示请求状态
    * 当code返回如下情况则说明权限有问题，登出并返回到登录页
@@ -40,7 +44,7 @@ service.interceptors.response.use(
   //   const res = response.data
   //   if (res.code !== 20000) {
   //     Message({
-  //       message: res.message,
+  //       message: res.message || 'error',
   //       type: 'error',
   //       duration: 5 * 1000
   //     })
@@ -53,14 +57,14 @@ service.interceptors.response.use(
   //         cancelButtonText: '取消',
   //         type: 'warning'
   //       }).then(() => {
-  //         store.dispatch('FedLogOut').then(() => {
+  //         store.dispatch('user/resetToken').then(() => {
   //           location.reload() // 为了重新实例化vue-router对象 避免bug
   //         })
   //       })
   //     }
-  //     return Promise.reject('error')
+  //     return Promise.reject(res.message || 'error')
   //   } else {
-  //     return response.data
+  //     return res
   //   }
   // },
   error => {

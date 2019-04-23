@@ -4,18 +4,19 @@ const getters = {
   size: state => state.app.size,
   theme: state => state.app.theme,
   device: state => state.app.device,
+  screenfull: state => state.app.screenfull,
+  dicts: state => state.app.dicts,
   visitedViews: state => state.tagsView.visitedViews,
   cachedViews: state => state.tagsView.cachedViews,
   token: state => state.user.token,
   avatar: state => state.user.avatar,
   name: state => state.user.name,
   introduction: state => state.user.introduction,
-  status: state => state.user.status,
   roles: state => state.user.roles,
   routes: state => state.user.routes,
-  setting: state => state.user.setting,
-  permission_routers: state => state.permission.routers,
-  addRouters: state => state.permission.addRouters,
-  errorLogs: state => state.errorLog.logs
+  permissionRoutes: state => state.permission.routes,
+  addRoutes: state => state.permission.addRoutes,
+  // 刷新token用
+  refreshPromise: state => state.user.refreshPromise
 }
 export default getters

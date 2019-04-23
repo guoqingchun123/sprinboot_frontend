@@ -14,11 +14,24 @@ $--font-path: '~element-ui/lib/theme-chalk/fonts';
 // $--color-primary-light-9: red;
 $--color-primary-mix: mix($--color-black, $--color-primary, $--button-active-shade-percent);
 
+$--table-header-color: $--color-white !important;
+$--table-header-background-color: $--color-primary-light-4 !important;
+
+// $--menu-item-color: #bfcbd9;
+// $--menu-item-active-color: #409EFF;
+$--menu-item-fill: #ecf5ff;
+$--sub-menu-item-fill: #fff;
+$--sub-menu-item-active-fill: $--menu-item-hover-fill;
+$--sub-menu-item-color: $--menu-item-color;
+
 $headerHeight: 50px;
+$tagsViewHeight: 34px;
+$logoHeight: 50px;
 $sideBarWidth: 180px;
-$miniSideBarWidth: 36px;
+$miniSideBarWidth: 54px;
 
 // the :export directive is the magic sauce for webpack
+// https://www.bluematador.com/blog/how-to-share-variables-between-js-and-sass
 :export {
   colorPrimary: $--color-primary;
   colorPrimaryLight1: $--color-primary-light-1;
@@ -32,9 +45,36 @@ $miniSideBarWidth: 36px;
   colorPrimaryLight9: $--color-primary-light-9;
   colorPrimaryMix: $--color-primary-mix;
 
+  colorSuccess: $--color-success;
+  colorWarning: $--color-warning;
+  colorDanger: $--color-danger;
+  colorInfo: $--color-info;
+  colorSuccessLight: $--color-success-light;
+  colorWarningLight: $--color-warning-light;
+  colorDangerLight: $--color-danger-light;
+  colorInfoLight: $--color-info-light;
+  colorSuccessLighter: $--color-success-lighter;
+  colorWarningLighter: $--color-warning-lighter;
+  colorDangerLighter: $--color-danger-lighter;
+  colorInfoLighter: $--color-info-lighter;
+
   colorTextPrimary: $--color-text-primary;
+  colorTextRegular: $--color-text-regular;
+  colorTextSecondary: $--color-text-secondary;
+  colorTextPlaceholder: $--color-text-placeholder;
+  borderColorBase: $--border-color-base;
+  borderColorLight: $--border-color-light;
+  borderColorLighter: $--border-color-lighter;
+  borderColorExtraLight: $--border-color-extra-light;
+
+  backgroundColorBase: $--background-color-base;
+
   linkColor: $--link-color;
   linkHoverColor: $--link-hover-color;
+
+  menuItemColor: $--menu-item-color;
+  menuItemFill: $--menu-item-fill;
+  menuItemHoverFill: $--menu-item-hover-fill;
 
   headerHeight: $headerHeight;
   sideBarWidth: $sideBarWidth;

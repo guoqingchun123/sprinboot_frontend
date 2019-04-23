@@ -11,11 +11,14 @@ export default {
   name: 'BvScreenfull',
   data() {
     return {
-      isFullscreen: false
+      isFullscreen: this.$store.getters.screenfull
     }
   },
   mounted() {
     this.init()
+  },
+  beforeDestroy() {
+    this.destroy()
   },
   methods: {
     click() {
@@ -27,12 +30,19 @@ export default {
         return false
       }
       screenfull.toggle()
+      this.$store.dispatch('toggleScreenfull')
     },
     init() {
       if (screenfull.enabled) {
         screenfull.on('change', () => {
-          this.isFullscreen = screenfull.isFullscreen
+          this.$store.dispatch('toggleScreenfull', screenfull.isFullscreen)
+          // this.isFullscreen = screenfull.isFullscreen
         })
+      }
+    },
+    destroy() {
+      if (screenfull.enabled) {
+        screenfull.off('change', this.change)
       }
     }
   }

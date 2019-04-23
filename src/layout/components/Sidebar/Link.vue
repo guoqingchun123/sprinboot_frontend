@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { isExternal } from '@/utils/validate'
+import { validate } from '@bestvike/utils'
 
 export default {
   props: {
@@ -18,7 +18,7 @@ export default {
   },
   methods: {
     linkProps(url) {
-      if (isExternal(url)) {
+      if (validate.isExternal(url)) {
         return {
           is: 'a',
           href: url,

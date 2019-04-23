@@ -1,5 +1,5 @@
 <template>
-  <div class="tags-view-container">
+  <div id="tags-view-container" class="tags-view-container">
     <scroll-pane ref="scrollPane" class="tags-view-wrapper">
       <router-link
         v-for="tag in visitedViews"
@@ -35,8 +35,9 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import ScrollPane from './ScrollPane'
-import { generateTitle } from '@/utils/i18n'
+import { i18n } from '@bestvike/utils'
 import path from 'path'
 
 export default {
@@ -51,11 +52,14 @@ export default {
     }
   },
   computed: {
+    ...mapGetters([
+      'sidebar'
+    ]),
     visitedViews() {
       return this.$store.state.tagsView.visitedViews
     },
-    routers() {
-      return this.$store.state.permission.routers
+    routes() {
+      return this.$store.state.permission.routes
     }
   },
   watch: {
@@ -76,7 +80,7 @@ export default {
     this.addTags()
   },
   methods: {
-    generateTitle, // generateTitle by vue-i18n
+    generateTitle: i18n.generateTitle, // generateTitle by vue-i18n
     isActive(route) {
       return route.path === this.$route.path
     },
@@ -102,18 +106,18 @@ export default {
       return tags
     },
     initTags() {
-      const affixTags = this.affixTags = this.filterAffixTags(this.routers)
+      const affixTags = this.affixTags = this.filterAffixTags(this.routes)
       for (const tag of affixTags) {
         // Must have tag name
         if (tag.name) {
-          this.$store.dispatch('addVisitedView', tag)
+          this.$store.dispatch('tagsView/addVisitedView', tag)
         }
       }
     },
     addTags() {
       const { name } = this.$route
       if (name) {
-        this.$store.dispatch('addView', this.$route)
+        this.$store.dispatch('tagsView/addView', this.$route)
       }
       return false
     },
@@ -125,7 +129,7 @@ export default {
             this.$refs.scrollPane.moveToTarget(tag)
             // when query is different then update
             if (tag.to.fullPath !== this.$route.fullPath) {
-              this.$store.dispatch('updateVisitedView', this.$route)
+              this.$store.dispatch('tagsView/updateVisitedView', this.$route)
             }
             break
           }
@@ -133,7 +137,7 @@ export default {
       })
     },
     refreshSelectedTag(view) {
-      this.$store.dispatch('delCachedView', view).then(() => {
+      this.$store.dispatch('tagsView/delCachedView', view).then(() => {
         const { fullPath } = view
         this.$nextTick(() => {
           this.$router.replace({
@@ -143,33 +147,39 @@ export default {
       })
     },
     closeSelectedTag(view) {
-      this.$store.dispatch('delView', view).then(({ visitedViews }) => {
+      this.$store.dispatch('tagsView/delView', view).then(({ visitedViews }) => {
         if (this.isActive(view)) {
-          this.toLastView(visitedViews)
+          this.toLastView(visitedViews, view)
         }
       })
     },
     closeOthersTags() {
       this.$router.push(this.selectedTag)
-      this.$store.dispatch('delOthersViews', this.selectedTag).then(() => {
+      this.$store.dispatch('tagsView/delOthersViews', this.selectedTag).then(() => {
         this.moveToCurrentTag()
       })
     },
     closeAllTags(view) {
-      this.$store.dispatch('delAllViews').then(({ visitedViews }) => {
+      this.$store.dispatch('tagsView/delAllViews').then(({ visitedViews }) => {
         if (this.affixTags.some(tag => tag.path === view.path)) {
           return
         }
-        this.toLastView(visitedViews)
+        this.toLastView(visitedViews, view)
       })
     },
-    toLastView(visitedViews) {
+    toLastView(visitedViews, view) {
       const latestView = visitedViews.slice(-1)[0]
       if (latestView) {
         this.$router.push(latestView)
       } else {
-        // You can set another route
-        this.$router.push('/')
+        // now the default is to redirect to the home page if there is no tags-view,
+        // you can adjust it according to your needs.
+        if (view.name === 'Dashboard') {
+          // to reload home page
+          this.$router.replace({ path: '/redirect' + view.fullPath })
+        } else {
+          this.$router.push('/')
+        }
       }
     },
     openMenu(tag, e) {
@@ -177,7 +187,7 @@ export default {
       const offsetLeft = this.$el.getBoundingClientRect().left // container margin left
       const offsetWidth = this.$el.offsetWidth // container width
       const maxLeft = offsetWidth - menuMinWidth // left boundary
-      const left = e.clientX - offsetLeft + 15 // 15: margin right
+      const left = e.clientX - offsetLeft + 15 + (this.sidebar.opened ? 145 : 0) // 15: margin right
 
       if (left > maxLeft) {
         this.left = maxLeft
@@ -196,9 +206,11 @@ export default {
 }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="scss" scoped>
+@import "@/styles/variables.scss";
+
 .tags-view-container {
-  height: 34px;
+  height: $tagsViewHeight;
   width: 100%;
   background: #fff;
   border-bottom: 1px solid #d8dce5;
@@ -243,7 +255,7 @@ export default {
   .contextmenu {
     margin: 0;
     background: #fff;
-    z-index: 100;
+    z-index: 3000;
     position: absolute;
     list-style-type: none;
     padding: 5px 0;
@@ -264,7 +276,7 @@ export default {
 }
 </style>
 
-<style rel="stylesheet/scss" lang="scss">
+<style lang="scss">
 //reset element css of el-icon-close
 .tags-view-wrapper {
   .tags-view-item {
