@@ -9,7 +9,6 @@ import Layout from '@/layout/Layout'
 /* Router Modules */
 import authorityRouters from './authority'
 import projectRouter from './project'
-import employRouter from './employee'
 import sharedResourceRouter from './sharedResource'
 import serviceRouter from "./serviceManage";
 import customRouter from './custom'
@@ -59,11 +58,11 @@ export const constantRoutes = [
     component: () => import('@/layout/login/index'),
     hidden: true
   },
-  {
-    path: '/auth-redirect',
-    component: () => import('@/layout/login/authRedirect'),
-    hidden: true
-  },
+  // {
+  //   path: '/auth-redirect',
+  //   component: () => import('@/layout/login/authRedirect'),
+  //   hidden: true
+  // },
   {
     path: '/404',
     component: () => import('@/layout/errorPage/404'),
@@ -112,7 +111,6 @@ export const constantRoutes = [
 */
 export const asyncRoutes = [
   authorityRouters,
-  employRouter,
   projectRouter,
   {
     path: '/error',

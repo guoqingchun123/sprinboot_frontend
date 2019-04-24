@@ -26,13 +26,6 @@ const authorityRouter = {
         title: '用户管理'
       }
     }, {
-      path: 'areas',
-      component: () => import('@/views/authority/area'),
-      name: 'ListArea',
-      meta: {
-        title: '区域维护'
-      }
-    }, {
       path: 'roles',
       component: () => import('@/views/authority/role'),
       name: 'ListRole',
@@ -105,49 +98,6 @@ const authorityRouter = {
           }
         ]
       }
-    },
-    {
-      path: 'product',
-      component: () => import('@/views/authority/product'),
-      name: 'Product',
-      meta: {
-        title: '产品管理'
-      }
-    },
-    {
-      path: 'flow',
-      component: () => import('@/views/flowManger/flowList'),
-      name: 'Flow',
-      meta: {
-        title: '审批流程配置'
-      }
-    },
-    {
-      path: 'branch',
-      component: () => import('@/views/authority/branch/branchManage'),
-      name: 'ListAreaManage',
-      meta: {
-        title: '区域管理',
-        icon: 'location'
-      }
-    },
-    {
-      path: 'deptManage',
-      component: () => import('@/views/authority/deptManage/deptManage'),
-      name: 'ListDeptManage',
-      meta: {
-        title: '部门管理',
-        icon: 'cluster'
-      },
-    },
-    {
-      path: 'holidayConfig',
-      component: () => import('@/views/authority/holidayConfig/index'),
-      name: 'HolidayConfig',
-      meta: {
-        title: '节假日配置',
-        icon: 'schedule'
-      },
     }
   ]
 }

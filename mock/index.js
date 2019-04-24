@@ -14,8 +14,6 @@ import basicProjInfo from './projManage/basicProjInfo'
 import taskInfo from './projManage/taskInfo'
 import approveLog from './projManage/approveLog'
 import presaleProjInfo from './projManage/presaleProjInfo'
-import empInfo from './employee/empInfo'
-import areas from './employee/areas'
 import schedule from "./employee/schedule"
 import empAttend from "./employee/empAttend"
 import travel from "./employee/travel"
@@ -30,11 +28,9 @@ const mocks = [
   ...taskInfo,
   ...approveLog,
   ...presaleProjInfo,
-  ...empInfo,
   ...customFileTree,
   ...empData,
   ...customFileTree,
-  ...areas,
   ...schedule,
   ...empAttend,
   ...customFile,

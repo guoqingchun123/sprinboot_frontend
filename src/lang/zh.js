@@ -77,7 +77,6 @@ export default {
     contactCustomRemind:'联系客户提醒',
     empContractRemind:'合同到期提醒',
     myWork:'我的工作',
-    employee: '员工管理',
     sharedResource: '共享资源',
     isoFiles: '9000认证管理文件',
     publicFiles: '共享资源文件',
