@@ -11,7 +11,6 @@ import authorityRouters from './authority'
 import sharedResourceRouter from './sharedResource'
 import serviceRouter from "./serviceManage";
 import customRouter from './custom'
-import remindRouter from './remind'
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -137,7 +136,6 @@ export const asyncRoutes = [
     ]
   },
   customRouter,
-  remindRouter,
   {
     path: '/meetingManage',
     component: Layout,
