@@ -62,10 +62,6 @@ export default {
     ComplexExample: '复合',
     authority: '权限管理',
     projManage: '项目管理',
-    basicprojInfo: '项目信息管理',
-    projApproval: '项目审批',
-    projApprovalLog: '项目审批记录',
-    presaleProjInfo: '售前项目信息管理',
     taskInfo:'任务管理',
     customInfoManage:'客户管理',
     customManage:'客户信息管理',
@@ -83,7 +79,6 @@ export default {
     fileManagement: '文件管理',
     fileDownload: '文件下载',
     fileOperate: '文件操作记录',
-    productList: '产品一览'
   },
   navbar: {
     logOut: '退出登录',

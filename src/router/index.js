@@ -8,7 +8,6 @@ import Layout from '@/layout/Layout'
 
 /* Router Modules */
 import authorityRouters from './authority'
-import projectRouter from './project'
 import sharedResourceRouter from './sharedResource'
 import serviceRouter from "./serviceManage";
 import customRouter from './custom'
@@ -111,7 +110,6 @@ export const constantRoutes = [
 */
 export const asyncRoutes = [
   authorityRouters,
-  projectRouter,
   {
     path: '/error',
     component: Layout,
