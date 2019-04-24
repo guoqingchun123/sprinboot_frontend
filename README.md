@@ -1,5 +1,10 @@
 # oa
 
+##指定私服地址
+```
+npm config set registry https://maven.bestvike.com/repository/group-npm/
+```
+
 ## Project setup
 ```
 npm install
