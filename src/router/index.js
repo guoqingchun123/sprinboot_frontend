@@ -8,7 +8,6 @@ import Layout from '@/layout/Layout'
 
 /* Router Modules */
 import authorityRouters from './authority'
-import customRouter from './custom'
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -131,38 +130,6 @@ export const asyncRoutes = [
         name: 'Page404',
         meta: { title: '${page404}', noCache: true }
       }
-    ]
-  },
-  customRouter,
-  {
-    path: '/meetingManage',
-    component: Layout,
-    // redirect: 'noredirect',
-    name: 'meetingManage',
-    meta: {
-      title: '会议管理',
-      // title: '${meetingManage}',
-      icon: 'list'
-    },
-    children: [
-      {
-        path: 'buildMeeting',
-        component: () => import('@/views/meetingManage/buildMeeting'),
-        name: 'buildMeeting',
-        meta: { title: '会议安排', noCache: true }
-      },
-      {
-        path: 'meetingSummary',
-        component: () => import('@/views/meetingManage/meetingSummary'),
-        name: 'meetingSummary',
-        meta: { title: '会议室预约', noCache: true }
-      },
-      {
-        path: 'meetingReminder',
-        component: () => import('@/views/meetingManage/meetingReminder'),
-        name: 'meetingReminder',
-        meta: { title: '会议纪要', noCache: true }
-      },
     ]
   },
   {

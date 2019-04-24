@@ -61,12 +61,6 @@ export default {
     dynamicExample: '动态',
     ComplexExample: '复合',
     authority: '权限管理',
-    projManage: '项目管理',
-    taskInfo:'任务管理',
-    customInfoManage:'客户管理',
-    customManage:'客户信息管理',
-    contractMessage:'销售合同管理',
-    customManageDetail:'客户详细信息'
   },
   navbar: {
     logOut: '退出登录',
