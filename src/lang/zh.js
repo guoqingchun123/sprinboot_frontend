@@ -66,13 +66,7 @@ export default {
     customInfoManage:'客户管理',
     customManage:'客户信息管理',
     contractMessage:'销售合同管理',
-    customManageDetail:'客户详细信息',
-    sharedResource: '共享资源',
-    isoFiles: '9000认证管理文件',
-    publicFiles: '共享资源文件',
-    fileManagement: '文件管理',
-    fileDownload: '文件下载',
-    fileOperate: '文件操作记录',
+    customManageDetail:'客户详细信息'
   },
   navbar: {
     logOut: '退出登录',

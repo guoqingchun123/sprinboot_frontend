@@ -8,7 +8,6 @@ import Layout from '@/layout/Layout'
 
 /* Router Modules */
 import authorityRouters from './authority'
-import sharedResourceRouter from './sharedResource'
 import customRouter from './custom'
 
 /**
@@ -166,7 +165,6 @@ export const asyncRoutes = [
       },
     ]
   },
-  sharedResourceRouter,
   {
     path: '/error-log',
     component: Layout,
