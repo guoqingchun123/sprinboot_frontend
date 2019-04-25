@@ -10,7 +10,7 @@ export function login(authority) {
   }*/
   // console.log(MD5('666666').toString())
   // console.log(Base64.stringify(Utf8.parse('666666')))
-  authority.password = Base64.stringify(Utf8.parse(MD5(authority.password).toString()))
+  authority.userPass = Base64.stringify(Utf8.parse(MD5(authority.userPass).toString()))
   return http.post('/api/authority/login', authority)
 }
 
