@@ -53,11 +53,11 @@ export const constantRoutes = [
     component: () => import('@/layout/login/index'),
     hidden: true
   },
-  // {
-  //   path: '/auth-redirect',
-  //   component: () => import('@/layout/login/authRedirect'),
-  //   hidden: true
-  // },
+  {
+    path: '/auth-redirect',
+    component: () => import('@/layout/login/authRedirect'),
+    hidden: true
+  },
   {
     path: '/404',
     component: () => import('@/layout/errorPage/404'),
