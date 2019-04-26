@@ -1,16 +1,16 @@
 'use strict'
-const path = require('path')
-const pkg = require('./package.json')
-const SentryPlugin = require('@sentry/webpack-plugin')
+const path = require('path');
+const pkg = require('./package.json');
+const SentryPlugin = require('@sentry/webpack-plugin');
 
 function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
-process.env.VUE_APP_VERSION = pkg.version
+process.env.VUE_APP_VERSION = pkg.version;
 
-const name = pkg.name || 'oa' // page title
-const port = 8080
+const name = "房产信息系统";
+const port = 8080;
 
 module.exports = {
     publicPath: process.env.VUE_APP_ROOT || '/',
@@ -56,12 +56,12 @@ module.exports = {
         ] : []
     },
     chainWebpack(config) {
-        config.plugins.delete('preload')
-        config.plugins.delete('prefetch')
+        config.plugins.delete('preload');
+        config.plugins.delete('prefetch');
         config.module
           .rule('svg')
           .exclude.add(resolve('src/icons'))
-          .end()
+          .end();
           config.module
           .rule('icons')
           .test(/\.svg$/)
@@ -72,22 +72,22 @@ module.exports = {
           .options({
               symbolId: 'icon-[name]'
           })
-          .end()
+          .end();
         // set preserveWhitespace
         config.module
           .rule('vue')
           .use('vue-loader')
           .loader('vue-loader')
           .tap(options => {
-            options.compilerOptions.preserveWhitespace = true
-            return options
+            options.compilerOptions.preserveWhitespace = true;
+            return options;
           })
-          .end()
+          .end();
 
         config
           .when(process.env.NODE_ENV !== 'production',
             config => config.devtool('cheap-source-map')
-          )
+          );
 
         config
           .when(process.env.NODE_ENV === 'production',
@@ -99,7 +99,7 @@ module.exports = {
                 // `runtime` must same as runtimeChunk name. default is `runtime`
                   inline: /runtime\..*\.js$/
                 }])
-                .end()
+                .end();
               config
                 .optimization.splitChunks({
                   chunks: 'all',
@@ -123,9 +123,9 @@ module.exports = {
                       reuseExistingChunk: true
                     }
                   }
-                })
+                });
               config.optimization.runtimeChunk('single')
             }
           )
     }
-}
+};
