@@ -98,7 +98,29 @@ const authorityRouter = {
           }
         ]
       }
-    }
+    },
+    {
+      path: 'company',
+      component: () => import('@/views/company/company'),
+      name: 'company',
+      meta: {
+        title: '从业机构管理',
+      },
+      children: [
+        {
+          path: '/companyManage',
+          component: () => import('@/views/company/companyManage'),
+          name: 'companyManage',
+          meta: { title: '从业机构维护', noCache: true }
+        },
+       /* {
+          path: '/companyManage',
+          component: () => import('@/views/company/companyManage'),
+          name: 'companyManage',
+          meta: { title: '从业机构维护', noCache: true }
+        },*/
+      ]
+    },
   ]
 }
 export default authorityRouter
