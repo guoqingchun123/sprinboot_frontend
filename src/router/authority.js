@@ -18,9 +18,9 @@ const authorityRouter = {
       meta: {
         title: '路由一览'
       }
-    },{
+    }, {
       path: 'users',
-      component: () => import('@/views/authority/user'),
+      component: () => import('@/views/authority/user/list'),
       name: 'ListUser',
       meta: {
         title: '用户管理'

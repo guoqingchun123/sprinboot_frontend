@@ -44,12 +44,8 @@
 
       <div style="position:relative">
         <div class="tips">
-          <span>账号 : admin</span>
+          <span>账号 : 100000</span>
           <span>密码 : password</span>
-        </div>
-        <div class="tips">
-          <span style="margin-right:18px;">账号 : editor</span>
-          <span>密码 : 随便填</span>
         </div>
       </div>
     </el-form>
@@ -78,7 +74,7 @@ export default {
     }
     return {
       loginForm: {
-        id: 'admin',
+        id: '100000',
         password: 'password'
       },
       loginRules: {
