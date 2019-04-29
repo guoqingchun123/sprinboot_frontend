@@ -143,26 +143,7 @@ export const asyncRoutes = [
     ]
   },
 
-  { path: '*', redirect: '/404', hidden: true, meta: { authority: false } },
-  {
-    path: '/baseManage',
-    component: Layout,
-    // redirect: 'noredirect',
-    name: 'baseManage',
-    meta: {
-      title: '基础管理',
-      // title: '${meetingManage}',
-      icon: 'list'
-    },
-    children: [
-      {
-        path: 'buildMeeting',
-        component: () => import('@/views/base/dept'),
-        name: 'buildMeeting',
-        meta: { title: '行政区维护', noCache: true }
-      }
-    ]
-  }
+  { path: '*', redirect: '/404', hidden: true, meta: { authority: false } }
 ]
 
 const createRouter = () => new Router({
