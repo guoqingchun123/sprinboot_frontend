@@ -121,6 +121,15 @@ const authorityRouter = {
         },*/
       ]
     },
+    {
+      path: 'dept',
+      component: ()=> import('@/views/base/dept'),
+      // redirect: 'noredirect',
+      name: 'dept',
+      meta: {
+        title: '行政区维护'
+      }
+    }
   ]
 }
 export default authorityRouter
