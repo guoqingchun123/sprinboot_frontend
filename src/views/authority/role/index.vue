@@ -1,6 +1,10 @@
 <template>
   <div class="app-container">
-    <bv-table title="角色一览" :pagination="true" :filter.sync="filter" :fetch-api="fetchRoles" @on-mounted="(table) => tableInstance = table">
+    <bv-table title="角色一览"
+              :pagination="true"
+              :filter.sync="filter"
+              :fetch-api="fetchRoles"
+              @on-mounted="(table) => tableInstance = table">
       <div slot="operates">
         <bv-button show="one" view="grant" authority="grant" @click="startGrant()">授权</bv-button>
         <bv-button show="none" view="add" authority="add" @click="startCreate()">新增</bv-button>
@@ -27,23 +31,23 @@
         </bv-col>
       </div>
       <el-table-column type="selection" width="55" />
-      <el-table-column label="角色代码" prop="id" align="center" />
-      <el-table-column label="角色名称" prop="name" align="center" sortable="custom" />
-      <el-table-column label="角色状态" prop="statusName" align="center" />
+      <el-table-column label="角色代码" prop="roleId" align="center" />
+      <el-table-column label="角色名称" prop="roleName" align="center" sortable="custom" />
+      <el-table-column label="角色状态" prop="roleState" align="center" />
     </bv-table>
 
     <bv-dialog title="角色维护" :visible.sync="dialogFormVisible">
       <bv-form ref="dialogForm" :model="item" :rules="rules">
         <bv-row layout="dialog-2">
           <bv-col>
-            <el-form-item label="角色代码" prop="id">
-              <el-input v-if="modifyType === 'create'" v-model="item.id" />
-              <span v-else v-text="item.id" />
+            <el-form-item label="角色代码" prop="roleId">
+              <el-input v-if="modifyType === 'create'" v-model="item.roleId" clearable/>
+              <span v-else v-text="item.roleId" />
             </el-form-item>
           </bv-col>
           <bv-col>
-            <el-form-item label="角色名称" prop="name">
-              <el-input v-model="item.name" />
+            <el-form-item label="角色名称" prop="roleName">
+              <el-input v-model="item.roleName" />
             </el-form-item>
           </bv-col>
         </bv-row>
@@ -101,7 +105,10 @@
         dialogFormVisible: false,
         dialogGrantVisible: false,
         modifyType: null,
-        item: {},
+        item: {
+          roleId: '',
+          roleName: ''
+        },
         // 授权用
         routes: [],
         // 字典
@@ -113,10 +120,10 @@
         fetchRoles,
 
         rules: {
-          id: [
+          roleId: [
             {required: true, message: '请输入角色代码', trigger: 'blur'}
           ],
-          name: [
+          roleName: [
             {required: true, message: '请输入角色名称', trigger: 'blur'}
           ]
         }
@@ -127,7 +134,6 @@
         return !route.hidden && route.meta
       }))
       this.routes = [...this.__initRoutes]
-      // this.fetchData()
       this.$store.dispatch('app/fetchDicts', 'roleStatus').then(data => {
         this.roleStatusOptions = data
       })
@@ -138,6 +144,7 @@
         this.item = {}
       },
       startCreate() {
+        this.item = {}
         this.dialogFormVisible = true
         this.modifyType = 'create'
         this.$refs.dialogForm && this.$refs.dialogForm.clearValidate()
@@ -178,7 +185,7 @@
         })
       },
       afterModify() {
-        this.fetchData()
+        this.tableInstance.fetchData()
         this.initRole()
         this.dialogFormVisible = false
         this.modifyType = null
@@ -193,7 +200,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          removeRoles(this.tableInstance.table.selection.map(item => item.id).join()).then(() => {
+          removeRoles(this.tableInstance.table.selection.map(item => item.roleId).join()).then(() => {
             this.tableInstance.fetchData()
             this.$message({
               message: '删除成功',
