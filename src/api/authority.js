@@ -4,12 +4,6 @@ import Base64 from 'crypto-js/enc-base64'
 import Utf8 from 'crypto-js/enc-utf8'
 
 export function login(authority) {
-  /*const data = {
-    id,
-    password
-  }*/
-  // console.log(MD5('666666').toString())
-  // console.log(Base64.stringify(Utf8.parse('666666')))
   authority.userPass = Base64.stringify(Utf8.parse(MD5(authority.userPass).toString()))
   return http.post('/portal/api/authority/login', authority)
 }
@@ -146,9 +140,6 @@ export function fetchUsers(query) {
 // 保存用户头像
 export function modifyAvatar(avatar) {
   return http.put('/portal/api/users/avatar', avatar)
-}
-export function modifyUser(data) {
-  return http.put('/portal/api/users', data)
 }
 export function resetPass(data) {
   return http.put('/portal/api/resetPass', data)
