@@ -18,8 +18,8 @@
           </el-form-item>
         </bv-col>
         <bv-col>
-          <el-form-item label="机构编号:" prop="compId">
-            <el-input v-model="filter.compId"  clearable />
+          <el-form-item label="机构编号:" prop="companyId">
+            <el-input v-model="filter.companyId"  clearable />
           </el-form-item>
         </bv-col>
         <bv-col>
@@ -53,8 +53,7 @@
         </bv-col>
       </div>
       <el-table-column type="selection" width="55" />
-      <el-table-column v-if="false" prop="bcGuid" label="企业id" />
-      <el-table-column v-if="false" prop="compId" label="企业编号" />
+      <el-table-column v-if="false" prop="companyId" label="企业编号" />
       <el-table-column prop="compName" label="机构名称" sortable />
       <el-table-column prop="compShortName" label="机构简称" sortable />
       <el-table-column prop="compId" label="机构编号" sortable />
@@ -80,7 +79,7 @@
         filter: {
           compName:'',
           compShortName:'',
-          compId:'',
+          companyId:'',
           legalName:'',
           compState:'',
           compType:'',
