@@ -202,7 +202,7 @@ instance.upload = (url, file, data) => {
     url: url,
     method: 'post',
     headers: {
-        'Content-Type': 'multipart/form-data'
+      'Content-Type': 'multipart/form-data'
     },
     data: formData
   })

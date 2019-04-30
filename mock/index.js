@@ -17,7 +17,6 @@ import presaleProjInfo from './projManage/presaleProjInfo'
 import schedule from "./employee/schedule"
 import empAttend from "./employee/empAttend"
 import travel from "./employee/travel"
-import company  from './custom/company'
 
 const mocks = [
   ...authority,
@@ -37,7 +36,6 @@ const mocks = [
   ...customFile,
   ...customFile,
   ...travel,
-  ...company
 ]
 
 // for front mock

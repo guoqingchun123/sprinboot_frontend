@@ -22,10 +22,10 @@
 <el-form ref="form" :model="form" label-width="120px" :rules="rules"
          style="width:60% ;float:left;margin-top: 50px;margin-left: 100px;border:1px solid #dcdfe6;padding-top: 10px">
   <el-form-item label="行政区划代码"  prop="divisionCode">
-    <el-input v-model="form.divisionCode"  :disabled="disabledCode"></el-input>
+    <el-input v-model="form.divisionCode" style="width: 217px" :disabled="disabledCode"></el-input>
   </el-form-item>
   <el-form-item label="行政区划名称"  prop="divisionName">
-    <el-input v-model="form.divisionName"></el-input>
+    <el-input v-model="form.divisionName" style="width: 217px"></el-input>
   </el-form-item>
 
   <el-form-item label="行政区划级别" prop="divisionLevel">
@@ -107,7 +107,7 @@
       },
 
       remove(node, data) {
-        this.$confirm('此操作将永久删除该信息, 是否继续?', '提示', {
+        this.$confirm('此操作将永久删除【'+this.form.divisionName+'】及其子节点, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
