@@ -132,17 +132,37 @@ export function getPjInfos(query) {
     });
   }
 }
+
+
+/******************************************************用户管理 BEGIN*******************************************************/
+
+// 查询用户列表
 export function fetchUsers(query) {
   return http.get('/portal/api/users', {
     params: query
   })
 }
+
+// 新增用户
+export function createUser(data) {
+  return http.post('/portal/api/users', data)
+}
+// 修改用户
+export function updateUser(data) {
+  return http.put('/portal/api/users', data)
+}
+// 删除用户
+export function delUsers(userIds) {
+  return http.delete('portal/api/users' + userIds)
+}
+
 // 保存用户头像
 export function modifyAvatar(avatar) {
   return http.put('/portal/api/users/avatar', avatar)
 }
-export function resetPass(data) {
-  return http.put('/portal/api/resetPass', data)
+// 密码重置
+export function resetPass(userId) {
+  return http.put('/portal/api/users/resetPass/'+ userId)
 }
 //查询用户权限
 export function fetchGrants(id) {

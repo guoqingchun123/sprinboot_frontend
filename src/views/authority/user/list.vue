@@ -7,6 +7,7 @@
         <bv-button show="one" view="grant" @click="initGrant()">授权</bv-button>
         <bv-button show="none" view="add" authority="add" @click="startCreate()">新增</bv-button>
         <bv-button show="one" view="modify" @click="initUserEdit()">修改</bv-button>
+        <bv-button show="oneOrMore" view="remove" @click="startRemove()">删除</bv-button>
         <bv-button show="one" view="remove" @click="resetPass()">重置密码</bv-button>
       </div>
       <div slot="search">
@@ -23,22 +24,23 @@
       <el-table-column label="用户别名" prop="userAlias" sortable="custom" />
       <el-table-column label="状态" prop="userState" sortable="custom" />
     </bv-table>
-
-    <!--新增/修改弹窗-->
-    <bv-dialog title="用户维护" :visible.sync="dialogFormVisible" />
-
+    <!--新增，修改用户信息-->
     <user-edit :visible="dialogFormVisible" :item="item" @on-edit="userEdited" />
+    <!--授权-->
+    <user-grant :visible="dialogGrantVisible" :grants="grants" :userId="userId" :roles="roles" @on-grant="userEdited"></user-grant>
   </div>
 </template>
 
 <script>
-  import {fetchUsers, resetPass, fetchGrants} from '@/api/authority'
+  import {fetchUsers, delUsers, resetPass, fetchGrants} from '@/api/authority'
   import http from '@/utils/http'
   import userEdit from './edit'
+  import userGrant from './grant'
   export default {
     name: 'ListUser',
     components: {
-      userEdit
+      userEdit,
+      userGrant
     },
     data() {
       return {
@@ -96,63 +98,35 @@
         // 表单重置，表单验证重置
         this.$refs.dialogForm && this.$refs.dialogForm.clearValidate()
       },
-      // 关闭弹窗
-      cancelModify() {
-        // 关闭弹窗
-        this.dialogFormVisible = false
-      },
-      // 保存用户信息
-      // confirmModify() {
-      //   // 表单验证
-      //   this.$refs.dialogForm.validate((valid) => {
-      //     if (!valid) {
-      //       return false
-      //     }
-      //     // 保存
-      //     if ( 'add' === this.editType ) {
-      //       // 验证通过，提交表单
-      //       http.post('/portal/api/users/addUser', this.item).then( () => {
-      //         // 关闭弹窗，刷新列表，提示成功
-      //         this.dialogFormVisible = false
-      //         this.tableInstance.fetchData()
-      //         this.$message({
-      //           message: '保存成功',
-      //           type: 'success'
-      //         })
-      //       })
-      //     }
-      //     // 修改
-      //     else if ('edit' == this.editType) {
-      //       http.put('/portal/api/users/editUser', this.item).then( () => {
-      //         // 关闭弹窗
-      //         this.dialogFormVisible = false
-      //         // 刷新列表
-      //         this.tableInstance.fetchData()
-      //         // 提示成功
-      //         this.$message({
-      //           message: '修改成功',
-      //           type: 'success'
-      //         })
-      //       })
-      //     }
-      //     else {
-      //       this.$message({
-      //         message: '请刷新页面后重试',
-      //         type: 'error'
-      //       })
-      //       return false
-      //     }
-      //   })
-      // },
-      userEdited(visible, refresh) {
-        this.dialogFormVisible = visible;
+      // 关闭弹出框
+      userEdited(refresh) {
+        this.dialogFormVisible = false;
+        this.dialogGrantVisible = false
         if (refresh) {
           this.tableInstance.fetchData();
           this.$message({
-            message: '修改成功...',
+            message: '操作成功...',
             type: 'success'
           })
         }
+      },
+      // 删除用户
+      startRemove() {
+        this.$confirm('此操作将删除所选用户，是否继续？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then( () => {
+          let userIds = this.tableInstance.table.selection.map(item => item.userId)
+          delUsers(userIds).then(() => {
+            // 刷新table
+            this.tableInstance.fetchData()
+            this.$message({
+              message: '删除用户成功...',
+              type: 'success'
+            })
+          })
+        })
       },
       initGrant() {
         //置空
@@ -177,8 +151,8 @@
         })
       },
       resetPass() {
-        let data = {...this.tableInstance.table.selection[0]}
-        resetPass(data).then(() => {
+        let userId = this.tableInstance.table.selection[0].userId
+        resetPass(userId).then(() => {
           this.tableInstance.fetchData()
           this.$message({
             message: '重置密码成功',

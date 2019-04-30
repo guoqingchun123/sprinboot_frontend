@@ -20,7 +20,7 @@
 </template>
 
 <script>
-  import http from '@/utils/http'
+  import { createUser, updateUser} from '@/api/authority'
   export default {
     props: {
       visible: {
@@ -51,7 +51,7 @@
     },
     methods: {
       cancelModify() {
-        this.$emit('on-edit', false, false)
+        this.$emit('on-edit',false)
       },
       confirmModify() {
         // 表单验证
@@ -64,14 +64,14 @@
           if (!userId) {
             // userId为空，表示新增
             // 验证通过，提交表单
-            http.post('/portal/api/users/addUser', this.item).then(() => {
-              this.$emit('on-edit', false, true)
+            createUser(this.item).then(() => {
+              this.$emit('on-edit', true)
             })
           }
           // 修改
           else {
-            http.put('/portal/api/users/editUser', this.item).then(() => {
-              this.$emit('on-edit', false, true)
+            updateUser(this.item).then(() => {
+              this.$emit('on-edit', true)
             })
           }
         })
