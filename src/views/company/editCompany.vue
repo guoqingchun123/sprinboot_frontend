@@ -172,43 +172,43 @@
 
         <bv-col>
           <el-form-item label="有职称专业人数：" prop="hasTitleNum">
-            <el-input  v-model="company.hasTitleNum" class="edit-input" type="number" size="small" ></el-input>
+            <el-input  v-model="company.hasTitleNum" class="edit-input" type="number"    ></el-input>
           </el-form-item>
         </bv-col>
         <bv-col>
           <el-form-item label="高级职称专业人数：" prop="highTitleNum">
-            <el-input  v-model="company.highTitleNum" class="edit-input" size="small" type="number" ></el-input>
+            <el-input  v-model="company.highTitleNum" class="edit-input"   type="number"></el-input>
           </el-form-item>
         </bv-col>
 
         <bv-col>
           <el-form-item label="在册人员总数：" prop="headCount">
-            <el-input  v-model="company.headCount" class="edit-input" size="small"  type="number"></el-input>
+            <el-input  v-model="company.headCount" class="edit-input"   type="number"></el-input>
           </el-form-item>
         </bv-col>
         <bv-col>
           <el-form-item label="中级职称人数：" prop="middleTitleNum">
-            <el-input  v-model="company.middleTitleNum" class="edit-input" size="small" type="number"></el-input>
+            <el-input  v-model="company.middleTitleNum" class="edit-input"  type="number"></el-input>
           </el-form-item>
         </bv-col>
         <bv-col>
           <el-form-item label="初级级职称人数：" prop="primaryTitleNum">
-            <el-input  v-model="company.primaryTitleNum" class="edit-input" size="small"  type="number"></el-input>
+            <el-input  v-model="company.primaryTitleNum" class="edit-input"  type="number"></el-input>
           </el-form-item>
         </bv-col>
         <bv-col>
           <el-form-item label="净资产（万元）：" prop="netAsset">
-            <el-input  v-model="company.netAsset" class="edit-input" size="small"  type="number"></el-input>
+            <el-input  v-model="company.netAsset" class="edit-input"   type="number"></el-input>
           </el-form-item>
         </bv-col>
         <bv-col>
           <el-form-item label="总资产（万元）：" prop="totalAsset">
-            <el-input  v-model="company.totalAsset" class="edit-input" size="small"  type="number"></el-input>
+            <el-input  v-model="company.totalAsset" class="edit-input"   type="number"></el-input>
           </el-form-item>
         </bv-col>
         <bv-col>
           <el-form-item label="注册资本：" prop="registerAsset">
-            <el-input  v-model="company.registerAsset" class="edit-input" size="small" type="number"></el-input>
+            <el-input  v-model="company.registerAsset" class="edit-input"  type="number"></el-input>
           </el-form-item>
         </bv-col>
         <bv-col>
@@ -332,21 +332,6 @@
               ],
               creditDate:[
                 {required: true ,  message: '请输入有效期', trigger: 'blur'}
-              ],
-              hasTitleNum:[
-                {max:6,  message: '最大不超过6位', trigger: 'blur'}
-              ],
-              highTitleNum:[
-                {max:6,  message: '最大不超过6位', trigger: 'blur'}
-              ],
-              headCount:[
-                {max:6,  message: '最大不超过6位', trigger: 'blur'}
-              ],
-              middleTitleNum:[
-                {max:6,  message: '最大不超过6位', trigger: 'blur'}
-              ],
-              primaryTitleNum:[
-                {max:6,  message: '最大不超过6位', trigger: 'blur'}
               ],
             },
             comPropertys:[
