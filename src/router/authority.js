@@ -27,7 +27,7 @@ const authorityRouter = {
       }
     }, {
       path: 'roles',
-      component: () => import('@/views/authority/role'),
+      component: () => import('@/views/authority/role/list'),
       name: 'ListRole',
       meta: {
         title: '角色维护',

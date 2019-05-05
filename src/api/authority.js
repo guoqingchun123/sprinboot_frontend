@@ -35,6 +35,8 @@ export function fetchAreas(query) {
     params: query
   })
 }
+
+/***********************************角色管理BEGIN***************************************/
 export function fetchRoles(query) {
   return http.get('/portal/api/roles', {
     params: query
@@ -54,6 +56,8 @@ export function fetchAll2(query) {
     params: query
   })
 }
+/***********************************角色管理END***************************************/
+
 export function fetchRoutes(id) {
   return http.get('/portal/api/roles/' + id + '/routes')
 }
