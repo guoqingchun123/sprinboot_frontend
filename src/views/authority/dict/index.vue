@@ -1,12 +1,17 @@
 <template>
   <el-row type="flex" class="fit-scroll" style="margin-bottom: -20px">
     <el-col :sm="6">
-      <bv-scrollbar id="bs1">
-        <bv-tree ref="tree" :data="items" node-key="code" :default-expanded-keys="['root']" @current-change="changeSelect">
+
+      <bv-scrollbar id="bs1" >
+        <el-input
+          placeholder="输入关键字进行过滤"
+          v-model="filterText">
+        </el-input>
+        <el-tree ref="tree" :data="items" node-key="dictCode" :default-expanded-keys="['root']" :expand-on-click-node="false" @current-change="changeSelect"    :filter-node-method="filterNode"  >
           <span slot-scope="{ node, data }" class="tree-node-operates">
-            <span>{{ data.code === 'root' ? node.label : data.code + ' - ' + node.label }}</span>
+             <span>{{ data.dictCode === 'root' ? data.dictName: data.dictCode + ' - ' + data.dictName}}</span>
           </span>
-        </bv-tree>
+        </el-tree>
       </bv-scrollbar>
     </el-col>
     <el-col :sm="18">
@@ -18,20 +23,26 @@
             <bv-button show="oneOrMore" view="remove" authority="remove" @click="startRemove()">删除</bv-button>
           </div>
           <el-table-column type="selection" width="55" />
-          <el-table-column label="字典代码" prop="code" align="center" />
-          <el-table-column label="字典名称" prop="name" align="center" />
+          <el-table-column label="id" prop="id" align="center" v-if="false" />
+          <el-table-column label="字典代码" prop="dictCode" align="center" />
+          <el-table-column label="字典名称" prop="dictName" align="center" />
         </bv-table>
 
         <bv-form v-show="formVisible" ref="form" title="字典维护" :model="item" :rules="rules">
           <bv-row>
             <bv-col>
-              <el-form-item label="字典代码" prop="code">
-                <span v-text="item.code" />
+              <el-form-item label="字典代码" prop="dictCode">
+                <span v-text="item.dictCode" />
               </el-form-item>
             </bv-col>
             <bv-col>
-              <el-form-item label="字典名称" prop="name">
-                <el-input v-model="item.name" />
+              <el-form-item label="字典名称" prop="dictName">
+                <el-input v-model="item.dictName" />
+              </el-form-item>
+            </bv-col>
+            <bv-col>
+              <el-form-item label="备注" prop="remark">
+                <el-input v-model="item.remark" />
               </el-form-item>
             </bv-col>
           </bv-row>
@@ -45,17 +56,22 @@
     </el-col>
 
     <bv-dialog title="字典维护" :visible.sync="dialogFormVisible">
-      <bv-form ref="dialogForm" :model="item" :rules="rules">
+      <bv-form ref="dialogForm" :model="item" :rules="rules" label-suffix="：">
         <bv-row layout="dialog-2">
           <bv-col>
-            <el-form-item label="字典代码" prop="code">
-              <el-input v-if="modifyType === 'create'" v-model="item.code" />
-              <span v-else v-text="item.code" />
+            <el-form-item label="字典代码" prop="dictCode">
+              <el-input v-if="modifyType === 'create'" v-model="item.dictCode" />
+              <span v-else v-text="item.dictCode" />
             </el-form-item>
           </bv-col>
           <bv-col>
-            <el-form-item label="字典名称" prop="name">
-              <el-input v-model="item.name" />
+            <el-form-item label="字典名称" prop="dictName">
+              <el-input v-model="item.dictName" />
+            </el-form-item>
+          </bv-col>
+          <bv-col>
+            <el-form-item label="备注" >
+              <el-input v-model="item.remark" />
             </el-form-item>
           </bv-col>
         </bv-row>
@@ -79,7 +95,7 @@
         if (this.modifyType === 'create' && value && this.__currentItem && this.__currentItem.children) {
           // 判断value是否重复
           this.__currentItem.children.forEach(item => {
-            if (item.code === value) {
+            if (item.dictCode === value) {
               callback(new Error('字典代码不能重复'))
               return
             }
@@ -93,7 +109,7 @@
         items: [],
         tableInstance: null,
         tableTitle: '字典一览',
-
+        filterText: '',
         modifyType: null,
         dialogFormVisible: false,
         tableVisible: true,
@@ -103,14 +119,14 @@
         fetchDicts,
 
         rules: {
-          code: [
+          dictCode: [
             {required: true, message: '请输入字典代码', trigger: 'blur'},
             {validator: checkCode, trigger: 'blur'}
           ],
-          name: [
+          dictName: [
             {required: true, message: '请输入字典名称', trigger: 'blur'}
           ]
-        }
+        },
       }
     },
     created() {
@@ -119,15 +135,20 @@
       this.fetchTreeData()
     },
     methods: {
+      filterNode(value, data) {
+        if (!value) return true;
+        return data.dictCode.indexOf(value) !== -1;
+      },
+
       isRoot(item) {
-        return item && item.code === 'root'
+        return item && item.dictCode === 'root'
       },
       fetchTreeData() {
         fetchDicts().then((res) => {
           this.items = [
             {
-              code: 'root',
-              name: '字典',
+              dictCode: 'root',
+              dictName: '字典',
               children: res.data
             }
           ]
@@ -147,7 +168,7 @@
       },
       fetchTableData() {
         return new Promise(resolve => {
-          if (this.isRoot(this.__currentItem.code)) {
+          if (this.isRoot(this.__currentItem.dictCode)) {
             // return fetchCurrentDicts(this.__currentItem.code, data)
             // 根节点
             resolve({data: elementUtils.removeChildren(this.items.children)})
@@ -169,7 +190,7 @@
           this.formVisible = false
           this.tableVisible = true
         }
-        this.tableTitle = this.isRoot(data) ? '字典一览' : data.code + ' - ' + data.name
+        this.tableTitle = this.isRoot(data) ? '字典一览' : data.dictCode + ' - ' + data.dictName
         this.tableInstance.fetchData()
         /*console.log(data)
         console.log(node)*/
@@ -206,17 +227,17 @@
           }
           if (this.modifyType === 'modify') {
             // 校验重复
-            modifyDict(this.item, this.isRoot(this.__currentItem) ? null : this.__currentItem.code).then(() => {
+            modifyDict(this.item, this.__currentItem.dictCode).then(() => {
               this.__currentItem.children.forEach((item => {
-                if (item.code === this.item.code) {
-                  item.name = this.item.name
+                if (item.dictCode === this.item.dictCode) {
+                  item.dictName = this.item.dictName
                 }
               }))
               this.tableInstance.table.clearSelection()
               this.afterModify()
             })
           } else {
-            createDict(this.item, this.isRoot(this.__currentItem) ? null : this.__currentItem.code).then(() => {
+            createDict(this.item, this.isRoot(this.__currentItem) ? 'root' : this.__currentItem.dictCode).then(() => {
               // 树增加子节点
               this.$refs.tree.append({...this.item}, this.__currentNode)
               // 展开节点
@@ -227,7 +248,7 @@
         })
       },
       afterModify() {
-        // this.fetchData(true)
+        this.fetchData(true)
         this.tableInstance.fetchData()
         this.initItem()
         this.dialogFormVisible = false
@@ -237,16 +258,18 @@
           type: 'success'
         })
       },
+      //父类节点删除则一并删除子类节点
       startRemove() {
         this.$confirm('此操作将删除该字典, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          removeDicts(this.tableInstance.table.selection.map(item => item.code).join(), this.isRoot(this.__currentItem) ? null : this.__currentItem.code).then(() => {
+          removeDicts(this.tableInstance.table.selection.map(item => item.id).join(), this.isRoot(this.__currentItem) ? null : this.__currentItem.id).then(() => {
             this.tableInstance.table.selection.forEach(item => {
               this.$refs.tree.remove({...item})
             })
+            this.fetchData(true)
             this.tableInstance.fetchData()
             this.$message({
               message: '删除成功',
@@ -265,16 +288,23 @@
           if (!valid) {
             return false
           }
-          modifyDict(this.item, this.__currentNode.parent.data.code).then(() => {
-            this.__currentNode.data.name = this.item.name
+          modifyDict(this.item, this.__currentNode.parent.data.id).then(() => {
+            this.__currentNode.data.dictName = this.item.dictName
             this.$message({
               message: '保存成功',
               type: 'success'
             })
           })
         })
+      },
+    },
+
+
+    watch: {
+      filterText(val) {
+        this.$refs.tree.filter(val);
       }
-    }
+    },
   }
 </script>
 <style>

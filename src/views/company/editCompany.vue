@@ -372,54 +372,7 @@
               value: '1',
               label: '济南'
             }],
-            compTypes:[ {
-              value: '1',
-              label: '房地产开发企业'
-            }, {
-              value: '2',
-              label: '房地产经纪机构'
-            }, {
-              value: '3',
-              label: '房地产评估机构'
-            }, {
-              value: '4',
-              label: '物业服务企业'
-            },
-              {
-                value: '5',
-                label: '房屋测绘机构'
-              },
-              {
-                value: '6',
-                label: '业主委员会'
-              },
-              {
-                value: '7',
-                label: '居委会'
-              },
-              {
-                value: '8',
-                label: '街道办事处'
-              },
-              {
-                value: '9',
-                label: '监理机构'
-              },
-              {
-                value: '10',
-                label: '审计机构'
-              },
-              {
-                value: '11',
-                label: '租赁企业'
-              },
-              {
-                value: '12',
-                label: '维修企业'
-              },{
-                value: '99',
-                label: '其他企业'
-              }],
+            compTypes:this.$store.state.app.dicts.compTypes,
           }
         },
       methods:{

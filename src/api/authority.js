@@ -66,51 +66,49 @@ export function saveRoutes(id, data) {
 }
 
 export function initDicts(code) {
-  return http.get('/portal/api/dicts/' + code)
+  return http.get('/center/api/dicts/' + code)
 }
 //查询系统字典
 export function fetchDicts(query) {
-  return http.get('/portal/api/dicts', {
+  return http.get('/center/api/dict/fetchDicts', {
     params: query
   })
 }
+
+
 export function fetchCurrentDicts(current, query) {
-  return http.get('/portal/api/dicts/' + current, {
+  return http.get('/center/api/dicts/' + current, {
     params: query
   })
 }
-export function createDict(data, path) {
-  if (!path) {
-    return http.post('/portal/api/dicts', data)
-  }
-  return http.post('/portal/api/dicts/' + path, data)
+export function createDict(data, parentCode) {
+  data.parentCode=parentCode
+  return http.post('/center/api/dict/saveDict', data)
 }
-export function modifyDict(data, path) {
-  if (!path) {
-    return http.put('/portal/api/dicts', data)
-  }
-  return http.put('/portal/api/dicts/' + path, data)
+export function modifyDict(data,parentCode) {
+  return http.put('/center/api/dict/modifyDict' , data)
 }
-export function removeDicts(codes, path) {
-  if (!path) {
-    return http.delete('/portal/api/dicts/' + codes)
+export function removeDicts(codes,parentCode) {
+  if (!parentCode){
+    //删除父类节点
+    return http.delete('/center/api/dict/removeDictParent/' + codes)
   }
-  return http.delete('/portal/api/dicts/' + path + '/' + codes)
+  return http.delete('/center/api/dict/removeDicts/' + codes)
 }
 //增加系统字典
 export function addDictInfo(query) {
-  return http.post('/portal/api/sysDict', query)
+  return http.post('/center/api/sysDict', query)
 }
 export function getDictByDictCode(query) {
-  return http.post('/portal/api/getDictByDictCode', query);
+  return http.post('/center/api/getDictByDictCode', query);
 }
 //删除一级字典
 export function deleteSysDictInfo(id) {
-  return http.delete('/portal/api/sysDict/' + id)
+  return http.delete('/center/api/sysDict/' + id)
 }
 //删除二级字典
 export function deleteSysDictInfo2(id) {
-  return http.delete('/portal/api/sysDict2/' + id)
+  return http.delete('/center/api/sysDict2/' + id)
 }
 //查询产品
 export function getSysProduct(query) {
@@ -181,4 +179,8 @@ export function fetchToken(query) {
   return http.get('/portal/api/token', {
     params: query
   })
+
+
+
+
 }

@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie'
 import { getLanguage } from '@/lang/index'
-import { initDicts } from '@/api/authority'
+import { fetchDicts } from '@/api/authority'
 
 const state = {
   sidebar: {
@@ -12,8 +12,11 @@ const state = {
   size: Cookies.get('size') || 'medium',
   theme: Cookies.get('theme') || '#409EFF',
   // 字典配置
-  dicts: {}
+  dicts: {},
+  //字典一项
+  dictsone: {},
 }
+
 
 const mutations = {
   TOGGLE_SIDEBAR: state => {
@@ -53,9 +56,41 @@ const mutations = {
     Cookies.set('theme', theme)
   },
   SET_DICTS: (state, data) => {
-    const { code, dicts } = data
-    state.dicts[code] = dicts
-  }
+    const {dicts } = data
+    var attr='';
+    for (var i in dicts ){
+      attr=dicts[i].dictCode
+
+      let childArr=[];
+      for (var c in dicts[i].children){
+        let child={}
+        child.value = dicts[i].children[c].dictCode
+        child.label = dicts[i].children[c].dictName
+        //遍历子类字典，转为 value lable，支持下拉列表和table
+        childArr.push(child)
+      }
+      state.dicts[attr]=childArr;
+    }
+  },
+
+  SET_DICTSONE: (state, data) => {
+    const {dictsone } = data
+    var attr='';
+    for (var i in dictsone ){
+      attr=dictsone[i].dictCode
+
+      let childArr=[];
+      for (var c in dictsone[i].children){
+        let child={}
+        child.value = dictsone[i].children[c].dictCode
+        child.label = dictsone[i].children[c].dictName
+        //遍历子类字典，转为 value lable，支持下拉列表和table
+        childArr.push(child)
+      }
+      state.dictsone[attr]=childArr;
+    }
+  },
+
 }
 
 const actions = {
@@ -80,24 +115,45 @@ const actions = {
   setTheme({ commit }, theme) {
     commit('SET_THEME', theme)
   },
-  fetchDicts({ commit, state }, code) {
+  fetchDicts({ commit}) {
     return new Promise((resolve, reject) => {
-      if (state.dicts[code]) {
-        resolve(state.dicts[code])
-      } else {
-        initDicts(code).then(response => {
+
+        fetchDicts().then(response => {
           const { data } = response
           commit('SET_DICTS', {
-            code,
             dicts: data
           })
           resolve(data)
         }).catch(error => {
           reject(error)
         })
-      }
+
     })
-  }
+  },
+
+  // fetchDictsOne({ commit, state }, code) {
+  //   return new Promise((resolve, reject) => {
+  //     if (state.dicts[code]) {
+  //       resolve(state.dicts[code])
+  //     } else {
+  //       initDicts(code).then(response => {
+  //         const { data } = response
+  //         commit('SET_DICTSONE', {
+  //           code,
+  //           dicts: data
+  //         })
+  //         resolve(data)
+  //       }).catch(error => {
+  //         reject(error)
+  //       })
+  //     }
+  //   })
+  // }
+
+  /**
+   * 查询某一项字典
+   */
+
 }
 
 export default {

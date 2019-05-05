@@ -90,15 +90,7 @@
         queryCompanys,
         dialogFormVisible: false,
         modifyType: null,
-        compStateS:[
-          {
-            value: '00',
-            label: '正常'
-          },{
-            value: '02',
-            label: '提交'
-          }
-        ],
+        compStateS:this.$store.getters.dicts.compState ,
         comPropertys:[
           {
             value: '100',
@@ -137,54 +129,7 @@
           value: '1',
           label: '济南'
         }],
-        compTypes:[ {
-          value: '1',
-          label: '房地产开发企业'
-        }, {
-          value: '2',
-          label: '房地产经纪机构'
-        }, {
-          value: '3',
-          label: '房地产评估机构'
-        }, {
-          value: '4',
-          label: '物业服务企业'
-        },
-          {
-            value: '5',
-            label: '房屋测绘机构'
-          },
-          {
-            value: '6',
-            label: '业主委员会'
-          },
-          {
-            value: '7',
-            label: '居委会'
-          },
-          {
-            value: '8',
-            label: '街道办事处'
-          },
-          {
-            value: '9',
-            label: '监理机构'
-          },
-          {
-            value: '10',
-            label: '审计机构'
-          },
-          {
-            value: '11',
-            label: '租赁企业'
-          },
-          {
-            value: '12',
-            label: '维修企业'
-          },{
-            value: '99',
-            label: '其他企业'
-          }],
+        compTypes:this.$store.getters.dicts.compTypes ,
       }
     },
     created() {
@@ -198,6 +143,8 @@
         }
       },
       compStateFormat(row){
+        debugger
+
         for (let i = 0; i < this.compStateS.length; i++) {
           if (this.compStateS[i].value === row.compState) {
             return this.compStateS[i].label;
@@ -205,6 +152,10 @@
         }
       },
       startCreate() {
+        this.$store.dispatch('app/fetchDicts', 'yesOrNo').then(data => {
+          this.devisionCodeS = data
+        });
+
         this.dialogFormVisible = true
         this.modifyType = 'create'
         this.$refs.dialogForm && this.$refs.dialogForm.clearValidate()

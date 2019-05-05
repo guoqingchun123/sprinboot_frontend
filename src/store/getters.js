@@ -17,6 +17,7 @@ const getters = {
   permissionRoutes: state => state.permission.routes,
   addRoutes: state => state.permission.addRoutes,
   // 刷新token用
-  refreshPromise: state => state.user.refreshPromise
+  refreshPromise: state => state.user.refreshPromise,
+  dictsone: state => state.app.dictsone,
 }
 export default getters
