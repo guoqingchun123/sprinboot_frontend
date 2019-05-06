@@ -12,3 +12,4 @@ export function saveOrUpdateDept(query) {
 export function deleteDept(query) {
   return http.post('/center/api/dept/delete', {params: query})
 }
+

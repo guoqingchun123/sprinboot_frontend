@@ -110,6 +110,10 @@ export function deleteSysDictInfo(id) {
 export function deleteSysDictInfo2(id) {
   return http.delete('/center/api/sysDict2/' + id)
 }
+//通过字典名称或字典代码查询字典信息
+export function queryDict(query) {
+  return http.post('/center/api/dict/queryDictInfo', {key:query})
+}
 //查询产品
 export function getSysProduct(query) {
   return http.get('/portal/api/sysProduct', query)

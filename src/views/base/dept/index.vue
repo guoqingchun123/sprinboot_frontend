@@ -30,11 +30,7 @@
 
   <el-form-item label="行政区划级别" prop="divisionLevel">
     <el-select v-model="form.divisionLevel" placeholder="请选择活动区域">
-      <el-option label="省" value="1"></el-option>
-      <el-option label="市" value="2"></el-option>
-      <el-option label="区" value="3"></el-option>
-      <el-option label="县" value="4"></el-option>
-      <el-option label="街道" value="5"></el-option>
+      <el-option v-for="item in deptLevels" :label="item.dictName" :value="item.dictCode"></el-option>
     </el-select>
   </el-form-item>
 
@@ -52,6 +48,7 @@
 </template>
 <script>
   import { queryDepts,saveOrUpdateDept,deleteDept } from '@/api/dept/dept'
+  import { queryDict } from '@/api/authority'
 
   export default {
 
@@ -61,6 +58,7 @@
         filterText: '',
         disabled:false,
         disabledCode:true,
+        deptLevels:[],
         form: {
           divisionCode: '',
           divisionName: '',
@@ -89,6 +87,9 @@
     },
     created:function () {
         this.initdata();
+      queryDict("deptLevel").then((res)=>{
+        this.deptLevels = res.data;
+      })
     },
     methods: {
       append(data) {
