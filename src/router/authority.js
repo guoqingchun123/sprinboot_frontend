@@ -129,6 +129,15 @@ const authorityRouter = {
       meta: {
         title: '行政区维护'
       }
+    },
+    {
+      path: 'competent',
+      component: ()=> import('@/views/competent'),
+      // redirect: 'noredirect',
+      name: 'competent',
+      meta: {
+        title: '主管单位维护'
+      }
     }
   ]
 }
