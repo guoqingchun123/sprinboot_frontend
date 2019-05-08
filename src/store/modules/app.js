@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie'
 import { getLanguage } from '@/lang/index'
-import { fetchDicts } from '@/api/authority'
+import { fetchDicts,fetchDepts,fetchComps } from '@/api/authority'
 
 const state = {
   sidebar: {
@@ -15,6 +15,10 @@ const state = {
   dicts: {},
   //字典一项
   dictsone: {},
+  //行政区域下拉
+  depts: {},
+  //从业机构下拉
+  comps:{}
 }
 
 
@@ -91,6 +95,32 @@ const mutations = {
     }
   },
 
+  SET_DEPTS: (state, data) => {
+    const {depts } = data
+    let deptArr=[];
+    for (var i in depts ){
+
+      let child={}
+      child.value = depts[i].divisionCode
+      child.label = depts[i].divisionName
+      deptArr.push(child)
+
+    }
+    state.depts=deptArr;
+  },
+  SET_COMPS: (state, data) => {
+    const {comps } = data
+    let compsArr=[];
+    for (var i in comps ){
+
+      let child={}
+      child.value = comps[i].companyId
+      child.label = comps[i].compName
+      compsArr.push(child)
+
+    }
+    state.comps = compsArr;
+  }
 }
 
 const actions = {
@@ -127,6 +157,36 @@ const actions = {
         }).catch(error => {
           reject(error)
         })
+
+    })
+  },
+  fetchDepts({ commit}) {
+    return new Promise((resolve, reject) => {
+
+      fetchDepts().then(response => {
+        const { data } = response
+        commit('SET_DEPTS', {
+          depts: data
+        })
+        resolve(data)
+      }).catch(error => {
+        reject(error)
+      })
+
+    })
+  },
+  fetchComps({ commit}) {
+    return new Promise((resolve, reject) => {
+
+      fetchComps().then(response => {
+        const { data } = response
+        commit('SET_COMPS', {
+          comps: data
+        })
+        resolve(data)
+      }).catch(error => {
+        reject(error)
+      })
 
     })
   },

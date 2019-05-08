@@ -30,7 +30,7 @@
 
   <el-form-item label="行政区划级别" prop="divisionLevel">
     <el-select v-model="form.divisionLevel" placeholder="请选择活动区域">
-      <el-option v-for="item in deptLevels" :label="item.dictName" :value="item.dictCode"></el-option>
+      <el-option v-for="item in deptLevels" :label="item.label" :value="item.value"></el-option>
     </el-select>
   </el-form-item>
 
@@ -58,7 +58,7 @@
         filterText: '',
         disabled:false,
         disabledCode:true,
-        deptLevels:[],
+        deptLevels:this.$store.getters.dicts.deptLevel,
         form: {
           divisionCode: '',
           divisionName: '',
@@ -87,9 +87,6 @@
     },
     created:function () {
         this.initdata();
-      queryDict("deptLevel").then((res)=>{
-        this.deptLevels = res.data;
-      })
     },
     methods: {
       append(data) {

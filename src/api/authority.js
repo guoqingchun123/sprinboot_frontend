@@ -74,7 +74,18 @@ export function fetchDicts(query) {
     params: query
   })
 }
-
+//行政区查询
+export function fetchDepts(query) {
+  return http.get('/center/api/dept/fetchDepts', {
+    params: query
+  })
+}
+//从业机构查询
+export function fetchComps(query) {
+  return http.get('/center/api/company/fetchComps', {
+    params: query
+  })
+}
 
 export function fetchCurrentDicts(current, query) {
   return http.get('/center/api/dicts/' + current, {
