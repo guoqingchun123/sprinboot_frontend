@@ -123,7 +123,7 @@ const authorityRouter = {
     },
     {
       path: 'dept',
-      component: ()=> import('@/views/base/dept'),
+      component: ()=> import('@/views/authority/dept'),
       // redirect: 'noredirect',
       name: 'dept',
       meta: {
