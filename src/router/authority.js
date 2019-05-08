@@ -123,7 +123,7 @@ const authorityRouter = {
     },
     {
       path: 'dept',
-      component: ()=> import('@/views/authority/dept'),
+      component: ()=> import('@/views/base/dept'),
       // redirect: 'noredirect',
       name: 'dept',
       meta: {
@@ -136,6 +136,15 @@ const authorityRouter = {
       name: 'project',
       meta: {
         title: '项目管理'
+      }
+    },
+    {
+      path: 'competent',
+      component: ()=> import('@/views/competent'),
+      // redirect: 'noredirect',
+      name: 'competent',
+      meta: {
+        title: '主管单位维护'
       }
     }
   ]
