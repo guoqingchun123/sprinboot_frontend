@@ -122,7 +122,8 @@
         }
       }
     },
-
+    created() {
+    },
     methods: {
       // 弹窗用
       initRole() {

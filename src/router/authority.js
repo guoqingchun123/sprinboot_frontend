@@ -146,6 +146,14 @@ const authorityRouter = {
       meta: {
         title: '主管单位维护'
       }
+    },
+    {
+      path: 'bankManage',
+      component: ()=> import('@/views/bank'),
+      name: 'bankManage',
+      meta: {
+        title: '银行信息管理'
+      }
     }
   ]
 }
