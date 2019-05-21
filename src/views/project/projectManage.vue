@@ -16,6 +16,11 @@
         </bv-col>
 
         <bv-col>
+          <el-form-item label="企业名称" prop="compName">
+            <el-input v-model="filter.compName" />
+          </el-form-item>
+        </bv-col>
+        <bv-col>
           <el-form-item label="项目名称" prop="projectName">
             <el-input v-model="filter.projectName" />
           </el-form-item>
@@ -44,9 +49,10 @@
       <el-table-column type="selection" width="55" />
       <el-table-column  prop="projectId" label="项目编号" />
       <el-table-column label="项目名称" prop="projectName" sortable="custom" />
+      <el-table-column label="企业名称" prop="compName" sortable="custom" />
       <el-table-column label="项目地址" prop="address" sortable="custom" />
-      <el-table-column label="状态" prop="projectState"  />
-      <el-table-column label="最后更新时间" prop="lastModifyTime"   :formatter="dateFormat" />
+      <el-table-column label="状态" prop="projectState"  :formatter="projectStateFormat"  />
+      <el-table-column label="最后更新时间" prop="lastModifyTime"  :formatter="dateFormat"  />
     </bv-table>
     <!--新增，修改项目信息-->
     <project-edit :visible="dialogFormVisible" :project="project" :editType="editType" @on-edit="projectEdited" />
@@ -54,8 +60,7 @@
 </template>
 
 <script>
-  import {queryProjects, insertProject, deleteProject, updateProject,queryProjectInfo} from '@/api/custom/project'
-  import http from '@/utils/http'
+  import {deleteProject, queryProjectInfo, queryProjects} from '@/api/custom/project'
   import projectEdit from './projectEdit'
   import moment from 'moment'
   export default {
@@ -65,7 +70,7 @@
     },
     data() {
       return {
-        projectStateS:[],
+        projectStateS:this.$store.getters.dicts.projectState ,
         project: {},
         // 过滤条件
         filter: {},
@@ -131,13 +136,20 @@
           })
         })
       },
-      dateFormat:function(row, column) {
+     dateFormat:function(row, column) {
         var date = row[column.property];
         if (date == undefined) {
           return "";
         }
         return moment(date).format("YYYY-MM-DD HH:mm:ss");
-      }
+      },
+      projectStateFormat(row){
+        for (let i = 0; i < this.projectStateS.length; i++) {
+          if (this.projectStateS[i].value === row.projectState) {
+            return this.projectStateS[i].label;
+          }
+        }
+      },
     }
   }
 </script>

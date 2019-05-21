@@ -20,7 +20,7 @@ export function deleteCompany(id) {
   return http.delete('/center/api/company/' + id)
 }
 
-//xiugai 从业机构
+//修改从业机构
 export function updateCompany(query) {
   return http.post('/center/api/company/updateCompany', query)
 }

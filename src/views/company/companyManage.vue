@@ -53,10 +53,9 @@
         </bv-col>
       </div>
       <el-table-column type="selection" width="55" />
-      <el-table-column v-if="false" prop="companyId" label="企业编号" />
+      <el-table-column  prop="companyId" label="企业编号" sortable/>
       <el-table-column prop="compName" label="机构名称" sortable />
       <el-table-column prop="compShortName" label="机构简称" sortable />
-      <el-table-column prop="compId" label="机构编号" sortable />
       <el-table-column prop="compType" label="机构类别"   :formatter="compTypesFormat"/>
       <el-table-column prop="legalName" label="法定代表人"  />
       <el-table-column prop="compState" label="状态"  :formatter="compStateFormat" />
@@ -68,7 +67,7 @@
 
 <script>
   import { queryCompanys  ,deleteCompany  } from '@/api/custom/company'
-  import editCompany from './editCompany'
+  import editCompany from './companyEdit'
   export default {
     name: 'companyManage',
     components:{editCompany},
@@ -91,44 +90,6 @@
         dialogFormVisible: false,
         modifyType: null,
         compStateS:this.$store.getters.dicts.compState ,
-        comPropertys:[
-          {
-            value: '100',
-            label: '内资企业'
-          },{
-            value: '110',
-            label: '国有企业'
-          }
-        ],
-        qualifyGradeS:[
-          {
-            value: '1',
-            label: '一级'
-          },{
-            value: '2',
-            label: '二级'
-          }
-        ],
-        yesOrNo:[
-          {
-            value: '0',
-            label: '是'
-          },
-          {
-            value: '1',
-            label: '否'
-          }
-        ],
-        certTypes:[
-          {
-            value: '1',
-            label: '身份证'
-          }
-        ],
-        devisionCodeS:[{
-          value: '1',
-          label: '济南'
-        }],
         compTypes:this.$store.getters.dicts.compTypes ,
       }
     },
@@ -143,7 +104,6 @@
         }
       },
       compStateFormat(row){
-        debugger
 
         for (let i = 0; i < this.compStateS.length; i++) {
           if (this.compStateS[i].value === row.compState) {
@@ -173,7 +133,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          deleteCompany(this.tableInstance.table.selection.map(item => item.bcGuid).join()).then(() => {
+          deleteCompany(this.tableInstance.table.selection.map(item => item.companyId).join()).then(() => {
             this.tableInstance.fetchData()
             this.$message({
               type: 'success',

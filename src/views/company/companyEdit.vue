@@ -28,7 +28,7 @@
           <el-form-item label="所属行政区：" prop="devisionCode">
             <el-select  v-model="company.devisionCode" placeholder="请选择" clearable >
               <el-option
-                v-for="item in devisionCodeS"
+                v-for="item in divisionCodes"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
@@ -334,44 +334,11 @@
                 {required: true ,  message: '请输入有效期', trigger: 'blur'}
               ],
             },
-            comPropertys:[
-              {
-                value: '100',
-                label: '内资企业'
-              },{
-                value: '110',
-                label: '国有企业'
-              }
-            ],
-            qualifyGradeS:[
-              {
-                value: '1',
-                label: '一级'
-              },{
-                value: '2',
-                label: '二级'
-              }
-            ],
-            yesOrNo:[
-              {
-                value: '0',
-                label: '是'
-              },
-              {
-                value: '1',
-                label: '否'
-              }
-            ],
-            certTypes:[
-              {
-                value: '1',
-                label: '身份证'
-              }
-            ],
-            devisionCodeS:[{
-              value: '1',
-              label: '济南'
-            }],
+            comPropertys:this.$store.state.app.dicts.corpProperty ,
+            qualifyGradeS:this.$store.state.app.dicts.qualifyGrade ,
+            yesOrNo:this.$store.state.app.dicts.yesOrNo,
+            certTypes:this.$store.state.app.dicts.certType ,
+            divisionCodes:this.$store.getters.depts,
             compTypes:this.$store.state.app.dicts.compTypes,
           }
         },
@@ -384,7 +351,6 @@
             if (!valid) {
               return false
             }
-            debugger ;
             if (this.modifyType === 'update') {
               //将修改的数据更新到数据库
               updateCompany(this.company).then(res =>{

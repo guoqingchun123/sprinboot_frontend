@@ -113,14 +113,9 @@ const authorityRouter = {
           name: 'companyManage',
           meta: { title: '从业机构维护', noCache: true }
         },
-       /* {
-          path: '/companyManage',
-          component: () => import('@/views/company/companyManage'),
-          name: 'companyManage',
-          meta: { title: '从业机构维护', noCache: true }
-        },*/
       ]
     },
+
     {
       path: 'dept',
       component: ()=> import('@/views/authority/dept'),
@@ -132,7 +127,7 @@ const authorityRouter = {
     },
     {
       path: 'project',
-      component: () => import('@/views/project/projectManger'),
+      component: () => import('@/views/project/projectManage'),
       name: 'project',
       meta: {
         title: '项目管理'

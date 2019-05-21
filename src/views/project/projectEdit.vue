@@ -147,17 +147,17 @@
         </bv-col>
         <bv-col>
           <el-form-item label="绿化率:" prop="greenPercent">
-            <el-input  v-model="project.greenPercent" class="edit-input"  type="edit-input" ></el-input>
+            <el-input  v-model="project.greenPercent" class="edit-input"  type="number"   ></el-input>
           </el-form-item>
         </bv-col>
         <bv-col>
           <el-form-item label="容积率:" prop="plotratio">
-            <el-input  v-model="project.plotratio" class="edit-input"  type="edit-input" ></el-input>
+            <el-input  v-model="project.plotratio" class="edit-input"   type="number" ></el-input>
           </el-form-item>
         </bv-col>
         <bv-col>
           <el-form-item label="建筑密度:" prop="buildingDensity">
-            <el-input  v-model="project.buildingDensity" class="edit-input"  type="edit-input" ></el-input>
+            <el-input  v-model="project.buildingDensity" class="edit-input"    type="number"></el-input>
           </el-form-item>
         </bv-col>
         <bv-col>
@@ -259,12 +259,35 @@
       editType:{
         default:''
       },
-      rules: {
-
-      },
     },
     data() {
       return {
+       rules: {
+         projectName: [
+           { required: true, message: '请填项目名称', trigger: 'blur'  }
+         ],
+         divisionCode:[
+           { required: true, message: '请选择行政区域', trigger: 'change'  }
+         ],
+         address:[
+           { required: true, message: '请填写地址', trigger: 'blur'  }
+         ],
+         companyId:[
+           { required: true, message: '请选择开发企业', trigger: 'change'  }
+         ],
+         openDate:[
+           { required: true, message: '请填写开盘日期', trigger: 'blur'  }
+         ],
+         saleAddress:[
+           { required: true, message: '请填写售楼地址', trigger: 'blur'  }
+         ],
+         totalNum:[
+           { required: true, message: '请填写总套数', trigger: 'blur'  }
+         ],
+         totalArea:[
+           { required: true, message: '请填写总建筑面积', trigger: 'blur'  }
+         ],
+       },
         divisionCodes:this.$store.getters.depts,
         companys:this.$store.getters.comps
       }
