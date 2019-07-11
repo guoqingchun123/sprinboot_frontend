@@ -27,29 +27,10 @@ const authorityRouter = {
       }
     }, {
       path: 'roles',
-      component: () => import('@/views/authority/role/list'),
+      component: () => import('@/views/authority/role'),
       name: 'ListRole',
       meta: {
-        title: '角色维护',
-        operates: [
-          {
-            name: 'grant',
-            label: '授权',
-            routes: ['GET:/api/roles/{id}/routes', 'POST:/api/roles/{id}/routes']
-          }, {
-            name: 'add',
-            label: '新增',
-            routes: ['POST:/api/roles']
-          }, {
-            name: 'modify',
-            label: '修改',
-            routes: ['PUT:/api/roles']
-          }, {
-            name: 'remove',
-            label: '删除',
-            routes: ['DELETE:/api/roles/{ids}']
-          }
-        ]
+        title: '角色维护'
       }
     }, {
       path: 'token',
@@ -73,7 +54,21 @@ const authorityRouter = {
           meta: {
             title: '种子文件查询'
           }
-        },
+        },{
+          path: 'tokenAllot',
+            component: () => import('@/views/authority/token/tokenAllot'),
+            name: 'tokenAllot',
+            meta: {
+            title: '用户令牌分配'
+          }
+        },{
+          path: 'tokenSyn',
+            component: () => import('@/views/authority/token/tokenSyn'),
+            name: 'tokenSyn',
+            meta: {
+            title: '同步事件戳'
+          }
+        }
       ]
     },
     {

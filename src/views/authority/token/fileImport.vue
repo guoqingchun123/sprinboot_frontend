@@ -3,11 +3,11 @@
     <div>
       <h3>种子信息导入</h3>
     </div>
-    <el-form ref="role" :rules="rules" :model="role" label-width="100px" label-position="right">
-      <bv-row layout="dialog-2">
+    <bv-col>
+      <el-form ref="role" :rules="rules" :model="role" label-width="110px" label-position="right" label-suffix=":">
         <bv-col>
-          <el-form-item label="设备类型:" prop="deviceType">
-            <el-select v-model="value" placeholder="请选择">
+          <el-form-item label="设备类型" prop="deviceType">
+            <el-select v-model="value" placeholder="请选择" style="width: 360px;">
               <el-option
                 v-for="item in options"
                 :key="item.value"
@@ -18,52 +18,57 @@
           </el-form-item>
         </bv-col>
         <bv-col>
-          请选择种子文件:
-          <el-button type="primary" @click="insertTokenData">浏览<i class="el-icon-upload el-icon--right" /></el-button>
+          <el-form-item label="请选择种子文件" prop="devicePwd" style="white-space: nowrap">
+            <el-upload
+              ref="uploadFile"
+              class="upload-demo"
+              drag
+              :action="upload_url"
+              accept=".xml"
+              :auto-upload="false"
+              :on-change="fileChange"
+              :file-list="fileList"
+            >
+              <i class="el-icon-upload" />
+              <div class="el-upload__text">请上传xml类型的文件，可以将文件拖到此处，或<em>点击上传</em></div>
+            </el-upload>
+            <bv-button size="small" type="success" :disabled="saveAndUploadDisabled" @click="submitUpload">上传并导入</bv-button>
+            <bv-button @click="cancleUpload">取 消</bv-button>
+          </el-form-item>
         </bv-col>
-      </bv-row>
-    </el-form>
-    <el-dialog title="种子文件导入" :visible.sync="exportTokenModal" :close-on-click-modal="false" :close-on-press-escape="false" width="30%">
-      <el-upload
-        ref="uploadFile"
-        class="upload-demo"
-        drag
-        :action="upload_url"
-        :auto-upload="false"
-        :on-change="demo2Change"
-        :file-list="fileList"
-      >
-        <i class="el-icon-upload" />
-        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-      </el-upload>
-      <span slot="footer" class="dialog-footer">
-        <bv-button size="small" type="success" @click="submitUpload">上传并导入</bv-button>
-        <bv-button @click="exportTokenModal = false">取 消</bv-button>
-      </span>
-    </el-dialog>
+      </el-form>
+    </bv-col>
   </div>
 </template>
 
 <script>
   import { importToken } from '@/views/authority/token/travels'
+  const maxFileSize = 20;
   export default {
     data() {
       return {
         options: [{
-          value: '1101',
-          label: '时间型'
-        }, {
           value: '1102',
           label: '时间事件型'
         }],
         value: '1102',
-        //导入数据弹窗是否显示
-        exportTokenModal: false
+        //上传的文件列表
+        fileList: [],
+        saveAndUploadDisabled:false
       }
     },
     methods:{
-      insertTokenData() {
-        this.exportTokenModal = true
+      fileChange(file, fileList) {
+        let isLt = file.size / 1024 / 1024 < 20;
+        if (!isLt) {
+          this.$message.error('上传文件大小不能超过' + maxFileSize + 'MB!');
+          this.fileList = fileList.slice(1, 1);
+          return;
+        }
+        this.fileList = fileList.slice(-1);
+      },
+      cancleUpload(){
+        this.$refs.uploadFile.clearFiles()
       },
       submitUpload(){
         let path = '\\travel';
@@ -89,21 +94,27 @@
           path: path,
         };
         data.deviceId = this.value
+        this.saveAndUploadDisabled=true
+
         importToken(file, data).then(ret => {
           //上传文件成功  返回文件id  插入数据
+          this.$message({
+            type: ret.data.level,
+            message: ret.data.retMsg
+
+          }
+          );
           if (ret.data.retCode === '00000') {
               // 隐藏版本弹窗
               this.exportTokenModal = false;
-              this.$message({
-                type: ret.data.level,
-                message: ret.data.retMsg
-              });
               //清除上传的文件
               this.$refs.uploadFile.clearFiles()
           }
+          this.saveAndUploadDisabled=false
         }).catch(() => {
           console.log('上传失败')
           this.$refs.uploadFile.clearFiles()
+          this.saveAndUploadDisabled=false
         });
       }
     }

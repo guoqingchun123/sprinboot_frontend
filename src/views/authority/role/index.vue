@@ -4,7 +4,8 @@
               :pagination="true"
               :filter.sync="filter"
               :fetch-api="fetchRoles"
-              @on-mounted="(table) => tableInstance = table">
+              @on-mounted="(table) => tableInstance = table"
+    >
       <div slot="operates">
         <bv-button show="one" view="grant" authority="grant" @click="startGrant()">授权</bv-button>
         <bv-button show="none" view="add" authority="add" @click="startCreate()">新增</bv-button>
@@ -41,7 +42,7 @@
         <bv-row layout="dialog-2">
           <bv-col>
             <el-form-item label="角色代码" prop="roleId">
-              <el-input v-if="modifyType === 'create'" v-model="item.roleId" clearable/>
+              <el-input v-if="modifyType === 'create'" v-model="item.roleId" clearable />
               <span v-else v-text="item.roleId" />
             </el-form-item>
           </bv-col>

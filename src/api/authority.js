@@ -18,8 +18,8 @@ export function refresh(refreshToken) {
   return http.post('/portal/api/authority/token', {
     refreshToken: refreshToken
   }, {
-    ignoreToken: true
-  })
+                     ignoreToken: true
+                   })
 }
 
 export function getInfo(token) {
@@ -42,25 +42,31 @@ export function fetchRoles(query) {
     params: query
   })
 }
+
 export function createRole(data) {
   return http.post('/portal/api/roles', data)
 }
+
 export function modifyRole(data) {
   return http.put('/portal/api/roles', data)
 }
+
 export function removeRoles(ids) {
   return http.delete('/portal/api/roles/' + ids)
 }
+
 export function fetchAll2(query) {
   return http.get('/portal/api/roles2', {
     params: query
   })
 }
+
 /***********************************角色管理END***************************************/
 
 export function fetchRoutes(id) {
   return http.get('/portal/api/roles/' + id + '/routes')
 }
+
 export function saveRoutes(id, data) {
   return http.post('/portal/api/roles/' + id + '/routes', data)
 }
@@ -68,18 +74,21 @@ export function saveRoutes(id, data) {
 export function initDicts(code) {
   return http.get('/center/api/dicts/' + code)
 }
+
 //查询系统字典
 export function fetchDicts(query) {
   return http.get('/center/api/dict/fetchDicts', {
     params: query
   })
 }
+
 //行政区查询
 export function fetchDepts(query) {
   return http.get('/center/api/dept/fetchDepts', {
     params: query
   })
 }
+
 //从业机构查询
 export function fetchComps(query) {
   return http.get('/center/api/company/fetchComps', {
@@ -92,55 +101,68 @@ export function fetchCurrentDicts(current, query) {
     params: query
   })
 }
+
 export function createDict(data, parentCode) {
-  data.parentCode=parentCode
+  data.parentCode = parentCode
   return http.post('/center/api/dict/saveDict', data)
 }
-export function modifyDict(data,parentCode) {
-  return http.put('/center/api/dict/modifyDict' , data)
+
+export function modifyDict(data) {
+  return http.put('/center/api/dict/modifyDict', data)
 }
-export function removeDicts(codes,parentCode) {
-  if (!parentCode){
+
+export function removeDicts(codes, parentCode) {
+  if (!parentCode) {
     //删除父类节点
     return http.delete('/center/api/dict/removeDictParent/' + codes)
   }
   return http.delete('/center/api/dict/removeDicts/' + codes)
 }
+
 //增加系统字典
 export function addDictInfo(query) {
   return http.post('/center/api/sysDict', query)
 }
+
 export function getDictByDictCode(query) {
   return http.post('/center/api/getDictByDictCode', query);
 }
+
 //删除一级字典
 export function deleteSysDictInfo(id) {
   return http.delete('/center/api/sysDict/' + id)
 }
+
 //删除二级字典
 export function deleteSysDictInfo2(id) {
   return http.delete('/center/api/sysDict2/' + id)
 }
+
 //通过字典名称或字典代码查询字典信息
 export function queryDict(query) {
-  return http.post('/center/api/dict/queryDictInfo', {key:query})
+  return http.post('/center/api/dict/queryDictInfo', {key: query})
 }
+
 //查询产品
 export function getSysProduct(query) {
   return http.get('/portal/api/sysProduct', query)
 }
+
 //查询产品一览
 export function getProducts(query) {
   return http.get('/portal/api/products', query)
 }
+
 //增加产品信息
 export function addProductInfo(query) {
   return http.post('/portal/api/sysProduct', query)
 }
+
 //删除产品信息
 export function deleteSysProductInfo(id) {
   return http.delete('/portal/api/sysProduct/' + id)
 }
+
 //查询产品项目信息
 export function getPjInfos(query) {
   if (query.productId !== '') {
@@ -149,7 +171,6 @@ export function getPjInfos(query) {
     });
   }
 }
-
 
 /******************************************************用户管理 BEGIN*******************************************************/
 
@@ -164,10 +185,12 @@ export function fetchUsers(query) {
 export function createUser(data) {
   return http.post('/portal/api/users', data)
 }
+
 // 修改用户
 export function updateUser(data) {
   return http.put('/portal/api/users', data)
 }
+
 // 删除用户
 export function delUsers(userIds) {
   return http.delete('portal/api/users' + userIds)
@@ -177,25 +200,98 @@ export function delUsers(userIds) {
 export function modifyAvatar(avatar) {
   return http.put('/portal/api/users/avatar', avatar)
 }
+
 // 密码重置
 export function resetPass(userId) {
-  return http.put('/portal/api/users/resetPass/'+ userId)
+  return http.put('/portal/api/users/resetPass/' + userId)
 }
+
 //查询用户权限
 export function fetchGrants(id) {
   return http.get('/portal/api/users/' + id + '/roles')
 }
+
 //保存用户授权角色
 export function saveGrants(id, data) {
   return http.put('/portal/api/users/' + id + '/roles', data)
 }
+
+/******************************************************用户管理 END*******************************************************/
+
+/******************************************************种子管理 BEGIN*******************************************************/
 //种子文件查询
 export function fetchToken(query) {
-  return http.get('/portal/api/token', {
+  return http.get('/portal/api/ess/token', {
     params: query
   })
-
-
-
-
 }
+
+//未分配令牌查询
+export function fetchUnallotToken() {
+  return http.get('/portal/api/ess/unallotToken')
+}
+
+//个人令牌信息查询
+export function fetchPersonToken(query) {
+  return http.get('/portal/api/ess/personToken', {
+    params: query
+  })
+}
+
+//个人令牌解锁
+export function fetchPersonUnlock(query) {
+  return http.get('/portal/api/ess/unlock', {
+    params: query
+  })
+}
+
+//个人令牌挂失
+export function lostPersonToken(query) {
+  return http.get('/portal/api/ess/lost', {
+    params: query
+  })
+}
+
+//个人令牌禁用
+export function deadPersonToken(query) {
+  return http.get('/portal/api/ess/disable', {
+    params: query
+  })
+}
+
+//个人令牌启用
+export function startPersonToken(query) {
+  return http.get('/portal/api/ess/start', {
+    params: query
+  })
+}
+
+//个人令牌解挂
+export function unlostPersonToken(query) {
+  return http.get('/portal/api/ess/unlost', {
+    params: query
+  })
+}
+
+//个人令牌回收
+export function backPersonToken(query) {
+  return http.get('/portal/api/ess/back', {
+    params: query
+  })
+}
+
+//个人令牌新增
+export function allotPersonToken(query) {
+  return http.get('/portal/api/ess/allot', {
+    params: query
+  })
+}
+
+//令牌同步
+export function tokenSync(query) {
+  return http.get('/portal/api/ess/sync', {
+    params: query
+  })
+}
+
+/******************************************************种子管理 END*******************************************************/

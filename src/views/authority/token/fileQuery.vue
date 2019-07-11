@@ -1,9 +1,6 @@
 <template>
   <div class="app-container">
     <bv-table ref="table" v-loading="loading" title="信息列表" :pagination="true" :filter.sync="filter" :fetch-api="fetchToken" @on-mounted="(table) => tableInstance = table">
-      <div slot="operates">
-        <bv-button show="none" view="refresh" authority="refresh" @click="refreshTokenTable()">刷新</bv-button>
-      </div>
       <div slot="search">
         <bv-col>
           <el-form-item label="系列号" prop="deviceSn">
@@ -25,6 +22,7 @@
       </div>
       <el-table-column label="序列号" prop="deviceSn" align="center" sortable="custom" />
       <el-table-column label="状态" prop="state" align="center" sortable="custom" :formatter="tokenStateFormatter" />
+      <el-table-column label="分配人编号" prop="userId" align="center" sortable="custom" />
       <el-table-column label="最后修改日期" prop="lastModifyDate" align="center" :formatter="dateFormatter" />
     </bv-table>
   </div>
@@ -33,15 +31,11 @@
 <script>
   // import Vue from 'vue'
   // import i18n from '@/lang'
-  // import BvScrollbar from '@/components/Scrollbar'
   import { fetchToken } from '@/api/authority'
   import moment from 'moment'
 
   export default {
     name: 'ListRole',
-    /*components: {
-      BvScrollbar
-    },*/
     data() {
       return {
         filter: {},
@@ -90,16 +84,17 @@
           case '0000':return "已激活";
           case '0001':return "已锁定";
           case '0002':return "已挂失";
+          case '0003':return "已停用";
         }
       },
      dateFormatter(row) {
         return moment(row.lastModifyDate).format('YYYY-MM-DD')
       },
       //刷新
-      refreshTokenTable() {
+     /* refreshTokenTable() {
       console.log(this.tableInstance)
       this.tableInstance.fetchData()
-    }
+    }*/
     }
   }
 </script>
