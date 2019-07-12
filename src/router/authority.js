@@ -144,7 +144,16 @@ const authorityRouter = {
       meta: {
         title: '银行信息管理'
       }
-    }
+    },
+  {
+    path: 'buildInfo',
+      component: ()=> import('@/views/project/buildInfo'),
+    name: 'buildInfo',
+    hidden: true,
+    meta: {
+    title: '项目管理'
+   }
+  }
   ]
 }
 export default authorityRouter
