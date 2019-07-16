@@ -2,15 +2,22 @@ import axios from 'axios'
 import { Message } from 'element-ui'
 import store from '@/store'
 import router from '@/router'
-import { auth } from '@bestvike/utils'
-import { refresh } from '@/api/authority'
+// import { auth } from '@bestvike/utils'
 
+// 直接使用Message会出现问题：只有第一处可用，后面的会有js错误
+const showMessage = (options) => {
+  Message(options)
+}
+
+// const baseUrl = process.env.VUE_APP_MOCK === 'true' ? '' : (process.env.VUE_APP_API_SERVER || process.env.VUE_APP_ROOT) + process.env.VUE_APP_BASE_API
 // create an axios instance
 const instance = axios.create({
-  baseURL: (process.env.VUE_APP_API_SERVER || '') + process.env.VUE_APP_BASE_API, // api 的 base_url
-  // withCredentials: true, // 跨域请求时发送 cookies
+  baseURL: process.env.VUE_APP_MOCK === 'true' ? '' : process.env.VUE_APP_ROOT + (process.env.VUE_APP_BASE_API === '/' ? '' : process.env.VUE_APP_BASE_API),
+  withCredentials: true,
   isRetryRequest: false,
-  timeout: 50000 // request timeout
+  timeout: 50000, // request timeout
+  // 指定header属性，避免spring security返回www-authenticate: Basic realm="Realm"造成浏览器弹窗
+  headers: {'X-Requested-With': 'XMLHttpRequest'}
 })
 
 // request interceptor
@@ -42,27 +49,11 @@ instance.interceptors.request.use(
         break
       }
     }
-    // 可以在此处判断token的有效期，快到期时刷新token
-    // 刷新token之后config_param要处理新Token的拼装
-    // 请求拦截器中要能识别出是否是refresh_token的请求
-    // 能识别出是否正在进行refresh_token，并能正确处理其他进入的请求
-    /*
-    return new Promise(resolve => {
-      // 模拟等待refresh_token
-      setTimeout(function (config_param) {
-          resolve(config_param);
-      }, 2000, config)
-    });
-    */
-    // Do something before request is sent
-    if (store.getters.token) {
+    /*if (store.getters.token) {
       const token = auth.getToken()
       // 让每个请求携带token-- ['X-Token']为自定义key 请根据实际情况自行修改
       config.headers['X-Token'] = token
-      if (!config.ignoreToken) {
-        config.headers['Authorization'] = 'Bearer ' + token
-      }
-    }
+    }*/
     return config
   },
   error => {
@@ -71,61 +62,51 @@ instance.interceptors.request.use(
   }
 )
 
-const isRefreshTokenReq = () => {
-  return false
+const isLogin = () => {
+  return router.currentRoute.path === '/login'
 }
 const toLogin = () => {
-  router.replace(`/login?redirect=${router.currentRoute.fullPath}`)
-}
-const refreshAccessToken = () => {
-  if (!store.getters.refreshPromise) {
-    const refreshToken = auth.getRefreshToken()
-    store.dispatch('user/setRefreshPromise', new Promise((resolve, reject) => {
-      refresh(refreshToken).then(res => {
-        store.dispatch('user/resetToken', res.data)
-        resolve(res)
-      }).catch(error => {
-        reject(error)
-      })
-    }))
-  }
-  return store.getters.refreshPromise
+  const currentPath = router.currentRoute.fullPath
+  store.dispatch('user/logout').then(() => {
+    router.push(`/login?redirect=${currentPath}`)
+  })
 }
 
 // response interceptor
 instance.interceptors.response.use(
   response => response,
   error => {
-    // 判断401错误，重新获取token
-    switch (error.response.status) {
-      case 401: {
-        // 先清空token
-        store.dispatch('user/resetToken')
-        let config = error.config
-        if (isRefreshTokenReq(config.url)) {
-          // 刷新Token的请求如果出现401直接退出登录
-          toLogin()
-        } else {
-          // console.log('请求的返回值出现401，由请求' + config.url + '的返回值触发，开始进行refresh_token！')
-          try {
-            return refreshAccessToken().then(res => {
-              config.headers['X-Token'] = res.data
-              config.headers['Authorization'] = 'Bearer ' + res.data
-              store.dispatch('user/setRefreshPromise', '')
-              return axios(config)
-            }).catch (() => {
-              toLogin()
-            })
-          } catch (error) {
-            console.log('无法等待刷新Token！', error)
-            toLogin()
-          }
-        }
-        break
-      }
-      default: {
-        Message({
+    // 如果是401错误，需要弹出登录窗口
+    if (error.response.status === 401) {
+      if (isLogin()) {
+        showMessage({
           message: error.response.data.message,
+          type: 'error',
+          duration: 5 * 1000
+        })
+        return Promise.reject(error)
+      } else {
+        // 暂时跳转登录页面，后续修改为弹出登录窗口
+        toLogin()
+        return Promise.reject(error)
+      }
+    } else {
+      let data = error.response.data
+      if (error.config.responseType && error.config.responseType === 'blob') {
+        var reader = new FileReader()
+        reader.onload = e => {
+          const result = JSON.parse(e.target.result)
+          showMessage({
+            message: result.message,
+            type: 'error',
+            duration: 5 * 1000
+          })
+          return Promise.reject(error)
+        }
+        reader.readAsText(data)
+      } else {
+        showMessage({
+          message: data.message,
           type: 'error',
           duration: 5 * 1000
         })
@@ -134,53 +115,6 @@ instance.interceptors.response.use(
     }
   }
 )
-
-/*
-let http = {}
-http.get = (url, params = {}) => {
-  params.t = new Date().getTime(); //get方法加一个时间参数,解决ie下可能缓存问题.
-  return instance({
-    url: url,
-    method: 'get',
-    headers: {
-    },
-    params
-  })
-}
-
-//封装post请求
-http.post = (url, data = {}) => {
-  return instance({
-    url: url,
-    method: 'post',
-    headers: {
-      'Content-Type': 'application/json;charset=UTF-8'
-    },
-    data: JSON.stringify(data)
-  })
-}
-
-http.put = (url, data = {}) => {
-  return instance({
-    url: url,
-    method: 'put',
-    headers: {
-        'Content-Type': 'application/json;charset=UTF-8'
-    },
-    data: JSON.stringify(data)
-  })
-}
-
-http.delete = (url, ids) => {
-  return instance({
-    // `http://localhost:3000/heroes/${id}`
-    url: url + `/${ids}`,
-    method: 'delete',
-    headers: {
-    }
-  })
-}
-*/
 
 instance.upload = (url, file, data) => {
   let formData = new FormData();
@@ -202,7 +136,7 @@ instance.upload = (url, file, data) => {
     url: url,
     method: 'post',
     headers: {
-      'Content-Type': 'multipart/form-data'
+        'Content-Type': 'multipart/form-data'
     },
     data: formData
   })

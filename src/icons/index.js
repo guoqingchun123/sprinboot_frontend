@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import BvIcon from '@/components/Icon'// svg组件
+import { BvIcon } from '@bestvike/components'// svg组件
 
 // register globally
 Vue.component('BvIcon', BvIcon)

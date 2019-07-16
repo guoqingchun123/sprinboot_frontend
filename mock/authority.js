@@ -32,7 +32,9 @@ export default [
   {
     url: '/authority/logout',
     type: 'post',
-    response: 'success'
+    response: () => {
+      return 'success'
+    }
   },
   {
     url: '/authority/info',
@@ -47,22 +49,33 @@ export default [
     },
   },
   {
-    '/authority/areas': () => {
+    url: '/areas',
+    type: 'get',
+    response: () => {
       return areas
-    },
-    '/authority/roles': () => {
-      return [
+    }
+  },
+  {
+    url: '/roles',
+    type: 'get',
+    response: {
+      list: [
         {
-          code: '00',
+          id: '00',
           name: '管理员'
         }, {
-          code: '01',
+          id: '01',
           name: '业务员'
         }
-      ]
-    },
+      ],
+      total: 2
+    }
+  },
+  {
     // 保存角色权限
-    '/authority/routes': (req) => {
+    url: '/authority/routes',
+    type: 'get',
+    response: (req) => {
       if (req.method === 'GET') {
         // 查询
         return ["/authority/areas", "/authority/roles"]
@@ -71,6 +84,19 @@ export default [
       return {
         b: 'b'
       }
+    }
+  },
+  {
+    // 字典
+    url: '/dicts/roleStatus',
+    type: 'get',
+    response: () => {
+      return [
+        {
+          code: '0000',
+          name: '正常'
+        }
+      ]
     }
   }
 ]

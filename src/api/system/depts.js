@@ -28,4 +28,25 @@ export function fetchPrincipal(query) {
     params: query
   })
 }
+export function fetchEmpLevelList(query) {
+  return http.get('/api/dept/empLevel', {
+    params: query
+  });
+}
+export function saveEmpLevelList(data) {
+  return http.put('/api/dept/empLevel', data);
+}
+export function getEmpInfo(query) {
+  return http.get('/api/dept/empInfo', {
+    params: query
+  });
+}
+export function fetchAllEmpLevelList(query) {
+  return http.get('/api/deptAll/empLevel', {
+    params: query
+  });
 
+}
+export function toFindDeptEmpSetting(data) {
+  return http.post('/api/empManage/findDeptEmpSetting',data)
+}

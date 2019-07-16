@@ -7,7 +7,7 @@
     <div class="right-menu">
       <template v-if="device!=='mobile'">
         <el-tooltip :content="$t('navbar.search')" effect="dark" placement="bottom">
-          <bv-search id="header-search" class="right-menu-item header-search" />
+          <bv-header-search id="header-search" class="right-menu-item header-search" />
         </el-tooltip>
         <el-tooltip :content="$store.getters.screenfull ? '退出全屏' : '全屏'" effect="dark" placement="bottom">
           <bv-screenfull id="screenfull" class="right-menu-item hover-effect" />
@@ -16,7 +16,7 @@
 
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
         <div class="avatar-wrapper">
-          <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
+          <img :src="'/file/view/' + avatar" class="user-avatar">
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown">
@@ -25,7 +25,7 @@
               {{ $t('navbar.dashboard') }}
             </el-dropdown-item>
           </router-link>
-          <router-link to="/user/setting">
+          <router-link to="/user/profile">
             <el-dropdown-item>
               用户中心
             </el-dropdown-item>
@@ -41,9 +41,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import BvBreadcrumb from '@/components/Breadcrumb'
-import BvScreenfull from '@/components/Screenfull'
-import BvSearch from '@/components/HeaderSearch'
+import { BvBreadcrumb, BvScreenfull, BvHeaderSearch } from '@bestvike/components'
 import variables from '@/styles/variables.scss'
 
 export default {
@@ -51,7 +49,7 @@ export default {
   components: {
     BvBreadcrumb,
     BvScreenfull,
-    BvSearch
+    BvHeaderSearch
   },
   computed: {
     ...mapGetters([
@@ -77,7 +75,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../styles/variables.scss';
+@import '@/styles/variables.scss';
 
 .navbar {
   height: $headerHeight;
@@ -87,7 +85,7 @@ export default {
   box-shadow: 0 1px 4px rgba(0,21,41,.08);
 
   .hamburger-container {
-    line-height: 46px;
+    line-height: $headerHeight;
     height: 100%;
     float: left;
     cursor: pointer;
@@ -101,6 +99,7 @@ export default {
 
   .breadcrumb-container {
     float: left;
+    line-height: $headerHeight;
   }
 
   .errLog-container {
@@ -111,7 +110,7 @@ export default {
   .right-menu {
     float: right;
     height: 100%;
-    line-height: 50px;
+    line-height: $headerHeight;
 
     &:focus {
       outline: none;

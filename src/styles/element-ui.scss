@@ -50,7 +50,7 @@
 /*#app .el-dialog__wrapper {
   overflow: hidden;
 }*/
-//暂时性解决dialog 问题 https://github.com/ElemeFE/element/issues/2461
+// to fixed https://github.com/ElemeFE/element/issues/2461
 .el-dialog {
   transform: none;
   left: 0;
@@ -81,7 +81,6 @@
   }
 }
 
-//element ui upload
 .upload-container {
   .el-upload {
     width: 100%;
@@ -93,11 +92,15 @@
   }
 }
 
-//dropdown
 .el-dropdown-menu {
   a {
     display: block
   }
+}
+
+// fix date-picker ui bug in filter-item
+.el-range-editor.el-input__inner {
+  display: inline-flex !important;
 }
 
 // form默认宽度100%
@@ -112,9 +115,15 @@
 }
 
 // 避免横向滚动条
-#app .el-scrollbar__wrap {
-  // overflow: auto;
-  overflow-x: hidden;
+#app {
+  .el-scrollbar__wrap {
+    overflow-x: hidden;
+  }
+  .tags-view-container {
+    .el-scrollbar__wrap {
+      overflow: auto;
+    }
+  }
 }
 
 // 对话框修改
@@ -144,4 +153,86 @@
   > .operates-container {
     display: flex;
   }
+}
+
+.el-date-editor.el-range-editor {
+  .el-range-separator {
+    width: 30px;
+  }
+}
+
+// table调整
+.bv-table {
+  .table-search {
+    min-height: 45px;
+  }
+
+  .el-table {
+    // 行高
+    &.el-table--medium {
+      th, td {
+        padding: 7px 0;
+      }
+    }
+
+    .el-table__header {
+      thead {
+        color: #ffffff;
+  
+        > tr:first-child {
+          > th:first-child {
+            border-top-left-radius: 4px;
+          }
+          > th:nth-last-child(2) {
+            border-top-right-radius: 4px;
+          }
+        }
+      }
+    }
+    
+    .sort-caret.ascending {
+      border-bottom-color: #ffffff;
+    }
+    .sort-caret.descending {
+      border-top-color: #ffffff;
+    }
+    .ascending {
+      .sort-caret.ascending {
+        border-bottom-color: #b0d7ff;
+      }
+    }
+    .descending {
+      .sort-caret.descending {
+        border-top-color: #b0d7ff;
+      }
+    }
+
+    &.el-table--border {
+      border-top: none;
+      border-top-left-radius: 4px;
+      border-top-right-radius: 4px;
+
+      th, td {
+        border-left: none;
+        border-right: none;
+      }
+    }
+  }
+
+  .el-pagination {
+    padding-top: 15px;
+
+    .pagination-refresh {
+      text-align: center;
+
+      .el-link--inner {
+        font-size: 18px;
+      }
+    }
+  }
+}
+
+// 按钮调整图标显示位置
+.el-button .svg-icon + span {
+  margin-left: 5px;
 }

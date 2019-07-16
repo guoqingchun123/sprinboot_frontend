@@ -11,6 +11,12 @@ export function fetchQuqEvaluate(query) {
     params: query
   })
 }
+//季度自评默认展示
+export function defaultQuaEvaluate(query) {
+  return http.get('/api/projPlan3', {
+    params: query
+  })
+}
 //获取季度自评展示列表
 export function showQuqEvaluate(query) {
   return http.get('/api/projPlan2', {
@@ -24,6 +30,10 @@ export function createQuaEvaluate(data) {
 //季度自评修改
 export function modifyQuaEvaluate(data) {
   return http.put('/api/projPlan', data)
+}
+//季度自评提交
+export function submitQuaEvaluate(query) {
+  return http.put('/api/projPlan3', query)
 }
 //季度自评审核
 export function approvalQuaEvaluate(data) {

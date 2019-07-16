@@ -4,39 +4,24 @@
       <div slot="search">
         <bv-col>
           <el-form-item label="用户编号" prop="id">
-            <el-input v-model="filter.userId" />
+            <el-input v-model="filter.id" />
           </el-form-item>
         </bv-col>
         <bv-col>
           <el-form-item label="用户姓名" prop="name">
-            <el-input v-model="filter.userName" />
+            <el-input v-model="filter.name" />
           </el-form-item>
         </bv-col>
         <bv-col>
           <el-form-item label="员工编号" prop="empId">
-            <el-input v-model="filter.roleIds" />
+            <el-input v-model="filter.empId" />
           </el-form-item>
         </bv-col>
-        <!--<bv-col>
-          <el-form-item label="用户状态" prop="state">
-            <el-select
-              v-model="filter.state"
-              placeholder="请选择"
-            >
-              <el-option
-                v-for="items in userState"
-                :key="items.value"
-                :label="items.label"
-                :value="items.value"
-              />
-            </el-select>
-          </el-form-item>
-        </bv-col>-->
       </div>
-      <el-table-column label="用户编号" prop="userId" align="center" sortable="custom" />
-      <el-table-column label="用户姓名" prop="userName" align="center" sortable="custom" />
-      <el-table-column label="员工编号" prop="roleIds" align="center" sortable="custom" />
-      <el-table-column label="用户状态" prop="userState" align="center" :formatter="userStateFormatter" />
+      <el-table-column label="用户编号" prop="id" align="center" sortable="custom" />
+      <el-table-column label="用户姓名" prop="name" align="center" sortable="custom" />
+      <el-table-column label="员工编号" prop="empId" align="center" sortable="custom" />
+      <el-table-column label="用户状态" prop="status" align="center" :formatter="userStateFormatter" />
       <el-table-column fixed="right" label="操作" align="center">
         <template slot-scope="scope">
           <el-button view="details" type="text" @click="tokenManagement(scope.row)">管理令牌</el-button>
@@ -47,13 +32,13 @@
     <bv-dialog title="令牌管理" :visible.sync="dialogFormVisible">
       <bv-table ref="table" :filter-switch="false" :pagination="true" :filter.sync="filter" :fetch-api="fetchPersonToken1" @on-mounted="(table) => tableInstanceDialog = table">
         <div slot="operates">
-          <bv-button show="none" view="add" authority="add" @click="add()">增加</bv-button>
+          <bv-button show="none" view="add" @click="add()">增加</bv-button>
           <bv-button v-if="unlockShow()" view="modify" @click="unlock()">解锁</bv-button>
-          <bv-button v-if="startLostShow()" view="modify" authority="modify" @click="startLost()">挂失</bv-button>
-          <bv-button v-if="cancleLostShow()" view="modify" authority="modify" @click="cancleLost()">解挂</bv-button>
-          <bv-button v-if="deadShow()" view="modify" authority="modify" @click="dead()">停用</bv-button>
-          <bv-button v-if="tokenStartShow()" view="modify" authority="modify" @click="tokenStart()">启用</bv-button>
-          <bv-button v-if="startBackShow()" view="modify" authority="modify" @click="startBack()">收回</bv-button>
+          <bv-button v-if="startLostShow()" view="modify" @click="startLost()">挂失</bv-button>
+          <bv-button v-if="cancleLostShow()" view="modify" @click="cancleLost()">解挂</bv-button>
+          <bv-button v-if="deadShow()" view="modify" @click="dead()">停用</bv-button>
+          <bv-button v-if="tokenStartShow()" view="modify" @click="tokenStart()">启用</bv-button>
+          <bv-button v-if="startBackShow()" view="modify" @click="startBack()">收回</bv-button>
         </div>
         <el-table-column type="selection" width="55" />
         <el-table-column label="序列号" prop="deviceSn" align="center" sortable="custom" />
@@ -82,10 +67,10 @@
       <bv-form ref="tokenGrantForm" :model="unallotToken" :rules="rules">
         <bv-row layout="dialog-2">
           <bv-col>
-            <el-form-item label="令牌序列号：" prop="deviceSn" style="white-space: nowrap">
+            <el-form-item label="令牌序列号" prop="deviceSn" style="white-space: nowrap">
               <el-select v-model="unallotToken.deviceSn" placeholder="请输入令牌序列号" filterable>
                 <el-option
-                  v-for="itemToken in unallotToken"
+                  v-for="itemToken in unallotTokenList"
                   :key="itemToken.deviceSn"
                   :label="itemToken.deviceSn"
                   :value="itemToken.deviceSn"
@@ -124,16 +109,17 @@
       return {
         filter: {},
         item: {},
-        unallotToken: [],
+        unallotToken: {},
+        unallotTokenList: [],
         dialogFormVisible: false,
         dialogFormVisibleToken: false,
         dialogFormVisibleAdd: false,
         modifyType: null,
         role: {
-          userId: null,
-          userName: null,
-          roleIds:null,
-          userState: null,
+          id: null,
+          name: null,
+          empId:null,
+          status: null,
           deviceSn: null,
           state: null,
           lastModifyDate: null
@@ -163,7 +149,7 @@
       getUnallotToken() {
         //查询未分配令牌
         fetchUnallotToken().then(response=>{
-          this.unallotToken=response.data;
+          this.unallotTokenList=response.data;
         })
       },
       unlockShow(){
@@ -252,7 +238,7 @@
          }
         let data = {}
         data.deviceSn = this.unallotToken.deviceSn
-        data.userId = this.role.userId
+        data.userId = this.role.id
         allotPersonToken(data).then(ret => {
           //新增成功  返回文件id  插入数据
           this.$message({
@@ -307,6 +293,7 @@
           if (ret.data.retCode === '00000') {
             // 隐藏版本弹窗
             this.dialogFormVisibleToken = false
+            this.dialogFormVisible=false
             this.refreshTokenTable()
           }
         }).catch(() => {
@@ -396,12 +383,12 @@
       },
       //用户状态
       userStateFormatter(row){
-        switch (row.userState) {
+        switch (row.status) {
           case '0000':return "正常";
         }
       },
       fetchPersonToken1(data) {
-        data.id = this.role.userId;
+        data.id = this.role.id;
         return fetchPersonToken(data);
       }
     }

@@ -47,7 +47,7 @@ export function downloadTemplate(data) {
 export function fetchDictInfo(dictCode) {
   return http.post('/api/employee/dict', dictCode)
 }
-//点击查看详情时-查询员工所属部门id
+//点击查看详情时-获取详情数据
 export function fetchTableInfo(data) {
   return http.post('/api/employee/deptByUser', data)
 }
@@ -63,3 +63,72 @@ export function fetchUserByIdCard(query) {
     params: query
   })
 }
+//员工附件上传
+export function uploadAttach(file,data) {
+  return http.upload('/api/employee/uploadAttach',file,data)//
+}
+//请求一张图片
+export function fetchPicture(query) {
+  return http.get('/api/employee/fetchPicture', {
+    params: query
+  })
+}
+//附件下载
+export function downloadAttach(data) {
+  return http.download('/api/empManage/downloadFile', data)
+}
+//获取历史合同签订信息
+export function fetchContractInfo(data) {
+  return http.get('/api/empManage/contractInfo', {
+    params: data
+  })
+}
+//获取部门调整记录
+export function fetchDeptHistory(data) {
+  return http.get('/api/empManage/deptHistory', {
+    params: data
+  })
+}
+//获取所有的员工信息，不分页
+export function fetchAllEmpInfo() {
+  return http.get('/api/employee/allEmpInfo')
+}
+//获取附件管理目录
+export function catalog() {
+  return http.get('/api/empManage/catalog')
+}
+export function fetchFileInfoByCode(query) {  //111111
+  return http.get('/api/empManage/fileInfo', {
+    params: query
+  })
+}
+//删除附件
+export function deletePic(id) {
+  return http.delete('/api/empManage/removeCatalog/' + id)
+}
+//员工转正
+export function empFormal(data) {
+  return http.put('/api/employee/empFormal',data)
+}
+//员工试用
+export function openEmpSave(data) {
+  return http.put('/api/employee/openEmp',data)
+}
+//未分配令牌查询
+export function fetchUnallotToken() {
+  return http.get('/api/unallotToken')
+}
+//为导入员工开户
+export function openCount(data) {
+  return http.put('/api/employee/openCount',data)
+}
+//查询最大员工工号
+export function fetchEmpId() {
+  return http.get('/api/employee/fetchEmpId')
+}
+//导入员工岗级调整历史
+export function importPostData(file,data) {
+  return http.upload('/api/employee/importPost',file,data)
+}
+
+

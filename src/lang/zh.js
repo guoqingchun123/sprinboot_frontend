@@ -1,7 +1,8 @@
 export default {
   login: {
     invalidUsername: '请输入正确的账号',
-    invalidPassword: '密码至少为6位'
+    invalidPassword: '密码至少为6位',
+    invalidPasstoken: '密码必须为7位'
   },
   route: {
     dashboard: '首页',
@@ -61,6 +62,30 @@ export default {
     dynamicExample: '动态',
     ComplexExample: '复合',
     authority: '权限管理',
+    projManage: '项目管理',
+    basicprojInfo: '项目信息管理',
+    projApproval: '项目审批',
+    projApprovalLog: '项目审批记录',
+    presaleProjInfo: '售前记录管理',
+    taskInfo:'任务管理',
+    customInfoManage:'客户管理',
+    customManage:'客户信息管理',
+    contractMessage:'销售合同管理',
+    customManageDetail:'客户详细信息',
+    customManageSchedule:'待办事项管理',
+    serviceDueRemind:'服务到期提醒',
+    inspectionVisitRemind:'巡检回访提醒',
+    contactCustomRemind:'联系客户提醒',
+    empContractRemind:'合同到期提醒',
+    myWork:'我的工作',
+    employee: '员工管理',
+    sharedResource: '共享资源',
+    isoFiles: '9000认证管理文件',
+    publicFiles: '共享资源文件',
+    fileManagement: '文件管理',
+    fileDownload: '文件下载',
+    fileOperate: '文件操作记录',
+    productList: '产品一览'
   },
   navbar: {
     logOut: '退出登录',

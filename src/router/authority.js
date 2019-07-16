@@ -1,4 +1,4 @@
-import Layout from '@/layout/Layout'
+import Layout from '@/layout'
 
 const authorityRouter = {
   path: '/authority',
@@ -18,19 +18,45 @@ const authorityRouter = {
       meta: {
         title: '路由一览'
       }
-    }, {
+    },{
       path: 'users',
-      component: () => import('@/views/authority/user/list'),
+      component: () => import('@/views/authority/user'),
       name: 'ListUser',
       meta: {
         title: '用户管理'
+      }
+    }, {
+      path: 'areas',
+      component: () => import('@/views/authority/area'),
+      name: 'ListArea',
+      meta: {
+        title: '区域维护'
       }
     }, {
       path: 'roles',
       component: () => import('@/views/authority/role'),
       name: 'ListRole',
       meta: {
-        title: '角色维护'
+        title: '角色维护',
+        operates: [
+          {
+            name: 'grant',
+            label: '授权',
+            routes: ['GET:/api/roles/{id}/routes', 'POST:/api/roles/{id}/routes']
+          }, {
+            name: 'add',
+            label: '新增',
+            routes: ['POST:/api/roles']
+          }, {
+            name: 'modify',
+            label: '修改',
+            routes: ['PUT:/api/roles']
+          }, {
+            name: 'remove',
+            label: '删除',
+            routes: ['DELETE:/api/roles/{ids}']
+          }
+        ]
       }
     }, {
       path: 'token',
@@ -39,6 +65,7 @@ const authorityRouter = {
       meta: {
         title: '动态令牌管理'
       },
+      redirect: 'noRedirect',
       children: [
         {
           path: 'fileImport',
@@ -56,16 +83,16 @@ const authorityRouter = {
           }
         },{
           path: 'tokenAllot',
-            component: () => import('@/views/authority/token/tokenAllot'),
-            name: 'tokenAllot',
-            meta: {
+          component: () => import('@/views/authority/token/tokenAllot'),
+          name: 'tokenAllot',
+          meta: {
             title: '用户令牌分配'
           }
-        },{
+        }, {
           path: 'tokenSyn',
-            component: () => import('@/views/authority/token/tokenSyn'),
-            name: 'tokenSyn',
-            meta: {
+          component: () => import('@/views/authority/token/tokenSyn'),
+          name: 'tokenSyn',
+          meta: {
             title: '同步事件戳'
           }
         }
@@ -77,83 +104,104 @@ const authorityRouter = {
       name: 'Dict',
       meta: {
         title: '字典管理',
+        // operates: [
+        //   {
+        //     name: 'add',
+        //     label: '新增',
+        //     routes: ['POST:/api/dicts', 'POST:/api/dicts/{path}']
+        //   }, {
+        //     name: 'modify',
+        //     label: '修改',
+        //     routes: ['PUT:/api/dicts', 'PUT:/api/dicts/{path}']
+        //   }, {
+        //     name: 'remove',
+        //     label: '删除',
+        //     routes: ['DELETE:/api/dicts/{codes}', 'DELETE:/api/dicts/{path}/{codes}']
+        //   }
+        // ]
+      }
+    },
+    {
+      path: 'product',
+      component: () => import('@/views/authority/product'),
+      name: 'Product',
+      meta: {
+        title: '产品管理'
+      }
+    },
+    {
+      path: 'flow',
+      component: () => import('@/views/authority/flowManger'),
+      name: 'Flow',
+      meta: {
+        title: '审批流程配置',
+        // operates: [
+        //   {
+        //     name: 'add',
+        //     label: '新增',
+        //     routes: ['POST:/api/flow']
+        //   }, {
+        //     name: 'modify',
+        //     label: '修改',
+        //     routes: ['PUT:/api/flow']
+        //   }, {
+        //     name: 'remove',
+        //     label: '删除',
+        //     routes: ['DELETE:/api/flowRemove']
+        //   }
+        // ]
+      }
+    },
+    {
+      path: 'deptEmpLevel',
+      component: () => import('@/views/authority/deptManage/deptEmpLevel'),
+      name: 'DeptEmpLevel',
+      meta: {
+        title: '人员层级配置'
+      },
+    },
+    {
+      path: 'branch',
+      component: () => import('@/views/authority/branch/branchManage'),
+      name: 'ListAreaManage',
+      meta: {
+        title: '分支机构',
+        icon: 'location'
+      }
+    },
+    {
+      path: 'deptManage',
+      component: () => import('@/views/authority/deptManage/deptManage'),
+      name: 'ListDeptManage',
+      meta: {
+        title: '部门管理',
+        icon: 'cluster'
+      },
+    },
+    {
+      path: 'holidayConfig',
+      component: () => import('@/views/authority/holidayConfig/index'),
+      name: 'HolidayConfig',
+      meta: {
+        title: '节假日配置',
+        icon: 'schedule',
         operates: [
-          {
+         {
             name: 'add',
             label: '新增',
-            routes: ['POST:/api/dicts', 'POST:/api/dicts/{path}']
+            routes: ['POST:/api/holidayConfigs']
           }, {
             name: 'modify',
             label: '修改',
-            routes: ['PUT:/api/dicts', 'PUT:/api/dicts/{path}']
+            routes: ['PUT:/api/holidayConfigs']
           }, {
             name: 'remove',
             label: '删除',
-            routes: ['DELETE:/api/dicts/{codes}', 'DELETE:/api/dicts/{path}/{codes}']
+            routes: ['DELETE:/api/holidayConfigs/{ids}']
           }
         ]
-      }
-    },
-    {
-      path: 'company',
-      component: () => import('@/views/company/company'),
-      name: 'company',
-      meta: {
-        title: '从业机构管理',
       },
-      children: [
-        {
-          path: '/companyManage',
-          component: () => import('@/views/company/companyManage'),
-          name: 'companyManage',
-          meta: { title: '从业机构维护', noCache: true }
-        },
-      ]
-    },
-
-    {
-      path: 'dept',
-      component: ()=> import('@/views/authority/dept'),
-      // redirect: 'noredirect',
-      name: 'dept',
-      meta: {
-        title: '行政区维护'
-      }
-    },
-    {
-      path: 'project',
-      component: () => import('@/views/project/projectManage'),
-      name: 'project',
-      meta: {
-        title: '项目管理'
-      }
-    },
-    {
-      path: 'competent',
-      component: ()=> import('@/views/competent'),
-      // redirect: 'noredirect',
-      name: 'competent',
-      meta: {
-        title: '主管单位维护'
-      }
-    },
-    {
-      path: 'bankManage',
-      component: ()=> import('@/views/bank'),
-      name: 'bankManage',
-      meta: {
-        title: '银行信息管理'
-      }
-    },
-  {
-    path: 'buildInfo',
-      component: ()=> import('@/views/project/buildInfo'),
-    name: 'buildInfo',
-    hidden: true,
-    meta: {
-    title: '项目管理'
-   }
-  }
+    }
   ]
 }
 export default authorityRouter

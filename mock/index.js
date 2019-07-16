@@ -1,8 +1,8 @@
 import Mock from 'mockjs'
-import { defaults as utils } from '@bestvike/utils'
+// import { defaults as utils } from '@bestvike/utils'
 
 import authority from './authority'
-import meetingManage from './meetingManage'
+/*import meetingManage from './meetingManage'
 import tableData from './custom/tableData'
 import customCard from './custom/customCard'
 import contractMessage from './custom/contractMessage'
@@ -14,13 +14,15 @@ import basicProjInfo from './projManage/basicProjInfo'
 import taskInfo from './projManage/taskInfo'
 import approveLog from './projManage/approveLog'
 import presaleProjInfo from './projManage/presaleProjInfo'
+import empInfo from './employee/empInfo'
+import areas from './employee/areas'
 import schedule from "./employee/schedule"
 import empAttend from "./employee/empAttend"
-import travel from "./employee/travel"
+import travel from "./employee/travel"*/
 
 const mocks = [
-  ...authority,
-  ...meetingManage,
+  ...authority
+  /*...meetingManage,
   ...tableData,
   ...customCard,
   ...contractMessage,
@@ -28,20 +30,22 @@ const mocks = [
   ...taskInfo,
   ...approveLog,
   ...presaleProjInfo,
+  ...empInfo,
   ...customFileTree,
   ...empData,
   ...customFileTree,
+  ...areas,
   ...schedule,
   ...empAttend,
   ...customFile,
   ...customFile,
-  ...travel,
+  ...travel*/
 ]
 
 // for front mock
 // please use it cautiously, it will redefine XMLHttpRequest,
 // which will cause many of your third-party libraries to be invalidated(like progress event).
-export function mockXHR() {
+/*export function mockXHR() {
   // mock patch
   // https://github.com/nuysoft/Mock/issues/300
   Mock.XHR.prototype.proxy_send = Mock.XHR.prototype.send
@@ -77,7 +81,7 @@ export function mockXHR() {
   for (const i of mocks) {
     Mock.mock(new RegExp(i.url), i.type || 'get', XHR2ExpressReqWrap(i.response))
   }
-}
+}*/
 
 // for mock server
 const responseFake = (url, type, respond) => {

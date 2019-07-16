@@ -1,19 +1,37 @@
+import Cookies from 'js-cookie'
 import { login, logout, getInfo, modifyAvatar } from '@/api/authority'
 import { auth } from '@bestvike/utils'
 import router, { resetRouter } from '@/router'
 
 const state = {
   token: auth.getToken(),
+  needValidateCode: Cookies.get('needValidateCode') || false,
+  needRefreshValidateCode: true,
   name: '',
   avatar: '',
   introduction: '',
   roles: [],
-  refreshPromise: ''
+  refreshPromise: '',
+  empId: ''
 }
 
 const mutations = {
   SET_TOKEN: (state, token) => {
     state.token = token
+  },
+  SET_NEED_VALIDATE_CODE: (state, needValidateCode) => {
+    if (state.needValidateCode && needValidateCode) {
+      // 需要刷新验证码
+      state.needRefreshValidateCode = true
+    } else {
+      state.needRefreshValidateCode = false
+    }
+    state.needValidateCode = needValidateCode
+    if (needValidateCode) {
+      Cookies.set('needValidateCode', true)
+    } else {
+      Cookies.remove('needValidateCode')
+    }
   },
   SET_INTRODUCTION: (state, introduction) => {
     state.introduction = introduction
@@ -29,21 +47,31 @@ const mutations = {
   },
   SET_REFRESH_PROMISE: (state, refreshPromise) => {
     state.refreshPromise = refreshPromise
+  },
+  SET_EMPID: (state,empId) => {
+    state.empId = empId
   }
 }
 
 const actions = {
   // user login
   login({ commit }, userInfo) {
-    const { id, password } = userInfo
     return new Promise((resolve, reject) => {
-      login({ userId: id.trim(), userPass: password }).then(response => {
+      login(userInfo).then(response => {
         const { data } = response
         commit('SET_TOKEN', data.token)
         auth.setToken(data.token)
         auth.setRefreshToken(data.refreshToken)
+        setTimeout(() => {
+          commit('SET_NEED_VALIDATE_CODE', false)
+        }, 2000)
         resolve()
       }).catch(error => {
+        if (error.response.status === 403) {
+          commit('SET_NEED_VALIDATE_CODE', true)
+        } else {
+          commit('SET_NEED_VALIDATE_CODE', false)
+        }
         reject(error)
       })
     })
@@ -64,22 +92,26 @@ const actions = {
           reject('Verification failed, please Login again.')
         }
 
-        const { roleIds, userName, imgPath, introduction } = data
+        const { roles, name, avatar, introduction,empId } = data
 
         // roles must be a non-empty array
-        if (!roleIds || roleIds.length <= 0) {
+        if (!roles || roles.length <= 0) {
           reject('getInfo: roles must be a non-null array!')
         }
-
-        commit('SET_ROLES', roleIds)
-        commit('SET_NAME', userName)
-        commit('SET_AVATAR', imgPath)
+        commit('SET_ROLES', roles)
+        commit('SET_NAME', name)
+        commit('SET_AVATAR', avatar)
+        commit('SET_EMPID', empId)
         commit('SET_INTRODUCTION', introduction)
         resolve(data)
       }).catch(error => {
         reject(error)
       })
     })
+  },
+
+  needValidateCode({ commit, needValidateCode }) {
+    commit('SET_NEED_VALIDATE_CODE', needValidateCode)
   },
 
   // 登出
@@ -129,6 +161,9 @@ const actions = {
 
       // dynamically add accessible routes
       router.addRoutes(accessRoutes)
+
+      // reset visited views and cached views
+      dispatch('tagsView/delAllViews', null, { root: true })
 
       resolve()
     })

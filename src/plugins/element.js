@@ -4,7 +4,7 @@ import {
   Alert, Dialog, Tooltip,
   Tabs, TabPane, Breadcrumb, BreadcrumbItem,
   Menu, Submenu, MenuItem,
-  Input, Button, Select, Option, Radio, RadioGroup, RadioButton, Checkbox, CheckboxGroup, Switch,
+  Input, Button, Link, Select, Option, Radio, RadioGroup, RadioButton, Checkbox, CheckboxGroup, Switch,
   Form, FormItem, Table, TableColumn, Pagination,
   Upload, Tree,
   Card, Row, Col,
@@ -34,6 +34,7 @@ Vue.use(Select)
 Vue.use(Option)
 Vue.use(Input)
 Vue.use(Button)
+Vue.use(Link)
 Vue.use(Radio)
 Vue.use(RadioGroup)
 Vue.use(RadioButton)

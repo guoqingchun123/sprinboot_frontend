@@ -1,16 +1,11 @@
 <template>
   <div class="app-container">
-    <bv-table title="角色一览"
-              :pagination="true"
-              :filter.sync="filter"
-              :fetch-api="fetchRoles"
-              @on-mounted="(table) => tableInstance = table"
-    >
+    <bv-table title="角色一览" :pagination="true" :filter.sync="filter" :fetch-api="fetchRoles" @on-mounted="(table) => tableInstance = table">
       <div slot="operates">
         <bv-button show="one" view="grant" authority="grant" @click="startGrant()">授权</bv-button>
         <bv-button show="none" view="add" authority="add" @click="startCreate()">新增</bv-button>
         <bv-button show="one" view="modify" authority="modify" @click="startModify()">修改</bv-button>
-        <bv-button show="oneOrMore" view="remove" authority="remove" @click="startRemove()">删除</bv-button>
+        <bv-button v-if="deleteShow() && testShow" view="remove" authority="remove" @click="startRemove()">删除</bv-button>
       </div>
       <div slot="search">
         <bv-col>
@@ -23,32 +18,33 @@
             <el-input v-model="filter.name" />
           </el-form-item>
         </bv-col>
-        <bv-col>
+        <!--<bv-col>
           <el-form-item label="角色状态" prop="status">
             <el-radio-group v-model="filter.status">
               <el-radio v-for="el in roleStatusOptions" :key="el.code" :label="el.code">{{ el.name }}</el-radio>
             </el-radio-group>
           </el-form-item>
-        </bv-col>
+        </bv-col>-->
       </div>
-      <el-table-column type="selection" width="55" />
-      <el-table-column label="角色代码" prop="roleId" align="center" />
-      <el-table-column label="角色名称" prop="roleName" align="center" sortable="custom" />
-      <el-table-column label="角色状态" prop="roleState" align="center" />
+      <el-table-column type="selection" width="55" :selectable="selectableCheckBox" />
+      <el-table-column label="角色代码" prop="id" align="center" />
+      <el-table-column label="角色名称" prop="name" align="center" sortable="custom" />
+      <el-table-column label="对应部门" prop="contactDeptName" align="center" />
+      <!--<el-table-column label="角色状态" prop="statusName" align="center" />-->
     </bv-table>
 
     <bv-dialog title="角色维护" :visible.sync="dialogFormVisible">
       <bv-form ref="dialogForm" :model="item" :rules="rules">
         <bv-row layout="dialog-2">
           <bv-col>
-            <el-form-item label="角色代码" prop="roleId">
-              <el-input v-if="modifyType === 'create'" v-model="item.roleId" clearable />
-              <span v-else v-text="item.roleId" />
+            <el-form-item label="角色代码" prop="id">
+              <el-input v-if="modifyType === 'create'" v-model.trim="item.id" />
+              <span v-else v-text="item.id" />
             </el-form-item>
           </bv-col>
           <bv-col>
-            <el-form-item label="角色名称" prop="roleName">
-              <el-input v-model="item.roleName" />
+            <el-form-item label="角色名称" prop="name">
+              <el-input v-model.trim="item.name" />
             </el-form-item>
           </bv-col>
         </bv-row>
@@ -59,7 +55,7 @@
       </div>
     </bv-dialog>
 
-    <bv-dialog title="角色授权" :visible.sync="dialogGrantVisible" top="5vh">
+    <bv-dialog title="角色授权" :visible.sync="dialogGrantVisible" top="5vh" width="1200px">
       <bv-scrollbar>
         <el-tree ref="tree" :data="routes" node-key="id" :props="{label: showLabel}" show-checkbox :default-expand-all="true" style="margin-bottom: 20px">
           <span slot-scope="{ node, data }" class="tree-node-operates">
@@ -90,26 +86,19 @@
 <script>
   // import Vue from 'vue'
   // import i18n from '@/lang'
-  // import BvScrollbar from '@/components/Scrollbar'
   import { asyncRoutes, constantRoutes } from '@/router'
-  import { fetchRoles, createRole, modifyRole, removeRoles, fetchRoutes, saveRoutes } from '@/api/authority'
+  import { fetchRoles, createRole, modifyRole, removeRoles, fetchRoutes, saveRoutes, removeShow } from '@/api/authority'
   import { route as routeUtils, element as elementUtils } from '@bestvike/utils'
 
   export default {
     name: 'ListRole',
-    /*components: {
-      BvScrollbar
-    },*/
     data() {
       return {
         filter: {},
         dialogFormVisible: false,
         dialogGrantVisible: false,
         modifyType: null,
-        item: {
-          roleId: '',
-          roleName: ''
-        },
+        item: {},
         // 授权用
         routes: [],
         // 字典
@@ -121,13 +110,17 @@
         fetchRoles,
 
         rules: {
-          roleId: [
-            {required: true, message: '请输入角色代码', trigger: 'blur'}
+          id: [
+            {required: true, message: '请输入角色代码', trigger: 'blur'},
+            { min: 1, max: 36, message: '长度必须小于36个字', trigger: 'blur' }
           ],
-          roleName: [
-            {required: true, message: '请输入角色名称', trigger: 'blur'}
+          name: [
+            {required: true, message: '请输入角色名称', trigger: 'blur'},
+            { min: 1, max: 10, message: '长度必须小于10个字', trigger: 'blur' }
+
           ]
-        }
+        },
+        testShow:false
       }
     },
     created() {
@@ -135,17 +128,20 @@
         return !route.hidden && route.meta
       }))
       this.routes = [...this.__initRoutes]
+      // this.fetchData()
       this.$store.dispatch('app/fetchDicts', 'roleStatus').then(data => {
         this.roleStatusOptions = data
       })
     },
     methods: {
+      selectableCheckBox(row){
+        return row.contactDeptName==null
+      },
       // 弹窗用
       initRole() {
         this.item = {}
       },
       startCreate() {
-        this.item = {}
         this.dialogFormVisible = true
         this.modifyType = 'create'
         this.$refs.dialogForm && this.$refs.dialogForm.clearValidate()
@@ -201,12 +197,12 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          removeRoles(this.tableInstance.table.selection.map(item => item.roleId).join()).then(() => {
-            this.tableInstance.fetchData()
+          removeRoles(this.tableInstance.table.selection.map(item => item.id).join()).then(() => {
             this.$message({
               message: '删除成功',
               type: 'success'
             })
+            this.tableInstance.fetchData()
           })
         }).catch(() => {
           /*this.$message({
@@ -300,6 +296,23 @@
       isIndeterminate(meta) {
         // data.meta
         return meta.authorityOperates__.length > 0 && meta.authorityOperates__.length < meta.operates.length
+      },
+      //删除按钮显示逻辑
+      deleteShow() {
+        if (!this.tableInstance || !this.tableInstance.selection || this.tableInstance.selection.length === 0) {
+          return false
+        }
+        const selection = this.tableInstance.selection
+        removeShow(selection.map(item => item.id).join()).then((response) => {
+          if (response.data == -1) {
+            //直接return存在作用域问题
+            //存在用户授予该角色，不显示删除按钮
+            this.testShow =  false
+          } else {
+            this.testShow = true
+          }
+        })
+        return true
       }
     }
   }

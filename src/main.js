@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import VueMatomo from 'vue-matomo'
 
 //import Cookies from 'js-cookie'
 
@@ -22,21 +23,28 @@ import './permission' // permission control
 
 import * as filters from './filters' // global filters
 
-if (process.env.VUE_APP_MOCK === 'true') {
+/*if (process.env.VUE_APP_MOCK === 'true') {
   require('../mock') // simulation data
-}
-// 开启访问分析
-if (process.env.VUE_APP_ANALYSIS === 'true') {
-  const MtaH5 = require('mta-h5-analysis')
-  MtaH5.init({
-    "sid": '500675932', //必填，统计用的appid
-    "cid": '500675953', //如果开启自定义事件，此项目为必填，否则不填
-    "autoReport": 1,//是否开启自动上报(1:init完成则上报一次,0:使用pgv方法才上报)
-    "senseHash": 1, //hash锚点是否进入url统计
-    "senseQuery": 0, //url参数是否进入url统计
-    "performanceMonitor": 0,//是否开启性能监控
-    "ignoreParams": ['token'] //开启url参数上报时，可忽略部分参数拼接上报 => 目前该参数对于#后无效
-  });
+}*/
+
+// matomo用户统计
+if (process.env.VUE_APP_ANALYSIS) {
+  Vue.use(VueMatomo, {
+    // 这里配置你自己的piwik服务器地址和网站ID
+    host: '/track',
+    siteId: process.env.VUE_APP_TRACK_SITEID,
+    // 根据router自动注册
+    router: router,
+    // 是否需要在发送追踪信息之前请求许可
+    // 默认false
+    requireConsent: false,
+    // 是否追踪初始页面
+    // 默认true
+    trackInitialView: true,
+    // 最终的追踪js文件名
+    // 默认 'piwik'
+    trackerFileName: 'piwik'
+  })
 }
 
 // mock api in github pages site build

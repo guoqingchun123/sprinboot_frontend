@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie'
 import { getLanguage } from '@/lang/index'
-import { fetchDicts,fetchDepts,fetchComps } from '@/api/authority'
+import { initDicts } from '@/api/authority'
 
 const state = {
   sidebar: {
@@ -12,15 +12,8 @@ const state = {
   size: Cookies.get('size') || 'medium',
   theme: Cookies.get('theme') || '#409EFF',
   // 字典配置
-  dicts: {},
-  //字典一项
-  dictsone: {},
-  //行政区域下拉
-  depts: {},
-  //从业机构下拉
-  comps:{}
+  dicts: {}
 }
-
 
 const mutations = {
   TOGGLE_SIDEBAR: state => {
@@ -60,66 +53,8 @@ const mutations = {
     Cookies.set('theme', theme)
   },
   SET_DICTS: (state, data) => {
-    const {dicts } = data
-    var attr='';
-    for (var i in dicts ){
-      attr=dicts[i].dictCode
-
-      let childArr=[];
-      for (var c in dicts[i].children){
-        let child={}
-        child.value = dicts[i].children[c].dictCode
-        child.label = dicts[i].children[c].dictName
-        //遍历子类字典，转为 value lable，支持下拉列表和table
-        childArr.push(child)
-      }
-      state.dicts[attr]=childArr;
-    }
-  },
-
-  SET_DICTSONE: (state, data) => {
-    const {dictsone } = data
-    var attr='';
-    for (var i in dictsone ){
-      attr=dictsone[i].dictCode
-
-      let childArr=[];
-      for (var c in dictsone[i].children){
-        let child={}
-        child.value = dictsone[i].children[c].dictCode
-        child.label = dictsone[i].children[c].dictName
-        //遍历子类字典，转为 value lable，支持下拉列表和table
-        childArr.push(child)
-      }
-      state.dictsone[attr]=childArr;
-    }
-  },
-
-  SET_DEPTS: (state, data) => {
-    const {depts } = data
-    let deptArr=[];
-    for (var i in depts ){
-
-      let child={}
-      child.value = depts[i].divisionCode
-      child.label = depts[i].divisionName
-      deptArr.push(child)
-
-    }
-    state.depts=deptArr;
-  },
-  SET_COMPS: (state, data) => {
-    const {comps } = data
-    let compsArr=[];
-    for (var i in comps ){
-
-      let child={}
-      child.value = comps[i].companyId
-      child.label = comps[i].compName
-      compsArr.push(child)
-
-    }
-    state.comps = compsArr;
+    const { code, dicts } = data
+    state.dicts[code] = dicts
   }
 }
 
@@ -145,75 +80,24 @@ const actions = {
   setTheme({ commit }, theme) {
     commit('SET_THEME', theme)
   },
-  fetchDicts({ commit}) {
+  fetchDicts({ commit, state }, code) {
     return new Promise((resolve, reject) => {
-
-        fetchDicts().then(response => {
+      if (state.dicts[code]) {
+        resolve(state.dicts[code])
+      } else {
+        initDicts(code).then(response => {
           const { data } = response
           commit('SET_DICTS', {
+            code,
             dicts: data
           })
           resolve(data)
         }).catch(error => {
           reject(error)
         })
-
+      }
     })
-  },
-  fetchDepts({ commit}) {
-    return new Promise((resolve, reject) => {
-
-      fetchDepts().then(response => {
-        const { data } = response
-        commit('SET_DEPTS', {
-          depts: data
-        })
-        resolve(data)
-      }).catch(error => {
-        reject(error)
-      })
-
-    })
-  },
-  fetchComps({ commit}) {
-    return new Promise((resolve, reject) => {
-
-      fetchComps().then(response => {
-        const { data } = response
-        commit('SET_COMPS', {
-          comps: data
-        })
-        resolve(data)
-      }).catch(error => {
-        reject(error)
-      })
-
-    })
-  },
-
-  // fetchDictsOne({ commit, state }, code) {
-  //   return new Promise((resolve, reject) => {
-  //     if (state.dicts[code]) {
-  //       resolve(state.dicts[code])
-  //     } else {
-  //       initDicts(code).then(response => {
-  //         const { data } = response
-  //         commit('SET_DICTSONE', {
-  //           code,
-  //           dicts: data
-  //         })
-  //         resolve(data)
-  //       }).catch(error => {
-  //         reject(error)
-  //       })
-  //     }
-  //   })
-  // }
-
-  /**
-   * 查询某一项字典
-   */
-
+  }
 }
 
 export default {

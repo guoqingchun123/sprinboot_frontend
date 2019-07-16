@@ -1,8 +1,10 @@
-$--font-path: '~element-ui/lib/theme-chalk/fonts';
-@import "~element-ui/packages/theme-chalk/src/index";
+// 注意
+// 2.8.2版本开始变动
+// $--menu-item-color -> $--menu-item-font-color
+// $--menu-item-fill -> $--menu-background-color
 
 // 定义颜色
-// $--color-primary: red;
+$--color-primary: #3693f3;
 // $--color-primary-light-1: red;
 // $--color-primary-light-2: red;
 // $--color-primary-light-3: red;
@@ -12,23 +14,42 @@ $--font-path: '~element-ui/lib/theme-chalk/fonts';
 // $--color-primary-light-7: red;
 // $--color-primary-light-8: red;
 // $--color-primary-light-9: red;
-$--color-primary-mix: mix($--color-black, $--color-primary, $--button-active-shade-percent);
+// $--color-primary-mix: mix($--color-black, $--color-primary, $--button-active-shade-percent);
 
-$--table-header-color: $--color-white !important;
-$--table-header-background-color: $--color-primary-light-4 !important;
+// $--button-primary-border-color: $--color-primary !important;
+// $--button-primary-background-color: $--color-primary !important;
 
- $--menu-item-color: #bfcbd9;
+// $--color-text-placeholder: #67C23A !important;
+
+$--table-header-color: #ffffff !important;
+$--table-header-background-color: #66b1ff !important;
+
+// 菜单文字颜色
+$--menu-item-font-color: #ffffff !important;
 // $--menu-item-active-color: #409EFF;
-$--menu-item-fill: #ecf5ff;
-$--sub-menu-item-fill: #fff;
+// 菜单底色
+$--menu-background-color: #3693f3;
+// 菜单hover底色
+$--menu-item-hover-fill: #006ee0;
+
+// 自定义 - 子菜单展开底色
+$--sub-menu-expand-background-color: #137ce9;
+// 自定义 - 子菜单底色
+$--sub-menu-background-color: $--menu-background-color;
+// 自定义 - 激活菜单底色
 $--sub-menu-item-active-fill: $--menu-item-hover-fill;
-$--sub-menu-item-color: $--menu-item-color;
+// 自定义 - 子菜单文字颜色
+$--sub-menu-item-color: $--menu-item-font-color;
 
 $headerHeight: 50px;
 $tagsViewHeight: 34px;
 $logoHeight: 50px;
+$menuHeight: 50px;
 $sideBarWidth: 180px;
 $miniSideBarWidth: 54px;
+
+$--font-path: '~element-ui/lib/theme-chalk/fonts';
+@import "~element-ui/packages/theme-chalk/src/index";
 
 // the :export directive is the magic sauce for webpack
 // https://www.bluematador.com/blog/how-to-share-variables-between-js-and-sass
@@ -43,7 +64,7 @@ $miniSideBarWidth: 54px;
   colorPrimaryLight7: $--color-primary-light-7;
   colorPrimaryLight8: $--color-primary-light-8;
   colorPrimaryLight9: $--color-primary-light-9;
-  colorPrimaryMix: $--color-primary-mix;
+  // colorPrimaryMix: $--color-primary-mix;
 
   colorSuccess: $--color-success;
   colorWarning: $--color-warning;
@@ -72,8 +93,8 @@ $miniSideBarWidth: 54px;
   linkColor: $--link-color;
   linkHoverColor: $--link-hover-color;
 
-  menuItemColor: $--menu-item-color;
-  menuItemFill: $--menu-item-fill;
+  menuItemColor: $--menu-item-font-color;
+  menuItemFill: $--menu-background-color;
   menuItemHoverFill: $--menu-item-hover-fill;
 
   headerHeight: $headerHeight;

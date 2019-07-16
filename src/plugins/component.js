@@ -1,17 +1,6 @@
 import Vue from 'vue'
 
-import BvHamburger from '@/components/Hamburger/index.js'
-import BvScrollbar from '@/components/Scrollbar/index.js'
-import BvRow from '@/components/Row/index.js'
-import BvCol from '@/components/Col/index.js'
-import BvButton from '@/components/Button/index.js'
-import BvForm from '@/components/Form/index.js'
-import BvTable from '@/components/Table/index.js'
-import BvTree from '@/components/Tree/index.js'
-import BvPagination from '@/components/Pagination/index.js'
-import BvDialog from '@/components/Dialog/index.js'
-
-import BvNext from '@/directive/next/index.js'
+import { BvButton, BvCol, BvForm, BvHamburger, BvRow, BvScrollbar, BvTable, BvTree, BvPagination, BvDialog, BvNext } from '@bestvike/components'
 
 Vue.use(BvHamburger)
 Vue.use(BvScrollbar)
@@ -26,13 +15,7 @@ Vue.use(BvDialog)
 
 Vue.use(BvNext)
 
-function analysisLog(actiontype, pagetype='', backup = {}){
-  console.log(actiontype)
-  console.log(pagetype)
-  console.log(backup)
-}
-
-Vue.prototype.$log = analysisLog
+Vue.prototype.$server = process.env.VUE_APP_API_SERVER === '/' ? '' : process.env.VUE_APP_API_SERVER
 
 ///// 注意 下面常量计划删除 /////
 Vue.prototype.$CONST = {
@@ -101,4 +84,4 @@ Vue.prototype.$CONST = {
       xl: 16
     }
   }
-}
+};

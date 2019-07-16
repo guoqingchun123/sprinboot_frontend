@@ -4,10 +4,16 @@ import Router from 'vue-router'
 Vue.use(Router)
 
 /* Layout */
-import Layout from '@/layout/Layout'
+import Layout from '@/layout'
 
 /* Router Modules */
-import authorityRouters from './authority'
+import authorityRouter from './authority'
+import projectRouter from './project'
+import employRouter from './employee'
+import sharedResourceRouter from './sharedResource'
+import serviceRouter from "./serviceManage";
+import customRouter from './custom'
+import remindRouter from './remind'
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -17,7 +23,7 @@ import authorityRouters from './authority'
  * alwaysShow: true               if set true, will always show the root menu
  *                                if not set alwaysShow, when item has more than one children route,
  *                                it will becomes nested mode, otherwise not show the root menu
- * redirect: noredirect           if `redirect:noredirect` will no redirect in the breadcrumb
+ * redirect: noRedirect           if `redirect:noRedirect` will no redirect in the breadcrumb
  * name:'router-name'             the name is used by <keep-alive> (must set!!!)
  * meta : {
     roles: ['admin','editor']    control the page roles (you can set multiple roles)
@@ -53,7 +59,12 @@ export const constantRoutes = [
     component: () => import('@/layout/login/index'),
     hidden: true
   },
+  {
+    path: '/auth-redirect',
 
+    component: () => import('@/layout/login/authRedirect'),
+    hidden: true
+  },
   {
     path: '/404',
     component: () => import('@/layout/errorPage/404'),
@@ -67,13 +78,14 @@ export const constantRoutes = [
   {
     path: '/user',
     component: Layout,
-    redirect: 'setting',
+    redirect: 'profile',
     hidden: true,
+    img: "odd",
     children: [
       {
-        path: 'setting',
-        component: () => import('@/layout/userSetting/index'),
-        name: 'UserSetting',
+        path: 'profile',
+        component: () => import('@/layout/userProfile/index'),
+        name: 'UserProfile',
         meta: {
           title: '用户中心'
         }
@@ -101,11 +113,13 @@ export const constantRoutes = [
  * the routes that need to be dynamically loaded based on user roles
 */
 export const asyncRoutes = [
-  authorityRouters,
+  authorityRouter,
+  employRouter,
+  projectRouter,
   {
     path: '/error',
     component: Layout,
-    redirect: 'noredirect',
+    redirect: 'noRedirect',
     name: 'ErrorPages',
     hidden: true,
     meta: {
@@ -128,11 +142,46 @@ export const asyncRoutes = [
       }
     ]
   },
+  customRouter,
+  remindRouter,
+  {
+    path: '/meetingManage',
+    component: Layout,
+    // redirect: 'noRedirect',
+    name: 'meetingManage',
+    meta: {
+      title: '会议管理',
+      // title: '${meetingManage}',
+      icon: 'list'
+    },
+    children: [
+      {
+        path: 'buildMeeting',
+        component: () => import('@/views/meetingManage/buildMeeting'),
+        name: 'buildMeeting',
+        meta: { title: '会议安排', noCache: true }
+      },
+      {
+        path: 'meetingSummary',
+        component: () => import('@/views/meetingManage/meetingSummary'),
+        name: 'meetingSummary',
+        meta: { title: '会议室预约', noCache: true }
+      },
+      {
+        path: 'meetingReminder',
+        component: () => import('@/views/meetingManage/meetingReminder'),
+        name: 'meetingReminder',
+        meta: { title: '会议纪要', noCache: true }
+      },
+    ]
+  },
+ serviceRouter,
+  sharedResourceRouter,
   {
     path: '/error-log',
     component: Layout,
     hidden: true,
-    redirect: 'noredirect',
+    redirect: 'noRedirect',
     children: [
       {
         path: 'log',

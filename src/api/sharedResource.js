@@ -36,7 +36,7 @@ export function getPath(data) {
 
 // 上传文件
 export function uploads(file, data) {
-  return http.upload('/api/file/upload', file, data);
+  return http.upload('/api/sharedFile/upload', file, data);
 }
 
 // 文件下载
@@ -54,5 +54,15 @@ export function getFileOperate(query) {
   return http.get('/api/file/operates', {
     params: query
   });
+}
+//根据部门查员工
+export function fetchEmpsForShared(query) {
+  return http.get('/api/file/empForShared', {
+    params: query
+  });
+}
+//删除文件版本信息
+export function deleteTmplList(id) {
+  return http.delete('/api/file/tmplList/' + id)
 }
 

@@ -37,6 +37,14 @@ export function one(arr) {
 }
 
 /**
+ * Upper case first char
+ * @param {String} string
+ */
+export function uppercaseFirst(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1)
+}
+
+/**
  * 弹窗考勤时间格式化
  * @param val
  * @returns {string}
@@ -52,4 +60,14 @@ export function formatDateByAttendDialog(val) {
   minute = minute < 10 ? ('0' + minute) : minute;
   second = second < 10 ? ('0' + second) : second;
   return h + ':' + minute + ':' + second;
+}
+
+/**
+ * 组合显示代码和名称
+ */
+export function comboShow(code, name) {
+  if (!code) {
+    return name
+  }
+  return '（' + code + '）' + name
 }
