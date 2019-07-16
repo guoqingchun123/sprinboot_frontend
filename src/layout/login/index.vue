@@ -13,14 +13,14 @@
     </div>
     <div class="login-form">
       <bv-form ref="loginForm" :inline="false" label-width="0" :model="loginForm" :rules="loginRules" autocomplete="on">
-        <el-form-item prop="id" class="item-container">
+        <el-form-item prop="userId" class="item-container">
           <span class="svg-container">
             <bv-icon icon-class="user" />
           </span>
           <el-input
-            v-model="loginForm.id"
+            v-model="loginForm.userId"
             placeholder="账号"
-            name="id"
+            name="userId"
             type="text"
             autocomplete="on"
             tabindex="1"
@@ -122,12 +122,12 @@ export default {
       validateCodeUrl: this.$server+'/api/authority/code?t=' + new Date().getTime(),
       loginType: process.env.VUE_APP_LOGINTYPE,
       loginForm: {
-        id: '',
+        userId: '',
         password: '',
         validateCode: ''
       },
       loginRules: {
-        id: [{ required: true, trigger: 'blur', validator: validateUsername }],
+        userId: [{ required: true, trigger: 'blur', validator: validateUsername }],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }]
       },
       passwordType: 'password',
