@@ -8,13 +8,6 @@ import Layout from '@/layout'
 
 /* Router Modules */
 import authorityRouter from './authority'
-import projectRouter from './project'
-import employRouter from './employee'
-import sharedResourceRouter from './sharedResource'
-import serviceRouter from "./serviceManage";
-import customRouter from './custom'
-import remindRouter from './remind'
-
 /**
  * Note: sub-menu only appear when route children.length >= 1
  * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
@@ -102,7 +95,7 @@ export const constantRoutes = [
         path: 'dashboard',
         component: () => import('@/views/dashboard/index'),
         name: 'Dashboard',
-        meta: { title: '${dashboard}', icon: 'dashboard', noCache: true, affix: true }
+        meta: {title: '${dashboard}', icon: 'dashboard', noCache: true, affix: true}
       }
     ]
   }
@@ -111,11 +104,9 @@ export const constantRoutes = [
 /**
  * asyncRoutes
  * the routes that need to be dynamically loaded based on user roles
-*/
+ */
 export const asyncRoutes = [
   authorityRouter,
-  employRouter,
-  projectRouter,
   {
     path: '/error',
     component: Layout,
@@ -132,51 +123,16 @@ export const asyncRoutes = [
         path: '401',
         component: () => import('@/layout/errorPage/401'),
         name: 'Page401',
-        meta: { title: '${page401}', noCache: true }
+        meta: {title: '${page401}', noCache: true}
       },
       {
         path: '404',
         component: () => import('@/layout/errorPage/404'),
         name: 'Page404',
-        meta: { title: '${page404}', noCache: true }
+        meta: {title: '${page404}', noCache: true}
       }
     ]
   },
-  customRouter,
-  remindRouter,
-  {
-    path: '/meetingManage',
-    component: Layout,
-    // redirect: 'noRedirect',
-    name: 'meetingManage',
-    meta: {
-      title: '会议管理',
-      // title: '${meetingManage}',
-      icon: 'list'
-    },
-    children: [
-      {
-        path: 'buildMeeting',
-        component: () => import('@/views/meetingManage/buildMeeting'),
-        name: 'buildMeeting',
-        meta: { title: '会议安排', noCache: true }
-      },
-      {
-        path: 'meetingSummary',
-        component: () => import('@/views/meetingManage/meetingSummary'),
-        name: 'meetingSummary',
-        meta: { title: '会议室预约', noCache: true }
-      },
-      {
-        path: 'meetingReminder',
-        component: () => import('@/views/meetingManage/meetingReminder'),
-        name: 'meetingReminder',
-        meta: { title: '会议纪要', noCache: true }
-      },
-    ]
-  },
- serviceRouter,
-  sharedResourceRouter,
   {
     path: '/error-log',
     component: Layout,
@@ -187,17 +143,17 @@ export const asyncRoutes = [
         path: 'log',
         component: () => import('@/views/errorLog/index'),
         name: 'ErrorLog',
-        meta: { title: '${errorLog}', icon: 'bug', authority: false }
+        meta: {title: '${errorLog}', icon: 'bug', authority: false}
       }
     ]
   },
 
-  { path: '*', redirect: '/404', hidden: true, meta: { authority: false } }
+  {path: '*', redirect: '/404', hidden: true, meta: {authority: false}}
 ]
 
 const createRouter = () => new Router({
   // mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
+  scrollBehavior: () => ({y: 0}),
   routes: constantRoutes
 })
 

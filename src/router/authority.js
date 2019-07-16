@@ -4,8 +4,6 @@ const authorityRouter = {
   path: '/authority',
   alwaysShow: true,
   component: Layout,
-  // redirect: '/areas',
-  // name: 'Authority',
   meta: {
     title: '${authority}',
     icon: 'lock'
@@ -18,19 +16,12 @@ const authorityRouter = {
       meta: {
         title: '路由一览'
       }
-    },{
+    }, {
       path: 'users',
-      component: () => import('@/views/authority/user'),
+      component: () => import('@/views/authority/user/list'),
       name: 'ListUser',
       meta: {
         title: '用户管理'
-      }
-    }, {
-      path: 'areas',
-      component: () => import('@/views/authority/area'),
-      name: 'ListArea',
-      meta: {
-        title: '区域维护'
       }
     }, {
       path: 'roles',
@@ -81,7 +72,7 @@ const authorityRouter = {
           meta: {
             title: '种子文件查询'
           }
-        },{
+        }, {
           path: 'tokenAllot',
           component: () => import('@/views/authority/token/tokenAllot'),
           name: 'tokenAllot',
@@ -103,104 +94,8 @@ const authorityRouter = {
       component: () => import('@/views/authority/dict'),
       name: 'Dict',
       meta: {
-        title: '字典管理',
-        // operates: [
-        //   {
-        //     name: 'add',
-        //     label: '新增',
-        //     routes: ['POST:/api/dicts', 'POST:/api/dicts/{path}']
-        //   }, {
-        //     name: 'modify',
-        //     label: '修改',
-        //     routes: ['PUT:/api/dicts', 'PUT:/api/dicts/{path}']
-        //   }, {
-        //     name: 'remove',
-        //     label: '删除',
-        //     routes: ['DELETE:/api/dicts/{codes}', 'DELETE:/api/dicts/{path}/{codes}']
-        //   }
-        // ]
+        title: '字典管理'
       }
-    },
-    {
-      path: 'product',
-      component: () => import('@/views/authority/product'),
-      name: 'Product',
-      meta: {
-        title: '产品管理'
-      }
-    },
-    {
-      path: 'flow',
-      component: () => import('@/views/authority/flowManger'),
-      name: 'Flow',
-      meta: {
-        title: '审批流程配置',
-        // operates: [
-        //   {
-        //     name: 'add',
-        //     label: '新增',
-        //     routes: ['POST:/api/flow']
-        //   }, {
-        //     name: 'modify',
-        //     label: '修改',
-        //     routes: ['PUT:/api/flow']
-        //   }, {
-        //     name: 'remove',
-        //     label: '删除',
-        //     routes: ['DELETE:/api/flowRemove']
-        //   }
-        // ]
-      }
-    },
-    {
-      path: 'deptEmpLevel',
-      component: () => import('@/views/authority/deptManage/deptEmpLevel'),
-      name: 'DeptEmpLevel',
-      meta: {
-        title: '人员层级配置'
-      },
-    },
-    {
-      path: 'branch',
-      component: () => import('@/views/authority/branch/branchManage'),
-      name: 'ListAreaManage',
-      meta: {
-        title: '分支机构',
-        icon: 'location'
-      }
-    },
-    {
-      path: 'deptManage',
-      component: () => import('@/views/authority/deptManage/deptManage'),
-      name: 'ListDeptManage',
-      meta: {
-        title: '部门管理',
-        icon: 'cluster'
-      },
-    },
-    {
-      path: 'holidayConfig',
-      component: () => import('@/views/authority/holidayConfig/index'),
-      name: 'HolidayConfig',
-      meta: {
-        title: '节假日配置',
-        icon: 'schedule',
-        operates: [
-         {
-            name: 'add',
-            label: '新增',
-            routes: ['POST:/api/holidayConfigs']
-          }, {
-            name: 'modify',
-            label: '修改',
-            routes: ['PUT:/api/holidayConfigs']
-          }, {
-            name: 'remove',
-            label: '删除',
-            routes: ['DELETE:/api/holidayConfigs/{ids}']
-          }
-        ]
-      },
     }
   ]
 }
