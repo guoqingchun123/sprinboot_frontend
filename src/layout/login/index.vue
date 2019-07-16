@@ -82,6 +82,7 @@ import { validate } from '@bestvike/utils'
 import logoUrl from '@/assets/login/login-logo.png'
 import banner1 from '@/assets/login/login-bg01.png'
 import banner2 from '@/assets/login/login-bg02.png'
+import banner3 from '@/assets/login/login-bg03.png'
 
 export default {
   name: 'Login',
@@ -115,7 +116,8 @@ export default {
     return {
       banners: [
         banner1,
-        banner2
+        banner2,
+        banner3
       ],
       logoUrl,
       // needValidateCode: false,

@@ -27,13 +27,12 @@
     <!--新增，修改用户信息-->
     <user-edit :visible="dialogFormVisible" :item="item" @on-edit="userEdited" />
     <!--授权-->
-    <user-grant :visible="dialogGrantVisible" :grants="grants" :userId="userId" :roles="roles" @on-grant="userEdited"></user-grant>
+    <user-grant :visible="dialogGrantVisible" :grants="grants" :user-id="userId" :roles="roles" @on-grant="userEdited" />
   </div>
 </template>
 
 <script>
-  import {fetchUsers, delUsers, resetPass, fetchGrants} from '@/api/authority'
-  import http from '@/utils/http'
+  import {fetchUsers, delUsers, resetPass, fetchGrants, selectUser} from '@/api/authority'
   import userEdit from './edit'
   import userGrant from './grant'
   export default {
@@ -67,41 +66,41 @@
       // 新增用户,弹窗
       startCreate() {
         // item 置空
-        this.item = {}
-        this.editType = 'add'
+        this.item = {};
+        this.editType = 'add';
         // 展示弹窗
-        this.dialogFormVisible = true
+        this.dialogFormVisible = true;
         // 表单重置，表单验证重置
         this.$refs.dialogForm && this.$refs.dialogForm.clearValidate()
       },
       // 修改用户，弹窗
       initUserEdit() {
-        this.editType = 'edit'
+        this.editType = 'edit';
         // 后台查询选中的用户信息
-        let userId = this.tableInstance.table.selection[0].userId
-        http.get('/portal/api/users/' + userId).then( (response) => {
+        let userId = this.tableInstance.table.selection[0].userId;
+        selectUser(userId).then((response) => {
           if (response.data) {
-            this.item = response.data
+            this.item = response.data;
             // 展示弹出框
             this.dialogFormVisible = true
           }
           else {
-            this.tableInstance.fetchData()
+            this.tableInstance.fetchData();
             this.$message ({
               message: '用户已被删除...',
               type: 'error'
             })
           }
-        })
+        });
         // 展示弹窗
-        this.dialogFormVisible = true
+        this.dialogFormVisible = true;
         // 表单重置，表单验证重置
         this.$refs.dialogForm && this.$refs.dialogForm.clearValidate()
       },
       // 关闭弹出框
       userEdited(refresh) {
         this.dialogFormVisible = false;
-        this.dialogGrantVisible = false
+        this.dialogGrantVisible = false;
         if (refresh) {
           this.tableInstance.fetchData();
           this.$message({
@@ -117,10 +116,10 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then( () => {
-          let userIds = this.tableInstance.table.selection.map(item => item.userId)
+          let userIds = this.tableInstance.table.selection.map(item => item.userId);
           delUsers(userIds).then(() => {
             // 刷新table
-            this.tableInstance.fetchData()
+            this.tableInstance.fetchData();
             this.$message({
               message: '删除用户成功...',
               type: 'success'
@@ -153,7 +152,7 @@
       resetPass() {
         let userId = this.tableInstance.table.selection[0].userId
         resetPass(userId).then(() => {
-          this.tableInstance.fetchData()
+          this.tableInstance.fetchData();
           this.$message({
             message: '重置密码成功',
             type: 'success'
