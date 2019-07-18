@@ -56,7 +56,7 @@ export function updateUser(data) {
 
 // 删除用户
 export function delUsers(userIds) {
-  return http.delete('/api/portal/users' + userIds)
+  return http.delete('/api/portal/users/' + userIds)
 }
 
 // 保存用户头像

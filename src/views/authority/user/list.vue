@@ -21,8 +21,10 @@
       <el-table-column type="selection" width="55" />
       <el-table-column label="用户编号" prop="userId" sortable="custom" />
       <el-table-column label="用户姓名" prop="userName" sortable="custom" />
-      <el-table-column label="用户别名" prop="userAlias" sortable="custom" />
-      <el-table-column label="状态" prop="userState" sortable="custom" />
+      <el-table-column label="用户别名" prop="alias" sortable="custom" />
+      <el-table-column label="证件号码" prop="certNo" sortable="custom" />
+      <el-table-column label="联系电话" prop="phoneNo" sortable="custom" />
+      <el-table-column label="状态" prop="userStatus" sortable="custom" />
     </bv-table>
     <!--新增，修改用户信息-->
     <user-edit :visible="dialogFormVisible" :item="item" @on-edit="userEdited" />
@@ -44,9 +46,7 @@
     data() {
       return {
         item: {
-          userName: '',
-          userAlias: '',
-          checkKey: 'Y'
+          type: Object
         },
         // 过滤条件
         filter: {},
@@ -57,7 +57,7 @@
         roles: [],
         grants: [],
         tableInstance: {},
-        editType: '', // add/edit
+        editType: '',
         user: {},
         fetchUsers
       }
