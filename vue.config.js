@@ -17,11 +17,11 @@ const port = 8080
 
 let proxy = {
   '/file/upload': {
-    target: process.env.VUE_APP_FILE_SERVER + '/api',
+    target: process.env.VUE_APP_API_SERVER + '/api',
     changeOrigin: true
   },
   '/file/view': {
-    target: process.env.VUE_APP_FILE_SERVER,
+    target: process.env.VUE_APP_API_SERVER,
     changeOrigin: true,
     pathRewrite: {
       '^/file/view': ''

@@ -18,21 +18,13 @@
             <el-input v-model="filter.name" />
           </el-form-item>
         </bv-col>
-        <!--<bv-col>
-          <el-form-item label="角色状态" prop="status">
-            <el-radio-group v-model="filter.status">
-              <el-radio v-for="el in roleStatusOptions" :key="el.code" :label="el.code">{{ el.name }}</el-radio>
-            </el-radio-group>
-          </el-form-item>
-        </bv-col>-->
       </div>
       <el-table-column type="selection" width="55" :selectable="selectableCheckBox" />
       <el-table-column label="角色代码" prop="id" align="center" />
       <el-table-column label="角色名称" prop="name" align="center" sortable="custom" />
       <el-table-column label="对应部门" prop="contactDeptName" align="center" />
-      <!--<el-table-column label="角色状态" prop="statusName" align="center" />-->
     </bv-table>
-
+    
     <bv-dialog title="角色维护" :visible.sync="dialogFormVisible">
       <bv-form ref="dialogForm" :model="item" :rules="rules">
         <bv-row layout="dialog-2">
@@ -54,7 +46,7 @@
         <bv-button view="cancel" @click="cancelModify()">取消</bv-button>
       </div>
     </bv-dialog>
-
+    
     <bv-dialog title="角色授权" :visible.sync="dialogGrantVisible" top="5vh" width="1200px">
       <bv-scrollbar>
         <el-tree ref="tree" :data="routes" node-key="id" :props="{label: showLabel}" show-checkbox :default-expand-all="true" style="margin-bottom: 20px">
@@ -84,12 +76,10 @@
 </template>
 
 <script>
-  // import Vue from 'vue'
-  // import i18n from '@/lang'
-  import { asyncRoutes, constantRoutes } from '@/router'
-  import { fetchRoles, createRole, modifyRole, removeRoles, fetchRoutes, saveRoutes, removeShow } from '@/api/authority'
-  import { route as routeUtils, element as elementUtils } from '@bestvike/utils'
-
+  import {asyncRoutes, constantRoutes} from '@/router'
+  import {fetchRoles, createRole, modifyRole, removeRoles, fetchRoutes, saveRoutes, removeShow} from '@/api/authority'
+  import {route as routeUtils, element as elementUtils} from '@bestvike/utils'
+  
   export default {
     name: 'ListRole',
     data() {
@@ -104,38 +94,36 @@
         // 字典
         roleStatusOptions: null,
         authorityRoutes: [],
-
+        
         tableInstance: {},
-
+        
         fetchRoles,
-
+        
         rules: {
           id: [
             {required: true, message: '请输入角色代码', trigger: 'blur'},
-            { min: 1, max: 36, message: '长度必须小于36个字', trigger: 'blur' }
+            {min: 1, max: 36, message: '长度必须小于36个字', trigger: 'blur'}
           ],
           name: [
             {required: true, message: '请输入角色名称', trigger: 'blur'},
-            { min: 1, max: 10, message: '长度必须小于10个字', trigger: 'blur' }
-
+            {min: 1, max: 10, message: '长度必须小于10个字', trigger: 'blur'}
           ]
         },
-        testShow:false
+        testShow: false
       }
     },
     created() {
       this.__initRoutes = routeUtils.initRoutesId([...constantRoutes, ...asyncRoutes].filter((route) => {
         return !route.hidden && route.meta
       }))
-      this.routes = [...this.__initRoutes]
-      // this.fetchData()
+      this.routes = [...this.__initRoutes];
       this.$store.dispatch('app/fetchDicts', 'roleStatus').then(data => {
         this.roleStatusOptions = data
       })
     },
     methods: {
-      selectableCheckBox(row){
-        return row.contactDeptName==null
+      selectableCheckBox(row) {
+        return row.contactDeptName == null
       },
       // 弹窗用
       initRole() {
@@ -147,29 +135,25 @@
         this.$refs.dialogForm && this.$refs.dialogForm.clearValidate()
       },
       startModify() {
-        this.item = {...this.tableInstance.table.selection[0]}
-        this.dialogFormVisible = true
-        this.modifyType = 'modify'
+        this.item = {...this.tableInstance.table.selection[0]};
+        this.dialogFormVisible = true;
+        this.modifyType = 'modify';
         this.$refs.dialogForm && this.$refs.dialogForm.clearValidate()
       },
       cancelModify() {
         this.initRole()
-        this.dialogFormVisible = false
-        this.modifyType = null
-        /*this.$message({
-          message: '取消保存',
-          type: 'warning'
-        })*/
+        this.dialogFormVisible = false;
+        this.modifyType = null;
       },
       confirmModify() {
         this.$refs.dialogForm.validate((valid) => {
           if (!valid) {
             return false
           }
-
+          
           if (this.modifyType === 'modify') {
-            let item = {...this.item}
-            delete item.permissions
+            let item = {...this.item};
+            delete item.permissions;
             modifyRole(item).then(() => {
               this.tableInstance.table.clearSelection()
               this.afterModify()
@@ -182,10 +166,10 @@
         })
       },
       afterModify() {
-        this.tableInstance.fetchData()
-        this.initRole()
-        this.dialogFormVisible = false
-        this.modifyType = null
+        this.tableInstance.fetchData();
+        this.initRole();
+        this.dialogFormVisible = false;
+        this.modifyType = null;
         this.$message({
           message: '保存成功',
           type: 'success'
@@ -225,7 +209,7 @@
               if (item.operates && item.operates.length > 0) {
                 const treeNode = this.$refs.tree.getNode(item.route)
                 // 按钮权限
-                if (treeNode && treeNode.data && treeNode.data.meta && treeNode.data.meta.operates  && treeNode.data.meta.operates.length > 0) {
+                if (treeNode && treeNode.data && treeNode.data.meta && treeNode.data.meta.operates && treeNode.data.meta.operates.length > 0) {
                   treeNode.data.meta.authorityOperates__ = item.operates
                   if (treeNode.data.meta.operates.length === item.operates.length) {
                     treeNode.data.meta.isAllOperatesSelected__ = true
@@ -291,7 +275,7 @@
       showLabel(data) {
         return this.$filters.transTitle(data.meta)
       },
-
+      
       // 辅助函数
       isIndeterminate(meta) {
         // data.meta
@@ -307,7 +291,7 @@
           if (response.data == -1) {
             //直接return存在作用域问题
             //存在用户授予该角色，不显示删除按钮
-            this.testShow =  false
+            this.testShow = false
           } else {
             this.testShow = true
           }

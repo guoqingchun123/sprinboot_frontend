@@ -3,6 +3,7 @@ import MD5 from 'crypto-js/md5'
 import Base64 from 'crypto-js/enc-base64'
 import Utf8 from 'crypto-js/enc-utf8'
 
+/******************************************************系统登录 BEGIN*******************************************************/
 export function login(authority) {
   let authorityRequest = {...authority}
   authorityRequest.loginType = process.env.VUE_APP_LOGINTYPE
@@ -28,6 +29,36 @@ export function refresh(refreshToken) {
 
 export function getInfo() {
   return http.get('/api/authority/info')
+}
+
+/******************************************************字典管理 BEGIN*******************************************************/
+export function initDicts(code) {
+  return http.get('/api/portal/dicts/' + code)
+}
+//查询系统字典
+export function fetchDicts(query) {
+  return http.get('/api/portal/dicts', {
+    params: query
+  })
+}
+
+export function createDict(data, path) {
+  if (!path) {
+    return http.post('/api/portal/dicts', data)
+  }
+  return http.post('/api/portal/dicts/' + path, data)
+}
+export function modifyDict(data, path) {
+  if (!path) {
+    return http.put('/api/portal/dicts', data)
+  }
+  return http.put('/api/portal/dicts/' + path, data)
+}
+export function removeDicts(codes, path) {
+  if (!path) {
+    return http.delete('/api/portal/dicts/' + codes)
+  }
+  return http.delete('/api/portal/dicts/' + path + '/' + codes)
 }
 
 /******************************************************用户管理 BEGIN*******************************************************/

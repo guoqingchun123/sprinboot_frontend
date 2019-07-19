@@ -23,6 +23,20 @@ const authorityRouter = {
       meta: {
         title: '用户管理'
       }
+    }, {
+      path: 'roles',
+      component: () => import('@/views/authority/role'),
+      name: 'ListRole',
+      meta: {
+        title: '角色管理'
+      }
+    },{
+      path: 'dicts',
+      component: () => import('@/views/authority/dict'),
+      name: 'Dict',
+      meta: {
+        title: '字典管理'
+      }
     }
   ]
 }

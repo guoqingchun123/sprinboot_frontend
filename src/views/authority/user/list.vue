@@ -166,11 +166,11 @@
           })
         })
       },
-    },
-    userStatusFormatter(row, column, cellValue) {
-      for (let i in this.userStatusDict) {
-        if (cellValue == this.dict[i].code) {
-          return this.dict[i].name
+      userStatusFormatter(row, column, cellValue) {
+        for (let i in this.userStatusDict) {
+          if (cellValue == this.userStatusDict[i].code) {
+            return this.userStatusDict[i].name
+          }
         }
       }
     }
