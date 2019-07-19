@@ -31,10 +31,48 @@ export function getInfo() {
   return http.get('/api/authority/info')
 }
 
+/******************************************************角色管理 BEGIN*******************************************************/
+export function fetchRoles(query) {
+  return http.get('/api/portal/roles', {
+    params: query
+  })
+}
+
+export function createRole(data) {
+  return http.post('/api/portal/roles', data)
+}
+
+export function modifyRole(data) {
+  return http.put('/api/portal/roles', data)
+}
+
+export function removeRoles(ids) {
+  return http.delete('/api/portal/roles/' + ids)
+}
+
+export function showRemove(id) {
+  return http.get('/api/portal/showRemove/' + id)
+}
+
+export function fetchAll2(query) {
+  return http.get('/api/portal/roles2', {
+    params: query
+  })
+}
+
+export function fetchRoutes(id) {
+  return http.get('/api/portal/roles/' + id + '/routes')
+}
+
+export function saveRoutes(id, data) {
+  return http.post('/api/portal/roles/' + id + '/routes', data)
+}
+
 /******************************************************字典管理 BEGIN*******************************************************/
 export function initDicts(code) {
   return http.get('/api/portal/dicts/' + code)
 }
+
 //查询系统字典
 export function fetchDicts(query) {
   return http.get('/api/portal/dicts', {
@@ -48,12 +86,14 @@ export function createDict(data, path) {
   }
   return http.post('/api/portal/dicts/' + path, data)
 }
+
 export function modifyDict(data, path) {
   if (!path) {
     return http.put('/api/portal/dicts', data)
   }
   return http.put('/api/portal/dicts/' + path, data)
 }
+
 export function removeDicts(codes, path) {
   if (!path) {
     return http.delete('/api/portal/dicts/' + codes)
