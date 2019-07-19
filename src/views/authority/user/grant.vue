@@ -1,6 +1,6 @@
 <template>
   <bv-dialog title="用户授权" width="550px" :visible.sync="visible" :show-close="showClose">
-    <el-transfer v-model="grants" :data="roles" :userId="userId" :titles="['未授权','已授权']" />
+    <el-transfer v-model="grants" :data="roles" :user-id="userId" :titles="['未授权','已授权']" />
     <div slot="footer">
       <bv-button view="save" @click="saveGrant">保存</bv-button>
       <bv-button view="cancel" @click="cancelGrant">取消</bv-button>
@@ -22,13 +22,20 @@
         default: false
       },
       grants: {
-        type: Array
+        type: Array,
+        default() {
+          return [];
+        }
       },
       roles: {
-        type: Array
+        type: Array,
+        default() {
+          return [];
+        }
       },
       userId: {
-        type: String
+        type: String,
+        default: ''
       }
     },
     data() {

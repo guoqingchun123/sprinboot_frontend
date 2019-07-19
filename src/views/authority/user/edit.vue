@@ -34,7 +34,10 @@
         default: false
       },
       item: {
-        type: Object
+        type: Object,
+        default() {
+          return {}
+        }
       }
     },
     data() {

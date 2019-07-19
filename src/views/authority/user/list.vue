@@ -24,7 +24,7 @@
       <el-table-column label="用户别名" prop="alias" sortable="custom" />
       <el-table-column label="证件号码" prop="certNo" sortable="custom" />
       <el-table-column label="联系电话" prop="phoneNo" sortable="custom" />
-      <el-table-column label="状态" prop="userStatus" sortable="custom" />
+      <el-table-column label="状态" prop="userStatus" sortable="custom" :formatter="userStatusFormatter" />
     </bv-table>
     <!--新增，修改用户信息-->
     <user-edit :visible="dialogFormVisible" :item="item" @on-edit="userEdited" />
@@ -37,6 +37,7 @@
   import {fetchUsers, delUsers, resetPass, fetchGrants, selectUser} from '@/api/authority'
   import userEdit from './edit'
   import userGrant from './grant'
+  
   export default {
     name: 'ListUser',
     components: {
@@ -52,6 +53,7 @@
         filter: {},
         dialogFormVisible: false,
         dialogGrantVisible: false,
+        userStatusDict: [],
         userId: '',
         // 授权用
         roles: [],
@@ -61,6 +63,11 @@
         user: {},
         fetchUsers
       }
+    },
+    created() {
+      this.$store.dispatch('app/fetchDicts', 'userStatus').then(data => {
+        this.userStatusDict = data
+      })
     },
     methods: {
       // 新增用户,弹窗
@@ -86,7 +93,7 @@
           }
           else {
             this.tableInstance.fetchData();
-            this.$message ({
+            this.$message({
               message: '用户已被删除...',
               type: 'error'
             })
@@ -115,7 +122,7 @@
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
-        }).then( () => {
+        }).then(() => {
           let userIds = this.tableInstance.table.selection.map(item => item.userId);
           delUsers(userIds).then(() => {
             // 刷新table
@@ -159,6 +166,13 @@
           })
         })
       },
+    },
+    userStatusFormatter(row, column, cellValue) {
+      for (let i in this.userStatusDict) {
+        if (cellValue == this.dict[i].code) {
+          return this.dict[i].name
+        }
+      }
     }
   }
 </script>
