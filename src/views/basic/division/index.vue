@@ -3,8 +3,8 @@
     <bv-table title="行政区划" :pagination="true" :filter.sync="filter" :fetch-api="fetchDivisions" @on-mounted="(table) => tableInstance = table">
       <div slot="operates">
         <bv-button show="none" view="add" authority="add" @click="startCreate()">新增</bv-button>
-        <bv-button show="one" view="modify" authority="modify">修改</bv-button>
-        <bv-button v-if="deleteShow()" view="remove" authority="remove">删除</bv-button>
+        <bv-button show="one" view="modify" authority="modify" @click="startModify()">修改</bv-button>
+        <bv-button v-if="deleteShow() && testShow" view="remove" authority="remove" @click="startRemove()">删除</bv-button>
       </div>
       <div slot="search">
         <bv-col>
@@ -19,10 +19,11 @@
         </bv-col>
       </div>
       <el-table-column type="selection" width="55" />
-      <el-table-column label="行政区代码" prop="divisionCode" align="center" />roleId
+      <el-table-column label="行政区代码" prop="divisionCode" align="center" />
+      roleId
       <el-table-column label="行政区名称" prop="divisionName" align="center" sortable="custom" />
     </bv-table>
-  
+    
     <bv-dialog title="行政区维护" :visible.sync="dialogFormVisible">
       <bv-form ref="dialogForm" :model="item" :rules="rules">
         <bv-row layout="dialog-2">
@@ -45,6 +46,18 @@
             </div>
           </bv-col>
         </bv-row>
+        <bv-row layout="dialog-2">
+          <bv-col>
+            <el-form-item label="经度" prop="x">
+              <el-input v-model.trim="item.x" :disabled="true" />
+            </el-form-item>
+          </bv-col>
+          <bv-col>
+            <el-form-item label="纬度" prop="y">
+              <el-input v-model.trim="item.y" :disabled="true" />
+            </el-form-item>
+          </bv-col>
+        </bv-row>
       </bv-form>
       <div slot="footer">
         <bv-button view="save" @click="confirmModify()">保存</bv-button>
@@ -56,7 +69,7 @@
 
 <script>
   
-  import {fetchDivisions} from '@/api/basic'
+  import {fetchDivisions, showRemoveBtn, removeDivisions, modifyDivision, createDivision} from '@/api/basic'
   import AMapJS from "amap-js"
   
   export default {
@@ -73,12 +86,13 @@
             {min: 1, max: 36, message: '长度必须小于36个字', trigger: 'blur'}
           ],
           divisionName: [
-            {required: true, message: '请输入角色名称', trigger: 'blur'},
+            {required: true, message: '请输入行政区名称', trigger: 'blur'},
             {min: 1, max: 10, message: '长度必须小于10个字', trigger: 'blur'}
           ]
         },
         dialogFormVisible: false,
-        modifyType: null
+        modifyType: null,
+        testShow: false
       }
     },
     created() {
@@ -92,12 +106,18 @@
         if (!this.tableInstance || !this.tableInstance.selection || this.tableInstance.selection.length === 0) {
           return false
         }
+        const selection = this.tableInstance.selection
+        showRemoveBtn(selection.map(item => item.divisionCode).join()).then((response) => {
+          if (response.data == -1) {
+            this.testShow = false
+          } else {
+            this.testShow = true
+          }
+        })
         return true;
       },
-      startCreate() {
-        this.dialogFormVisible = true
-        this.modifyType = 'create'
-        this.$refs.dialogForm && this.$refs.dialogForm.clearValidate()
+      initMap() {
+        var vm = this;
         const aMapJSAPILoader = new AMapJS.AMapJSAPILoader({
           key: "8493be8a99d103cbed76edb91479bf7f",
           v: "1.4.14", // 版本号
@@ -105,48 +125,59 @@
           protocol: "https:" // 请求协议
         });
   
-        const aMapUILoader = new AMapJS.AMapUILoader({
-          v: "1.0" // UI组件库版本号
-        });
-  
         aMapJSAPILoader.load().then(AMap => {
-          aMapUILoader.load().then(initAMapUI => {
-            const AMapUI = initAMapUI(); // 这里调用initAMapUI初始化并返回AMapUI
-            // 其他逻辑
-            console.log(AMap);
-            console.log(AMapUI);
-            new AMap.Map(this.$refs.map);
-          });
+          const map = new AMap.Map(vm.$refs.map, {
+              center: [118.916202, 42.271235], //初始地图中心点
+              resizeEnable: true, //是否监控地图容器尺寸变化
+              zoom: 12,
+              zooms: [10, 18]
+            }
+          );
+          map.on('click', function (e) {
+            // vue 多层属性值发生变化，不能直接修改属性值，可以使用以下两种方法赋值
+            // 方法1：
+            // vm.$set(vm.item, 'x', e.lnglat.lng)
+            // vm.$set(vm.item, 'y', e.lnglat.lat)
+            // 方法2：
+            vm.item = Object.assign({}, vm.item, {
+              x: e.lnglat.lng,
+              y: e.lnglat.lat
+            })
+          })
         })
+      },
+      startCreate() {
+        this.dialogFormVisible = true;
+        this.modifyType = 'create';
+        this.$refs.dialogForm && this.$refs.dialogForm.clearValidate()
+        this.initMap();
       },
       startModify() {
         this.item = {...this.tableInstance.table.selection[0]};
         this.dialogFormVisible = true;
         this.modifyType = 'modify';
         this.$refs.dialogForm && this.$refs.dialogForm.clearValidate()
+        this.initMap(this);
       },
       cancelModify() {
-        this.initDivision()
+        this.initDivision();
         this.dialogFormVisible = false;
         this.modifyType = null;
       },
       confirmModify() {
         this.$refs.dialogForm.validate((valid) => {
           if (!valid) {
-            return false
+            return false;
           }
-      
           if (this.modifyType === 'modify') {
-            let item = {...this.item};
-            delete item.permissions;
-            // modifyRole(item).then(() => {
-            //   this.tableInstance.table.clearSelection()
-            //   this.afterModify()
-            // })
+            modifyDivision(this.item).then(() => {
+              this.tableInstance.table.clearSelection()
+              this.afterModify()
+            })
           } else {
-            // createRole(this.item).then(() => {
-            //   this.afterModify()
-            // })
+            createDivision(this.item).then(() => {
+              this.afterModify()
+            })
           }
         })
       },
@@ -166,13 +197,13 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          // removeRoles(this.tableInstance.table.selection.map(item => item.roleId).join()).then(() => {
-          //   this.$message({
-          //     message: '删除成功',
-          //     type: 'success'
-          //   })
-          //   this.tableInstance.fetchData()
-          // })
+          removeDivisions(this.tableInstance.table.selection.map(item => item.divisionCode).join()).then(() => {
+            this.$message({
+              message: '删除成功',
+              type: 'success'
+            })
+            this.tableInstance.fetchData()
+          })
         }).catch(() => {
           /*this.$message({
             message: '取消删除',
