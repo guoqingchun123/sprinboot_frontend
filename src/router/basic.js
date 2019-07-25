@@ -10,6 +10,14 @@ const basicRouter = {
   },
   children: [
     {
+      path: '机构简介',
+      component: () => import('@/views/basic/competent'),
+      name: 'ListCompetent',
+      meta: {
+        title: '机构简介'
+      }
+    },
+    {
       path: 'divisions',
       component: () => import('@/views/basic/division'),
       name: 'ListDivision',
