@@ -16,10 +16,28 @@ const basicRouter = {
       meta: {
         title: '行政区划'
       }
-    }, {
+    },
+    {
       path: 'regions',
       component: () => import('@/views/basic/region'),
       name: 'ListRegion',
+      meta: {
+        title: '小区建档'
+      }
+    },
+    {
+      path: 'listProjectByRegion/:id',
+      component: () => import('@/views/basic/region/listProjectByRegion'),
+      name: 'ListProjectByRegion',
+      meta: {
+        title: '小区建档'
+      },
+      hidden: true
+    },
+    {
+      path: 'regionMaintain',
+      component: () => import('@/views/basic/region/regionMaintain'),
+      name: 'RegionMaintain',
       meta: {
         title: '小区建档'
       }
