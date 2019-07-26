@@ -1,5 +1,9 @@
 import http from '@/utils/http'
 
+//文件上传通用接口
+export function uploadFile(file,data) {
+  return http.upload('/api/portal/files/upload',file,data)
+}
 /*行政区域管理*/
 export function fetchDivisions(query) {
   return http.get('/api/center/divisions', {

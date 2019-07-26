@@ -39,6 +39,12 @@ import {fetchProjects, fetchNoRegionProjects, removeRegionProjects, addRegionPro
 
 export default {
   name: 'ListProjectByRegion',
+  props: {
+    regionId: {
+      type: String,
+      default: null
+    }
+  },
   data() {
     return {
       filter: {},
@@ -51,15 +57,9 @@ export default {
       fetchNoRegionProjects
     }
   },
-  computed: {
-    //获取所有展开页路由信息
-    visitedViews() {
-      return this.$store.state.tagsView.visitedViews
-    }
-  },
   methods: {
     fetchProjs_(data) {
-      data.regionId = this.$route.params.id
+      data.regionId = this.regionId
       return fetchProjects(data)
     },
     //打开新增项目弹窗
@@ -71,15 +71,7 @@ export default {
     },
     //返回小区列表页面
     returnPre() {
-      for (let i in this.visitedViews) {
-        if (this.visitedViews[i].name == 'ListProjectByRegion') {
-          this.$store.dispatch('tagsView/delView', this.visitedViews[i])
-          this.$router.push({
-            name: 'ListRegion'
-          })
-          break
-        }
-      }
+      this.$emit('on-project-return')
     },
     //移除项目
     handleRegionInfo(row) {
@@ -102,7 +94,7 @@ export default {
     //小区新增项目
     addRegionProjecs() {
       let param = {
-        regionId: this.$route.params.id,
+        regionId: this.regionId,
         projects: this.dialogTableInstance.table.selection
       }
       addRegionProjects(param).then(response => {
