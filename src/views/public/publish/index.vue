@@ -1,31 +1,38 @@
 <template>
   <div class="app-container">
-    <bv-table title="信息公开一览" :pagination="true" :filter.sync="filter" :fetch-api="fetchPublishes" @on-mounted="(table) => tableInstance = table">
+    <bv-table title="公开信息一览" :pagination="true" :filter.sync="filter" :fetch-api="fetchPublishes" @on-mounted="(table) => tableInstance = table">
       <div slot="operates">
         <bv-button show="none" view="add" authority="add" @click="startCreate()">新增</bv-button>
         <bv-button show="one" view="modify" authority="modify" @click="startModify()">修改</bv-button>
-        <bv-button v-if="deleteShow() && testShow" view="remove" authority="remove" @click="startRemove()">删除</bv-button>
+        <bv-button v-if="deleteShow()" view="remove" authority="remove" @click="startRemove()">删除</bv-button>
       </div>
       <div slot="search">
         <bv-col>
           <el-form-item label="信息类别" prop="publishType">
-            <el-input v-model="filter.publishType" />
+            <el-select v-model="filter.dataType" placeholder="请选择信息类别">
+              <el-option
+                v-for="item in publishTypes"
+                :key="item.code"
+                :label="item.name"
+                :value="item.code"
+              />
+            </el-select>
           </el-form-item>
         </bv-col>
         <bv-col>
-          <el-form-item label="信息摘要" prop="summary">
-            <el-input v-model="filter.summary" />
+          <el-form-item label="标题" prop="title">
+            <el-input v-model="filter.title" />
           </el-form-item>
         </bv-col>
       </div>
       <el-table-column type="selection" width="55" />
-      <el-table-column label="信息类别" prop="publishTypeName" align="center" />
-      <el-table-column label="信息摘要" prop="summary" align="center" sortable="custom" />
+      <el-table-column label="信息类别" prop="dataType" align="center" :formatter="dataTypeFormatter"/>
+      <el-table-column label="标题" prop="title" align="center" sortable="custom" />
       <el-table-column label="发布日期" prop="publishDate" align="center" sortable="custom" />
-      <el-table-column label="发布用户" prop="publishUser" align="center" sortable="custom" />
+      <el-table-column label="发布用户" prop="createUser" align="center" sortable="custom" />
     </bv-table>
     
-    <bv-dialog title="信息公开维护" :visible.sync="dialogFormVisible">
+    <bv-dialog title="公开信息维护" :visible.sync="dialogFormVisible">
       <bv-form ref="dialogForm" :model="item" :rules="rules">
         <bv-row layout="dialog-2">
           <bv-col>
@@ -45,6 +52,7 @@
               <el-date-picker
                 v-model="item.publishDate"
                 type="date"
+                value-format="yyyy-MM-dd"
                 placeholder="选择日期"
               />
             </el-form-item>
@@ -62,7 +70,9 @@
         </bv-row>
         <bv-row>
           <bv-col>
-            <bv-editor v-model="item.content" upload-action="/api/file/uploads" />
+            <el-form-item label="内容" prop="content">
+              <bv-editor v-model.trim="item.content" upload-action="/api/file/uploads" />
+            </el-form-item>
           </bv-col>
         </bv-row>
       </bv-form>
@@ -76,8 +86,7 @@
 
 <script>
   
-  import {showRemoveBtn, removeDivisions, modifyDivision, createDivision} from '@/api/basic'
-  import {fetchPublishes} from '@/api/public'
+  import {fetchPublishes, createPublish, modifyPublish, removePublish} from '@/api/public'
   import {BvEditor} from '@bestvike/components'
   
   export default {
@@ -110,8 +119,7 @@
           ]
         },
         dialogFormVisible: false,
-        modifyType: null,
-        testShow: false
+        modifyType: null
       }
     },
     created() {
@@ -124,18 +132,17 @@
       initData() {
         this.item = {}
       },
+      dataTypeFormatter(row, column, cellValue) {
+        for (let i in this.publishTypes) {
+          if (cellValue == this.publishTypes[i].code) {
+            return this.publishTypes[i].name
+          }
+        }
+      },
       deleteShow() {
         if (!this.tableInstance || !this.tableInstance.selection || this.tableInstance.selection.length === 0) {
           return false
         }
-        const selection = this.tableInstance.selection
-        showRemoveBtn(selection.map(item => item.divisionCode).join()).then((response) => {
-          if (response.data == -1) {
-            this.testShow = false
-          } else {
-            this.testShow = true
-          }
-        })
         return true;
       },
       startCreate() {
@@ -160,12 +167,12 @@
             return false;
           }
           if (this.modifyType === 'modify') {
-            modifyDivision(this.item).then(() => {
+            modifyPublish(this.item).then(() => {
               this.tableInstance.table.clearSelection()
               this.afterModify()
             })
           } else {
-            createDivision(this.item).then(() => {
+            createPublish(this.item).then(() => {
               this.afterModify()
             })
           }
@@ -182,12 +189,12 @@
         })
       },
       startRemove() {
-        this.$confirm('此操作将删除该行政区, 是否继续?', '提示', {
+        this.$confirm('此操作将删除该公开信息, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          removeDivisions(this.tableInstance.table.selection.map(item => item.divisionCode).join()).then(() => {
+          removePublish(this.tableInstance.table.selection.map(item => item.publishId).join()).then(() => {
             this.$message({
               message: '删除成功',
               type: 'success'
@@ -204,3 +211,6 @@
     }
   }
 </script>
+<style scoped>
+
+</style>

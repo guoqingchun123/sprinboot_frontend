@@ -50,6 +50,7 @@
               <el-date-picker
                 v-model="item.preSaleDate"
                 type="date"
+                format="yyyy-MM-dd"
                 placeholder="选择日期"
               />
             </el-form-item>
