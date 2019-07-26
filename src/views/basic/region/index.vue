@@ -1,39 +1,50 @@
 <template>
   <div class="app-container">
-    <bv-table title="小区一览" :pagination="true" :filter.sync="filter" :fetch-api="fetchRegions" @on-mounted="(table) => tableInstance = table">
+    <bv-table title="小区一览" :pagination="true" :filter.sync="filter" :fetch-api="fetchRegions"
+              @on-mounted="(table) => tableInstance = table">
       <div slot="operates">
         <bv-button show="none" view="add" authority="add" @click="startCreate()">新增</bv-button>
         <bv-button show="one" view="modify" authority="modify" @click="startModify()">修改</bv-button>
-        <bv-button v-if="deleteShow() && testShow" view="remove" authority="remove" @click="startRemove()">删除</bv-button>
+        <bv-button v-if="deleteShow() && testShow" view="remove" authority="remove" @click="startRemove()">删除
+        </bv-button>
       </div>
       <div slot="search">
         <bv-col>
           <el-form-item label="小区名称" prop="regionName">
-            <el-input v-model="filter.regionName" />
+            <el-input v-model="filter.regionName"/>
           </el-form-item>
         </bv-col>
       </div>
-      <el-table-column type="selection" width="55" />
-      <el-table-column label="小区名称" prop="regionName" align="center" sortable="custom" />
-      <el-table-column label="小区地址" prop="address" align="center" sortable="custom" />
-      <el-table-column label="所属行政区" prop="divisionName" align="center" sortable="custom" />
-      <el-table-column label="预售许可日期" prop="preSaleDate" align="center" sortable="custom" />
+      <el-table-column type="selection" width="55"/>
+      <el-table-column label="小区名称" prop="regionName" align="center" sortable="custom"/>
+      <el-table-column label="小区地址" prop="address" align="center" sortable="custom"/>
+      <el-table-column label="所属行政区" prop="divisionName" align="center" sortable="custom"/>
+      <el-table-column label="预售许可日期" prop="preSaleDate" align="center" sortable="custom"/>
+      <el-table-column align="center" label="操作">
+        <template slot-scope="scope">
+          <bv-button icon="el-icon-paperclip" type="text" @click="queryProjInfo(scope.row)">查看项目详情</bv-button>
+          <bv-button icon="el-icon-edit-outline" type="text" @click="handleRegionInfo(scope.row)">维护小区档案</bv-button>
+        </template>
+      </el-table-column>
     </bv-table>
-    
-    <bv-dialog title="小区信息维护" :visible.sync="dialogFormVisible">
-      <bv-form ref="dialogForm" :model="item" :rules="rules">
-        <bv-row layout="dialog-2">
-          <bv-col v-if="modifyType != 'create'">
-            <el-form-item label="小区编号" prop="regionId">
-              <span v-text="item.regionId" />
-            </el-form-item>
-          </bv-col>
-          <bv-col>
+
+    <bv-dialog title="小区信息维护" :visible.sync="dialogFormVisible" top="5vh">
+      <bv-form ref="dialogForm" :model="item" :rules="rules" class="dialog-form" label-width="120px"
+               label-position="right">
+        <el-row :gutter="$CONST.row.gutter">
+          <el-col v-bind="$CONST.col.layout3">
             <el-form-item label="小区名称" prop="regionName">
-              <el-input v-model.trim="item.regionName" />
+              <el-input v-model.trim="item.regionName" style="width: 73vh"/>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <bv-row :gutter="$CONST.row.gutter">
+          <bv-col v-if="modifyType != 'create'" v-bind="$CONST.col.layout2">
+            <el-form-item label="小区编号" prop="regionId">
+              <span v-text="item.regionId"/>
             </el-form-item>
           </bv-col>
-          <bv-col>
+          <bv-col v-bind="$CONST.col.layout2">
             <el-form-item label="所属行政区" prop="divisionCode">
               <el-select v-model="filter.divisionCode" placeholder="请选择所属行政区">
                 <el-option
@@ -45,7 +56,7 @@
               </el-select>
             </el-form-item>
           </bv-col>
-          <bv-col>
+          <bv-col v-bind="$CONST.col.layout2">
             <el-form-item label="预售许可日期" prop="preSaleDate">
               <el-date-picker
                 v-model="item.preSaleDate"
@@ -56,13 +67,9 @@
             </el-form-item>
           </bv-col>
         </bv-row>
-        <bv-row :layout="2">
-          <bv-col :layout="2">
-            <el-form-item label="小区地址" prop="address">
-              <el-input v-model.trim="item.address" />
-            </el-form-item>
-          </bv-col>
-        </bv-row>
+        <el-form-item label="小区地址" prop="address">
+          <el-input v-model.trim="item.address" type="textarea" :rows="1" style="width: 73vh"/>
+        </el-form-item>
       </bv-form>
       <div slot="footer">
         <bv-button view="save" @click="confirmModify()">保存</bv-button>
@@ -73,9 +80,9 @@
 </template>
 
 <script>
-  
+
   import {fetchRegions, fetchAllDivisions} from '@/api/basic'
-  
+
   export default {
     name: 'ListDivision',
     data() {
@@ -102,52 +109,12 @@
     },
     created() {
     },
-    /*computed: {
-      rowLayout() {
-        if (this.rowLayout) {
-          if (this.rowLayout === 'dialog-1') {
-            this.xs__ = 24
-            this.sm__ = 24
-            this.md__ = 24
-            this.lg__ = 24
-            this.xl__ = 24
-          }else if (this.rowLayout === 'dialog-2') {
-            this.xs__ = 24
-            this.sm__ = 24
-            this.md__ = 12
-            this.lg__ = 12
-            this.xl__ = 12
-          } else if (this.rowLayout === 'table-fuzzy') {
-            this.xs__ = 24
-            this.sm__ = 24
-            this.md__ = 12
-            this.lg__ = 12
-            this.xl__ = 8
-          } else if (this.rowLayout === 'table-filter') {
-            if (this.layout === 'between') {
-              // xx 至 xx 格式
-              this.xs__ = 24
-              this.sm__ = 24
-              this.md__ = 12
-              this.lg__ = 12
-              this.xl__ = 8
-            } else {
-              this.xs__ = 24
-              this.sm__ = 24
-              this.md__ = 12
-              this.lg__ = 8
-              this.xl__ = 6
-            }
-          } else if (this.rowLayout.xs) {
-            this.xs__ = this.rowLayout.xs
-            this.sm__ = this.rowLayout.sm || this.rowLayout.xs
-            this.md__ = this.rowLayout.md || this.rowLayout.xs
-            this.lg__ = this.rowLayout.lg || this.rowLayout.xs
-            this.xl__ = this.rowLayout.xl || this.rowLayout.xs
-          }
-        }
+    computed: {
+      //获取所有展开页路由信息
+      visitedViews() {
+        return this.$store.state.tagsView.visitedViews
       }
-    },*/
+    },
     methods: {
       // 弹窗用
       initRegion() {
@@ -236,6 +203,33 @@
             type: 'warning'
           })*/
         })
+      },
+      //查看项目详情
+      queryProjInfo(row) {
+        for (let i in this.visitedViews) {
+          if (this.visitedViews[i].name == 'ListRegion') {
+            this.$store.dispatch('tagsView/delView', this.visitedViews[i])
+            this.$router.push({
+              path: 'listProjectByRegion/'+row.regionId
+            })
+            break
+          }
+        }
+      },
+      //维护小区档案
+      handleRegionInfo(row) {
+        for (let i in this.visitedViews) {
+          if (this.visitedViews[i].name == 'ListRegion') {
+            this.$store.dispatch('tagsView/delView', this.visitedViews[i])
+            this.$router.push({
+              path: 'regionMaintain',
+              query: {
+                region: row
+              }
+            })
+            break
+          }
+        }
       }
     }
   }
