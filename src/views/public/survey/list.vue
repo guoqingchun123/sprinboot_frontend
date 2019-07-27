@@ -89,14 +89,14 @@
     <bv-dialog :title="'调查问卷预览===>' + item.title" :visible.sync="dialogViewFormVisible">
       <el-card v-for="(surveyItem, i) in item.surveyItems" :key="surveyItem.sysId" class="box-card">
         <div slot="header" class="clearfix">
-          <span>{{ i + 1 }}、{{ surveyItem.summary }}</span>
+          <span v-text="(i + 1) + '、' + surveyItem.summary" />
         </div>
         <div>
           <el-radio-group v-if="surveyItem.questionType === '0001'" v-model="surveyItem.result">
-            <el-radio v-for="(option, index) in surveyItem.options" :key="option.key" :label="index">{{ option.itemName }}</el-radio>
+            <el-radio v-for="(option, index) in surveyItem.options" :key="'option' + index" :label="index" v-text="option.itemName" />
           </el-radio-group>
-          <el-checkbox-group v-else-if="surveyItem.questionType === '0002'" v-model="surveyItem.result">
-            <el-checkbox v-for="(option) in surveyItem.options" :key="option.key" v-model="option.key" :label="index">{{ option.itemName }}</el-checkbox>
+          <el-checkbox-group v-else-if="surveyItem.questionType === '0002'" v-model="surveyItem.results">
+            <el-checkbox v-for="(option, index) in surveyItem.options" :key="'option' + index" :label="index">{{ option.itemName }}</el-checkbox>
           </el-checkbox-group>
           <el-input v-else v-model="surveyItem.result" type="textarea" :rows="1" style="width: 35.3vw;" />
         </div>

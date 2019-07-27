@@ -50,7 +50,7 @@
           </bv-col>
           <bv-col>
             <el-form-item v-for="(option, index) in item.options"
-                          :key="Date.now() + '' + option.key"
+                          :key="'options' + index"
                           label="选项内容"
                           :prop="'options.' + index + '.itemName'"
                           :rules="{
