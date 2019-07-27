@@ -38,6 +38,10 @@ export function removeSurvey(ids) {
   return http.delete('/api/public/surveys/' + ids)
 }
 
+export function selectSurvey(id) {
+  return http.get('/api/public/surveys/' + id)
+}
+
 /*调查问卷问题项*/
 export function fetchSurveyItems(query) {
   return http.get('/api/public/surveyItems', {

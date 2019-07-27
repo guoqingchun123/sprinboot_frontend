@@ -51,13 +51,15 @@
           <bv-col>
             <el-form-item v-for="(option, index) in item.options"
                           :key="Date.now() + '' + option.key"
-                          :label="'选项内容' + (index + 1)"
+                          label="选项内容"
                           :prop="'options.' + index + '.itemName'"
                           :rules="{
                             required: true, message: '选项内容不能为空', trigger: 'blur'
                           }"
             >
-              <el-input v-model.trim="option.itemName" />
+              <el-input v-model.trim="option.itemName">
+                <template slot="prepend">{{ index + 1 }}</template>
+              </el-input>
             </el-form-item>
           </bv-col>
         </bv-row>
