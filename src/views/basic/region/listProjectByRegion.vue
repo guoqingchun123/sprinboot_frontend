@@ -98,10 +98,10 @@ export default {
         projects: this.dialogTableInstance.table.selection
       }
       addRegionProjects(param).then(response => {
-        this.dialogTableVisible = false
         if (this.tableInstance.fetchData) {
           this.tableInstance.fetchData()
         }
+        this.dialogTableVisible = false
         this.$message({
           type: 'success',
           message: '新增项目成功'
