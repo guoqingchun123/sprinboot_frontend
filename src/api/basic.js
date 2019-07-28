@@ -38,21 +38,14 @@ export function fetchRegions(query) {
   })
 }
 
+export function fetchCityDivisionRegions() {
+  return http.get('/api/center/cityDivisionRegions')
+}
+
 export function showRegionRemoveBtn(ids) {
   return http.get('/api/center/showRemoveBtn/' + ids)
 }
-//
-// export function removeDivisions(ids) {
-//   return http.delete('/api/center/divisions/' + ids)
-// }
-//
-// export function createDivision(data) {
-//   return http.post('/api/center/divisions', data)
-// }
-//
-// export function modifyDivision(data) {
-//   return http.put('/api/center/divisions', data)
-// }
+
 export function fetchProjects(query) {
   return http.get('/api/center/projects', {
     params: query

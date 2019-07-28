@@ -32,7 +32,7 @@
       <el-table-column label="发布用户" prop="createUser" align="center" sortable="custom" />
     </bv-table>
     
-    <bv-dialog title="公开信息维护" :visible.sync="dialogFormVisible">
+    <bv-dialog v-if="dialogFormVisible" title="公开信息维护" :visible.sync="dialogFormVisible">
       <bv-form ref="dialogForm" :model="item" :rules="rules">
         <bv-row layout="dialog-2">
           <bv-col>
@@ -57,21 +57,21 @@
               />
             </el-form-item>
           </bv-col>
+        </bv-row>
+        <bv-row layout="dialog-1">
           <bv-col>
             <el-form-item label="标题" prop="title">
-              <el-input v-model="item.title" />
+              <el-input v-model="item.title" style="width: 35.3vw;" />
             </el-form-item>
           </bv-col>
           <bv-col>
             <el-form-item label="摘要" prop="summary">
-              <el-input v-model.trim="item.summary" />
+              <el-input v-model.trim="item.summary" type="textarea" :rows="1" style="width: 35.3vw;" />
             </el-form-item>
           </bv-col>
-        </bv-row>
-        <bv-row>
           <bv-col>
             <el-form-item label="内容" prop="content">
-              <bv-editor v-model.trim="item.content" upload-action="/api/file/uploads" />
+              <bv-editor v-model="item.content" upload-action="/api/file/uploads" style="width: 35.3vw;" />
             </el-form-item>
           </bv-col>
         </bv-row>
@@ -146,15 +146,16 @@
         return true;
       },
       startCreate() {
+        this.initData();
         this.dialogFormVisible = true;
         this.modifyType = 'create';
-        this.$refs.dialogForm && this.$refs.dialogForm.clearValidate()
+        this.$refs.dialogForm && this.$refs.dialogForm.clearValidate();
       },
       startModify() {
         this.item = {...this.tableInstance.table.selection[0]};
         this.dialogFormVisible = true;
         this.modifyType = 'modify';
-        this.$refs.dialogForm && this.$refs.dialogForm.clearValidate()
+        this.$refs.dialogForm && this.$refs.dialogForm.clearValidate();
       },
       cancelModify() {
         this.initData();
@@ -176,7 +177,7 @@
               this.afterModify()
             })
           }
-        })
+        });
       },
       afterModify() {
         this.tableInstance.fetchData();

@@ -42,6 +42,10 @@ export function selectSurvey(id) {
   return http.get('/api/public/surveys/' + id)
 }
 
+export function publishSurvey(data) {
+  return http.put('/api/public/publishSurvey', data)
+}
+
 /*调查问卷问题项*/
 export function fetchSurveyItems(query) {
   return http.get('/api/public/surveyItems', {

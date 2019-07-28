@@ -3,32 +3,33 @@
     <bv-table title="调查问卷一览" :pagination="true" :filter.sync="filter" :fetch-api="fetchSurveys" @on-mounted="(table) => tableInstance = table">
       <div slot="operates">
         <bv-button show="none" view="add" authority="add" @click="startCreate()">新增</bv-button>
-        <bv-button show="one" type="info" icon="el-icon-view" @click="startView()">预览</bv-button>
+        <bv-button show="one" type="success" icon="el-icon-position" @click="startPublish()">发布</bv-button>
         <bv-button show="one" view="modify" authority="modify" @click="startModify()">修改</bv-button>
         <bv-button v-if="deleteShow()" view="remove" authority="remove" @click="startRemove()">删除</bv-button>
       </div>
       <div slot="search">
         <bv-col>
           <el-form-item label="标题" prop="title">
-            <el-input v-model="filter.title" />
+            <el-input v-model="filter.title"/>
           </el-form-item>
         </bv-col>
         <bv-col>
           <el-form-item label="摘要" prop="summary">
-            <el-input v-model="filter.summary" />
+            <el-input v-model="filter.summary"/>
           </el-form-item>
         </bv-col>
       </div>
-      <el-table-column :selectable="selectable" type="selection" width="55" />
-      <el-table-column label="问卷标题" prop="title" align="center" sortable="custom" />
-      <el-table-column label="问卷摘要" prop="summary" align="center" sortable="custom" />
-      <el-table-column label="问卷状态" prop="surveyStatus" align="center" sortable="custom" :formatter="surveyStatusFormatter" />
-      <el-table-column label="经办人" prop="agentPerson" align="center" sortable="custom" />
-      <el-table-column label="开始日期" prop="startDate" align="center" sortable="custom" />
-      <el-table-column label="结束日期" prop="stopDate" align="center" sortable="custom" />
+      <el-table-column :selectable="selectable" type="selection" width="55"/>
+      <el-table-column label="问卷标题" prop="title" align="center" sortable="custom"/>
+      <el-table-column label="问卷摘要" prop="summary" align="center" sortable="custom"/>
+      <el-table-column label="问卷状态" prop="surveyStatus" align="center" sortable="custom" :formatter="surveyStatusFormatter"/>
+      <el-table-column label="经办人" prop="agentPerson" align="center" sortable="custom"/>
+      <el-table-column label="开始日期" prop="startDate" align="center" sortable="custom"/>
+      <el-table-column label="结束日期" prop="stopDate" align="center" sortable="custom"/>
       <el-table-column fixed="right" label="操作" align="center">
         <template slot-scope="scope">
-          <el-button view="details" type="text" @click="startSurveyItems(scope.row)">维护问卷明细</el-button>
+          <el-button view="details" :disabled="scope.row.surveyStatus === '0001'" type="text" @click="startSurveyItems(scope.row)">维护问卷明细</el-button>
+          <el-button view="view" type="text" @click="startView(scope.row)">预览</el-button>
         </template>
       </el-table-column>
     </bv-table>
@@ -38,12 +39,21 @@
         <bv-row layout="dialog-1">
           <bv-col>
             <el-form-item label="标题" prop="title">
-              <el-input v-model="item.title" style="width: 35.3vw;" />
+              <el-input v-model="item.title" style="width: 35.3vw;"/>
             </el-form-item>
           </bv-col>
           <bv-col>
             <el-form-item label="摘要" prop="summary">
-              <el-input v-model.trim="item.summary" type="textarea" :rows="1" style="width: 35.3vw;" />
+              <el-input v-model.trim="item.summary" type="textarea" :rows="1" style="width: 35.3vw;"/>
+            </el-form-item>
+          </bv-col>
+        </bv-row>
+        <bv-row layout="dialog-1">
+          <bv-col>
+            <el-form-item label="调查范围" prop="surveyScopes">
+              <el-cascader v-model="item.surveyScopes"
+                           :options="surveyScopesOptions"
+                           :props="{ checkStrictly: true }" clearable filterable style="width: 35.3vw;"/>
             </el-form-item>
           </bv-col>
         </bv-row>
@@ -70,12 +80,12 @@
           </bv-col>
           <bv-col>
             <el-form-item label="经办人" prop="agentPerson">
-              <el-input v-model="item.agentPerson" />
+              <el-input v-model="item.agentPerson"/>
             </el-form-item>
           </bv-col>
           <bv-col>
             <el-form-item label="手机号码" prop="agentPhone">
-              <el-input v-model.trim="item.agentPhone" />
+              <el-input v-model.trim="item.agentPhone"/>
             </el-form-item>
           </bv-col>
         </bv-row>
@@ -89,16 +99,16 @@
     <bv-dialog :title="'调查问卷预览===>' + item.title" :visible.sync="dialogViewFormVisible">
       <el-card v-for="(surveyItem, i) in item.surveyItems" :key="surveyItem.sysId" class="box-card">
         <div slot="header" class="clearfix">
-          <span v-text="(i + 1) + '、' + surveyItem.summary" />
+          <span v-text="(i + 1) + '、' + surveyItem.summary"/>
         </div>
         <div>
           <el-radio-group v-if="surveyItem.questionType === '0001'" v-model="surveyItem.result">
-            <el-radio v-for="(option, index) in surveyItem.options" :key="'option' + index" :label="index" v-text="option.itemName" />
+            <el-radio v-for="(option, index) in surveyItem.options" :key="'option' + index" :label="index">{{ option.itemName }}</el-radio>
           </el-radio-group>
           <el-checkbox-group v-else-if="surveyItem.questionType === '0002'" v-model="surveyItem.results">
             <el-checkbox v-for="(option, index) in surveyItem.options" :key="'option' + index" :label="index">{{ option.itemName }}</el-checkbox>
           </el-checkbox-group>
-          <el-input v-else v-model="surveyItem.result" type="textarea" :rows="1" style="width: 35.3vw;" />
+          <el-input v-else v-model="surveyItem.result" type="textarea" :rows="1" style="width: 35.3vw;"/>
         </div>
       </el-card>
       <div slot="footer">
@@ -110,7 +120,8 @@
 
 <script>
   
-  import {fetchSurveys, createSurvey, modifySurvey, removeSurvey, selectSurvey} from '@/api/public'
+  import {fetchSurveys, createSurvey, modifySurvey, removeSurvey, selectSurvey, publishSurvey} from '@/api/public'
+  import {fetchCityDivisionRegions} from '@/api/basic'
   
   export default {
     name: 'ListSurvey',
@@ -143,12 +154,16 @@
         dialogFormVisible: false,
         dialogViewFormVisible: false,
         modifyType: null,
-        surveyStatuses: []
+        surveyStatuses: [],
+        surveyScopesOptions: []
       }
     },
     created() {
       this.$store.dispatch('app/fetchDicts', 'surveyStatus').then(data => {
         this.surveyStatuses = data
+      });
+      fetchCityDivisionRegions().then((res) => {
+        this.surveyScopesOptions = res.data
       })
     },
     methods: {
@@ -186,6 +201,27 @@
         this.modifyType = 'modify';
         this.$refs.dialogForm && this.$refs.dialogForm.clearValidate()
       },
+      startPublish() {
+        this.item = {...this.tableInstance.table.selection[0]};
+        this.$confirm('此操作将发布该调查问卷到网站上, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          publishSurvey(this.item).then(() => {
+            this.$message({
+              message: '发布成功',
+              type: 'success'
+            })
+            this.tableInstance.fetchData()
+          })
+        }).catch(() => {
+          /*this.$message({
+            message: '取消删除',
+            type: 'warning'
+          })*/
+        })
+      },
       cancelModify() {
         this.initData();
         this.dialogFormVisible = false;
@@ -196,7 +232,6 @@
           if (!valid) {
             return false;
           }
-          this.item.cityCode = "150400";
           if (this.modifyType === 'modify') {
             modifySurvey(this.item).then(() => {
               this.tableInstance.table.clearSelection()
@@ -242,8 +277,8 @@
       startSurveyItems(row) {
         this.$emit('on-start-survey-items', row.surveyId, row.title)
       },
-      startView() {
-        this.item = {...this.tableInstance.table.selection[0]};
+      startView(row) {
+        this.item = row;
         selectSurvey(this.item.surveyId).then((res) => {
           this.item = res.data;
         });
