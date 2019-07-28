@@ -8,8 +8,8 @@
   export default {
     name: 'BldInfo',
     props: {
-      regionId: {
-        type: String,
+      region: {
+        type: Object,
         default: null
       }
     },

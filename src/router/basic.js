@@ -28,7 +28,7 @@ const basicRouter = {
     {
       path: 'regions',
       component: () => import('@/views/basic/region'),
-      name: 'ListRegion',
+      name: 'Regions',
       meta: {
         title: '小区建档'
       }

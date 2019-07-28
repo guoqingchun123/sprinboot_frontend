@@ -4,6 +4,10 @@ import http from '@/utils/http'
 export function uploadFile(file,data) {
   return http.upload('/api/portal/files/upload',file,data)
 }
+export function deleteFile(ids) {
+  return http.delete('/api/portal/files/' + ids)
+}
+
 /*行政区域管理*/
 export function fetchDivisions(query) {
   return http.get('/api/center/divisions', {
@@ -41,18 +45,18 @@ export function fetchRegions(query) {
 export function showRegionRemoveBtn(ids) {
   return http.get('/api/center/showRemoveBtn/' + ids)
 }
-//
-// export function removeDivisions(ids) {
-//   return http.delete('/api/center/divisions/' + ids)
-// }
-//
-// export function createDivision(data) {
-//   return http.post('/api/center/divisions', data)
-// }
-//
-// export function modifyDivision(data) {
-//   return http.put('/api/center/divisions', data)
-// }
+
+export function removeRegion(ids) {
+  return http.delete('/api/center/region/' + ids)
+}
+
+export function createRegion(data) {
+  return http.post('/api/center/region', data)
+}
+
+export function modifyRegion(data) {
+  return http.put('/api/center/region', data)
+}
 export function fetchProjects(query) {
   return http.get('/api/center/projects', {
     params: query
@@ -68,4 +72,21 @@ export function removeRegionProjects(ids) {
 }
 export function addRegionProjects(data) {
   return http.post('/api/center/addRegionProjects', data)
+}
+export function modifyRegionLnglat(data) {
+  return http.put('/api/center/regionLnglat', data)
+}
+export function updateRegionState(data) {
+  return http.put('/api/center/regionState', data)
+}
+export function fetchRegionFiles(query) {
+  return http.get('/api/portal/files', {
+    params: query
+  })
+}
+export function fetchRegion(id) {
+  return http.get('/api/center/region/'+id)
+}
+export function addBldCoordinate(data) {
+  return http.post('/api/center/bldCoordinate', data)
 }
