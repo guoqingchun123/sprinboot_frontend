@@ -151,3 +151,80 @@ export function saveGrants(userId, data) {
 }
 
 /******************************************************用户管理 END*******************************************************/
+
+/******************************************************令牌管理 begin*******************************************************/
+
+//令牌信息查询
+export function fetchToken(query) {
+  return http.get('/api/portal/token', {
+    params: query
+  })
+}
+
+//未分配令牌查询
+export function fetchUnallotToken() {
+  return http.get('/api/portal/unallotToken')
+}
+
+//个人令牌信息查询
+export function fetchPersonToken(query) {
+  return http.get('/api/portal/personToken', {
+    params: query
+  })
+}
+//个人令牌解锁
+export function fetchPersonUnlock(query) {
+  return http.get('/api/portal/unlock', {
+    params: query
+  })
+}
+//个人令牌挂失
+export function lostPersonToken(query) {
+  return http.get('/api/portal/lost', {
+    params: query
+  })
+}
+
+//个人令牌禁用
+export function deadPersonToken(query) {
+  return http.get('/api/portal/disable', {
+    params: query
+  })
+}
+
+//个人令牌启用
+export function startPersonToken(query) {
+  return http.get('/api/portal/start', {
+    params: query
+  })
+}
+//个人令牌解挂
+export function unlostPersonToken(query) {
+  return http.get('/api/portal/unlost', {
+    params: query
+  })
+}
+//个人令牌回收
+export function backPersonToken(query) {
+  return http.get('/api/portal/back', {
+    params: query
+  })
+}
+//个人令牌新增
+export function allotPersonToken(query) {
+  return http.get('/api/portal/allot', {
+    params: query
+  })
+}
+
+//令牌同步
+export function tokenSync(query) {
+  return http.get('/api/portal/sync', {
+    params: query
+  })
+}
+
+
+
+
+/******************************************************令牌管理 END*******************************************************/

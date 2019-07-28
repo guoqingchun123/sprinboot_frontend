@@ -23,6 +23,13 @@ const basicRouter = {
       meta: {
         title: '小区建档'
       }
+    }, {
+      path: 'corps',
+      component: () => import('@/views/basic/corp'),
+      name: 'ListCorp',
+      meta: {
+        title: '企业管理'
+      }
     }
   ]
 }

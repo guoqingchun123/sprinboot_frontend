@@ -37,6 +37,12 @@ export function fetchRegions(query) {
 export function showRegionRemoveBtn(ids) {
   return http.get('/api/center/showRemoveBtn/' + ids)
 }
+/*企业管理*/
+export function fetchCorp(query) {
+  return http.get('/api/center/corps', {
+    params: query
+  })
+}
 //
 // export function removeDivisions(ids) {
 //   return http.delete('/api/center/divisions/' + ids)
