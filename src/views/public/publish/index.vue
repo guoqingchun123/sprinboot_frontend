@@ -26,7 +26,7 @@
         </bv-col>
       </div>
       <el-table-column type="selection" width="55" />
-      <el-table-column label="信息类别" prop="dataType" align="center" :formatter="dataTypeFormatter"/>
+      <el-table-column label="信息类别" prop="dataType" align="center" :formatter="dataTypeFormatter" />
       <el-table-column label="标题" prop="title" align="center" sortable="custom" />
       <el-table-column label="发布日期" prop="publishDate" align="center" sortable="custom" />
       <el-table-column label="发布用户" prop="createUser" align="center" sortable="custom" />
@@ -211,6 +211,3 @@
     }
   }
 </script>
-<style scoped>
-
-</style>

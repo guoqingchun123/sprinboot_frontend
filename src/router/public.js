@@ -16,6 +16,14 @@ const basicRouter = {
       meta: {
         title: '信息公开'
       }
+    },
+    {
+      path: 'survey',
+      component: () => import('@/views/public/survey'),
+      name: 'ListSurvey',
+      meta: {
+        title: '调查问卷'
+      }
     }
   ]
 }
