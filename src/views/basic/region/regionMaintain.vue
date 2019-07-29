@@ -25,7 +25,7 @@
         <bld-coordinate :region="region" :region-sign-img="regionSignImg" />
       </el-tab-pane>
       <el-tab-pane label="楼栋详情" name="bldInfo" lazy>
-        <bld-info :region="region" />
+        <list-bld :region="region" />
       </el-tab-pane>
     </el-tabs>
     <bv-dialog title="小区发布" :visible.sync="dialogVisible" width="40vw">

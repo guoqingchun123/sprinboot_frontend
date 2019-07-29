@@ -90,3 +90,24 @@ export function fetchRegion(id) {
 export function addBldCoordinate(data) {
   return http.put('/api/center/bldCoordinate', data)
 }
+export function fetchRegionBlds(query) {
+  return http.get('/api/center/blds', {
+    params: query
+  })
+}
+export function fetchBldFloors(query) {
+  return http.get('/api/center/bldFloors', {
+    params: query
+  })
+}
+export function updateBldFloor(data) {
+  return http.put('/api/center/bldFloor', data)
+}
+export function addCellCoordinate(data) {
+  return http.post('/api/center/cellCoordinate', data)
+}
+export function fetchFloor(query) {
+  return http.get('/api/center/floor', {
+    params: query
+  })
+}

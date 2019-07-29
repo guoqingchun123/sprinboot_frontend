@@ -3,7 +3,7 @@
     <el-row :gutter="20">
       <el-col :span="20">
         <image-label v-bind="config" ref="child">
-          <div id="bld" style="border: 1px red solid;"></div>
+          <div id="cell" style="border: 1px red solid;"></div>
         </image-label>
       </el-col>
       <el-col :span="4">
@@ -22,7 +22,7 @@
 
 <script>
   import '@/plugins/imageLabel'
-  import {addBldCoordinate} from '@/api/basic'
+  import {addCellCoordinate} from '@/api/basic'
 
   export default {
     name: 'BldCoordinate',
@@ -31,7 +31,11 @@
         type: Object,
         default: null
       },
-      regionSignImg: {
+      floor: {
+        type: Object,
+        default: null
+      },
+      bldSignImg: {
         type: String,
         default: null
       }
@@ -39,15 +43,15 @@
     data() {
       return {
         config: {
-          container: 'bld',
-          img: this.regionSignImg,
+          container: 'cell',
+          img: this.bldSignImg,
           shade: false,
           show: false,
-          editText: '选择楼栋',
+          editText: '选择单元',
           select: {
-            url: '/api/center/bldListByRegionId/'+this.region.regionId,
-            code: 'bldId',
-            desc: 'bldName'
+            url: '/api/center/cellList?regionId='+this.region.regionId+'&bldNo='+this.floor.bldNo+'&floorNo='+this.floor.floorNo,
+            code: 'cellNo',
+            desc: 'cellName'
           }
         },
         disabledBtn: true
@@ -56,10 +60,10 @@
     created() {
       let _that = this;
       let img = new Image();
-      img.src = _that.regionSignImg;
+      img.src = _that.bldSignImg;
       img.onload = function () {
         let width = document.body.scrollWidth*0.65;
-        let b = document.getElementById('bld');
+        let b = document.getElementById('cell');
         b.style.width = width+'px';
         b.style.height = (img.height/img.width*width)+'px';
         _that.$nextTick(() => {
@@ -77,12 +81,14 @@
       saveData() {
         let data = {
           regionId: this.region.regionId,
-          bldSigns: this.$refs.child.getData()
+          bldNo: this.floor.bldNo,
+          floorNo: this.floor.floorNo,
+          cellSigns: this.$refs.child.getData()
         }
-        addBldCoordinate(data).then(() => {
+        addCellCoordinate(data).then(() => {
           this.$message({
             type: 'success',
-            message: '保存楼栋标记成功'
+            message: '保存单元标记成功'
           })
           this.$refs.child.clearArea()
         })

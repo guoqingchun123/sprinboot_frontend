@@ -32,6 +32,15 @@ const basicRouter = {
       meta: {
         title: '小区建档'
       }
+    },
+    {
+      path: 'floors',
+      component: () => import('@/views/basic/bld'),
+      name: 'Floors',
+      meta: {
+        title: '楼层维护'
+      },
+      hidden: true
     }
   ]
 }
