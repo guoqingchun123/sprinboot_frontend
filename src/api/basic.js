@@ -88,5 +88,5 @@ export function fetchRegion(id) {
   return http.get('/api/center/region/'+id)
 }
 export function addBldCoordinate(data) {
-  return http.post('/api/center/bldCoordinate', data)
+  return http.put('/api/center/bldCoordinate', data)
 }

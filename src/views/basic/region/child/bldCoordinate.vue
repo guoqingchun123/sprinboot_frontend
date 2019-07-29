@@ -3,7 +3,7 @@
     <el-row :gutter="20">
       <el-col :span="16" id="image-container">
         <image-label v-bind="config" ref="child">
-          <div id="bld" style="border: 2px red solid;"></div>
+          <div id="bld" style="border: 1px red solid;"></div>
         </image-label>
       </el-col>
       <el-col :span="8">
@@ -24,22 +24,6 @@
   import '@/plugins/imageLabel'
   import {addBldCoordinate} from '@/api/basic'
 
-  function getImgInfo(url) {
-    return new Promise((resolve, reject) => {
-      let img = new Image();
-      img.src = url;
-      img.onload = function () {
-        resolve({
-          width: img.width,
-          height: img.height
-        });
-      };
-      img.onerror = function () {
-        reject(new Error("图片加载错误！"));
-      }
-
-    });
-  }
   export default {
     name: 'BldCoordinate',
     props: {
@@ -58,7 +42,7 @@
           container: 'bld',
           img: this.regionSignImg,
           shade: false,
-          show: true,
+          show: false,
           editText: '选择楼栋',
           select: {
             url: '/api/center/bldListByRegionId/'+this.region.regionId,
@@ -69,25 +53,40 @@
         disabledBtn: true
       }
     },
-    mounted() {
+    created() {
       let _that = this;
-      getImgInfo(_that.regionSignImg).then(imgInfo => {
+      let img = new Image();
+      img.src = _that.regionSignImg;
+      img.onload = function () {
         let o = document.getElementById('image-container');
         let width = o.clientWidth||o.offsetWidth;
         let b = document.getElementById('bld');
         b.style.width = width+'px';
-        b.style.height = (imgInfo.height/imgInfo.width*width)+'px';
-        _that.config.show = true;
-        _that.disabledBtn = false;
-      }).catch(error => {
-        _that.$message.warning('未上传图片')
+        b.style.height = (img.height/img.width*width)+'px';
+        _that.$nextTick(() => {
+          _that.config.show = true;
+          _that.disabledBtn = false;
+        })
+      };
+      img.onerror = function () {
+        _that.$message.warning('未上传图片');
         _that.config.show = false;
         _that.disabledBtn = true;
-      });
+      }
     },
     methods: {
       saveData() {
-        console.log(this.$refs.child.getData())
+        let data = {
+          regionId: this.region.regionId,
+          bldSigns: this.$refs.child.getData()
+        }
+        addBldCoordinate(data).then(() => {
+          this.$message({
+            type: 'success',
+            message: '保存楼栋标记成功'
+          })
+          this.$refs.child.clearArea()
+        })
       },
       clearData() {
         this.$refs.child.clearArea()

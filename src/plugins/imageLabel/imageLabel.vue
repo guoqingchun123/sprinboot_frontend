@@ -5,8 +5,6 @@
 </template>
 
 <script>
-  import imageLabel from './scripts/jquery.imageLabel.js'
-
   export default {
     name: 'ImageLabel',
     props: {
@@ -59,42 +57,31 @@
       return {
         //启用默认修改弹窗
         editPop: true,
-        $imageLabel: imageLabel({
-          container: this.container,
-          editText: this.editText,
-          img: this.img,
-          editPop: this.editPop,
-          only: this.only,
-          shade: this.shade,
-          data: this.data,
-          show: this.show,
-          util: this.$message,
-          select: this.select
-        }),
-        dataImage: {}
+        $imageLabel: null
       };
     },
-    mounted() {
-      // let data = {
-      //   container: this.container,
-      //   editText: this.editText,
-      //   img: this.img,
-      //   editPop: this.editPop,
-      //   only: this.only,
-      //   shade: this.shade,
-      //   data: this.data,
-      //   show: this.show,
-      //   util: this.$message,
-      //   select: this.select
-      // }
-      // this.dataImage = data
-      // // this.$imageLabel = imageLabel(data);
-      // this.$imageLabel = imageLabel(data);
+    watch: {
+      show: {
+        handler(val) {
+          let _that = this
+          _that.$imageLabel = imageLabel({
+            container: _that.container,
+            editText: _that.editText,
+            img: _that.img,
+            editPop: _that.editPop,
+            only: _that.only,
+            shade: _that.shade,
+            data: _that.data,
+            show: val,
+            select: _that.select
+          });
+        },
+        deep: true
+      }
     },
     methods: {
       //获取选区数据，返回array
       getData() {
-        debugger
         return this.$imageLabel.getData()
       },
       //清除选区
@@ -104,6 +91,3 @@
     }
   }
 </script>
-<style scoped>
-  @import "./styles/jquery.imageLabel.css";
-</style>

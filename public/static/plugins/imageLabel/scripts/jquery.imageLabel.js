@@ -1,34 +1,33 @@
-import $ from 'jquery'
-import http from '@/utils/http'
-
 "use strict";
 
 function imageLabel(e) {
   if (!e.show) {
     return
   }
-  var util = e.util
   var select = e.select
   //下拉菜单查询接口
   var options = []
-  http.get(select.url).then(res => {
-    options = res.data
-  }).then(() => {
-    function a()
-  {
+  $.get({
+    url: select.url,
+    async: false,
+    success: function (res) {
+      options = res
+    }
+  })
+  function a() {
     function e() {
       var e = $(".imageLabel-imgdrop"),
         a = [];
-      e.each(function (e, i) {
+      e.each(function(e, i) {
         var n = $(i).width() * $(i).height();
         a.push(n)
       }),
-        e.each(function (e, i) {
+        e.each(function(e, i) {
           var n = $(i),
             t = n.width() * n.height(),
             l = 0;
           $.each(a,
-            function (e, a) {
+            function(e, a) {
               t <= a && l++
             }),
             n.css({
@@ -36,7 +35,6 @@ function imageLabel(e) {
             })
         })
     }
-
     function a() {
       var e = $(".imageLabel-img"),
         a = $(".imageLabel-jisuan"),
@@ -66,32 +64,32 @@ function imageLabel(e) {
       p = !1,
       v = !1,
       f = $(".imageLabel-drap-menu");
-    $(".imageLabel-content")[0].oncontextmenu = function () {
-      return !1
+    $(".imageLabel-content")[0].oncontextmenu = function() {
+      return ! 1
     },
-      f[0].oncontextmenu = function () {
-        return !1
+      f[0].oncontextmenu = function() {
+        return ! 1
       },
       //隐藏菜单
-      $(".imageLabel-box").click(function (e) {
+      $(".imageLabel-box").click(function(e) {
         f.hide()
       }),
       $.each(n.data,
-        function (e, a) {
-          s = $('<div class="imageLabel-imgdrop ' + (a.name ? "imageLabel-drop-has" : "") + '"><span class="imageLabel-imgdrop-font">' + (a.name || "") + '</span><div class="imageLable-i-s"></div></div>');
+        function(e, a) {
+          s = $('<div class="imageLabel-imgdrop ' + (a.name ? "imageLabel-drop-has": "") + '"><span class="imageLabel-imgdrop-font">' + (a.name || "") + '</span><div class="imageLable-i-s"></div></div>');
           for (var i = 0; i < 8; i++) s.find(".imageLable-i-s").append('<i class="imageLable-i">');
           if (n.shade) for (var t = 0; t < 4; t++) s.append('<em class="imageLable-em">');
           var l = a;
           s.css({
-            left: 100 * (l.ex - l.x > 0 ? l.x : l.ex) + "%",
-            top: 100 * (l.ey - l.y > 0 ? l.y : l.ey) + "%",
+            left: 100 * (l.ex - l.x > 0 ? l.x: l.ex) + "%",
+            top: 100 * (l.ey - l.y > 0 ? l.y: l.ey) + "%",
             width: 100 * Math.abs(l.ex - l.x) + "%",
             height: 100 * Math.abs(l.ey - l.y) + "%"
           }).attr("data-json", JSON.stringify(a)),
             r.append(s)
         }),
       e(),
-      $(".imageLabel-content").mousedown(function (e) {
+      $(".imageLabel-content").mousedown(function(e) {
         if (d = e.button, 2 != e.button) {
           if (f.hide(), b = !0, r = $(this), t = {
             x: r.offset().left,
@@ -130,7 +128,7 @@ function imageLabel(e) {
           }
           s.addClass("imageLabel-drop-now"),
           n.only && $(this).find(".imageLabel-imgdrop").hide()
-        } else $(e.target).hasClass("imageLabel-imgdrop") && (s = $(e.target), setTimeout(function () {
+        } else $(e.target).hasClass("imageLabel-imgdrop") && (s = $(e.target), setTimeout(function() {
             f.css({
               left: e.clientX - 145,
               top: e.clientY - 252
@@ -138,7 +136,7 @@ function imageLabel(e) {
           },
           0))
       }),
-      $(".imageLabel-img-boxs").mousemove(function (e) {
+      $(".imageLabel-img-boxs").mousemove(function(e) {
         if (b) {
           if (p) o.x = c.x + (e.clientX - t.cx) / t.w,
             o.ex = c.ex + (e.clientX - t.cx) / t.w,
@@ -165,19 +163,19 @@ function imageLabel(e) {
           o.y > 1 && (o.y = 1),
           o.x > 1 && (o.x = 1),
             s.css({
-              left: 100 * (o.ex - o.x > 0 ? o.x : o.ex) + "%",
-              top: 100 * (o.ey - o.y > 0 ? o.y : o.ey) + "%",
+              left: 100 * (o.ex - o.x > 0 ? o.x: o.ex) + "%",
+              top: 100 * (o.ey - o.y > 0 ? o.y: o.ey) + "%",
               width: 100 * Math.abs(o.ex - o.x) + "%",
               height: 100 * Math.abs(o.ey - o.y) + "%"
             }).addClass("imageLabel-drop-move")
         }
-      }).mouseup(function (a) {
+      }).mouseup(function(a) {
         if (b) {
           $("#sel").empty();
           var i = {};
           $("#sel").append("<option value=''>请选择</option>");
           for (let i in options) {
-            $("#sel").append("<option value='" + options[i][select.code] + "'>" + options[i][select.desc] + "</option>");
+            $("#sel").append("<option value='"+options[i][select.code]+"'>"+options[i][select.desc]+"</option>");
             //$("#sel").append("<option value='"+options[i].divisionCode+"'>"+options[i].divisionName+"</option>");
           }
 
@@ -185,7 +183,7 @@ function imageLabel(e) {
             o.y < o.ey ? (i.y = o.y, i.ey = o.ey) : (i.y = o.ey, i.ey = o.y),
             s.attr("data-json", JSON.stringify($.extend(o, i))),
             //Math.abs(a.clientX - t.cx) > 10 && Math.abs(a.clientY - t.cy) > 10 && !p && !v ? ($(".imageLabel-input").addClass("imageLabel-active"), n.edit(s)) : p || v || s.remove(),
-            Math.abs(a.clientX - t.cx) > 10 && Math.abs(a.clientY - t.cy) > 10 && !p && !v ? (n.editPop && ($(".imageLabel-input").addClass("imageLabel-active").find("select").val(""), setTimeout(function () {
+            Math.abs(a.clientX - t.cx) > 10 && Math.abs(a.clientY - t.cy) > 10 && !p && !v ? (n.editPop && ($(".imageLabel-input").addClass("imageLabel-active").find("select").val(""), setTimeout(function() {
                 // $(".imageLabel-input").find("select").focus()[0].setSelectionRange( - 1, -1)
               },
               500)), n.edit(s)) : p || v || s.remove(),
@@ -200,11 +198,11 @@ function imageLabel(e) {
     var y = $(".imageLabel-input"),
       //u = y.find("input"),
       se = y.find("select")
-    y.find(".imageLabel-input-close").click(function () {
+    y.find(".imageLabel-input-close").click(function() {
       $('#sel').empty()
       y.removeClass("imageLabel-active")
     }),
-      y.find(".imageLabel-input-ok").click(function () {
+      y.find(".imageLabel-input-ok").click(function() {
         //s.find(".imageLabel-imgdrop-font").html(u.val());
         s.find(".imageLabel-imgdrop-font").html($('#sel option:selected').text());
         var e = JSON.parse(s.attr("data-json"));
@@ -215,20 +213,20 @@ function imageLabel(e) {
           se.val() ? s.addClass("imageLabel-drop-has") : s.removeClass("imageLabel-drop-has")
         $('#sel').empty()
       }),
-      $(".imageLabel-delete").click(function () {
+      $(".imageLabel-delete").click(function() {
         s.remove(),
           f.hide()
       }),
-      $(".imageLabel-edit").click(function () {
+      $(".imageLabel-edit").click(function() {
         $('#sel').empty()
         $("#sel").append("<option value=''>请选择</option>");
         for (let i in options) {
-          $("#sel").append("<option value='" + options[i][select.code] + "'>" + options[i][select.desc] + "</option>");
+          $("#sel").append("<option value='"+options[i][select.code]+"'>"+options[i][select.desc]+"</option>");
           //$("#sel").append("<option value='"+options[i].divisionCode+"'>"+options[i].divisionName+"</option>");
         }
         n.edit(s),
           s.addClass("imageLabel-drop-edit").siblings().removeClass("imageLabel-drop-edit"),
-        n.editPop && (y.addClass("imageLabel-active").find("select").val(s.find(".imageLabel-imgdrop-font").html()), setTimeout(function () {
+        n.editPop && (y.addClass("imageLabel-active").find("select").val(s.find(".imageLabel-imgdrop-font").html()), setTimeout(function() {
             //y.find("select").focus()[0].setSelectionRange( - 1, -1)
           },
           500)),
@@ -242,32 +240,32 @@ function imageLabel(e) {
       /*u.keydown(function(e) {
           13 == e.keyCode && y.find(".imageLabel-input-ok").click()
       }),*/
-      se.keydown(function (e) {
+      se.keydown(function(e) {
         13 == e.keyCode && y.find(".imageLabel-input-ok").click()
       }),
-      $(window).keydown(function (e) {
+      $(window).keydown(function(e) {
         27 == e.keyCode && y.hasClass("imageLabel-active") && y.removeClass("imageLabel-active")
       }),
       a(),
       //$(window).resize(a),
-      $(".imageLabel-closes").click(function () {
-        n.close(i.getData()) && (l.removeClass("imageLabel-box-active"), setTimeout(function () {
+      $(".imageLabel-closes").click(function() {
+        n.close(i.getData()) && (l.removeClass("imageLabel-box-active"), setTimeout(function() {
             l.remove()
           },
           500))
-      }).next().click(function () {
+      }).next().click(function() {
         n.confirm(i.getData()) && l.removeClass("imageLabel-box-active")
       })
   }
   if (!e.img) {
-    util.warning('请填写图片地址')
+    alert('请填写图片地址')
     return !1;
 
   }
   var i = {
-      getData: function () {
+      getData: function() {
         var e = [];
-        return $(".imageLabel-imgdrop").each(function () {
+        return $(".imageLabel-imgdrop").each(function() {
           let port = JSON.parse($(this).attr("data-json"));
           let entity = {
             id: port.id,
@@ -279,10 +277,10 @@ function imageLabel(e) {
         }),
           e
       },
-      clearArea: function () {
+      clearArea: function() {
         $(".imageLabel-imgdrop").remove()
       },
-      close: function () {
+      close: function() {
         $(".imageLabel-closes").click()
       }
     },
@@ -290,18 +288,15 @@ function imageLabel(e) {
       only: !1,
       shade: !0,
       editPop: !0,
-      close: function () {
-        return !0
+      close: function() {
+        return ! 0
       },
-      edit: function () {
+      edit: function() {},
+      confirm: function() {
+        return ! 0
       },
-      confirm: function () {
-        return !0
-      },
-      startArea: function () {
-      },
-      clickArea: function () {
-      },
+      startArea: function() {},
+      clickArea: function() {},
       data: []
     };
   n = $.extend(n, e),
@@ -319,7 +314,7 @@ function imageLabel(e) {
     '             <div class="imageLabel-loading-body">\n      ' +
     '              <div class="imageLabel-loading"></div>\n      ' +
     '          </div>\n        ' +
-    '        <div class="imageLabel-jisuan" style="position: relative;overflow:hidden;">\n   ' +
+    '        <div class="imageLabel-jisuan" style="position: relative;overflow:hidden;height: 100%;width: 100%;">\n   ' +
     '                 <img src="' + e.img + '" alt="" style=\'position: absolute;width:100%;height:100%;\' class="imageLabel-img">\n    ' +
     '                <div class="imageLabel-content">\n\n      ' +
     '              </div>\n        ' +
@@ -337,12 +332,12 @@ function imageLabel(e) {
     '         <div class="imageLabel-input-box" style=\'width:250px;\'>\n      ' +
     '          <div style=\'background-color: #333;\'>\n      ' +
     '              <div style=\'color:#fff;overflow:hidden;line-height: 40px;\'>\n       ' +
-    '                 <span style=\'float: left;margin-left:20px;\'>' + editTitle + '</span>\n       ' +
+    '                 <span style=\'float: left;margin-left:20px;\'>'+editTitle+'</span>\n       ' +
     '                 <span class="imageLabel-input-close" style=\'float:right;margin-right:20px;cursor: pointer;\'>X</span>\n      ' +
     '              </div>\n     ' +
     '           </div>\n\n      ' +
     '          <div style=\'background: #fff;padding:20px;\'>\n     ' +
-    '               <select id="sel" style=\'width:100%;padding:5px;\'></select>' +
+    '               <select id="sel" style=\'width:100%;padding:5px;\'></select>'+
     /*'               <input type="text" value=\'\' max=\'10\' style=\'width:100%;padding:5px;\'>\n     ' +*/
     '               <div style=\'margin-top:20px;overflow:hidden;\'>\n       ' +
     '                 <div class="imageLabel-input-close imageLabel-btn" style=\'float: left;width:90px;background-color: #959595;\'>取消</div>\n         ' +
@@ -357,17 +352,15 @@ function imageLabel(e) {
   //var t = $('#'+n.container).html(domContainer)
   var l = $(t);
   return l.find(".imageLabel-img").one("load",
-    function () {
-      l.appendTo("#" + n.container),
+    function() {
+      l.appendTo("#"+n.container),
         $(this).addClass("imageLabel-img-active"),
         $(".imageLabel-loading-body").hide(),
         a()
     }),
-    setTimeout(function () {
+    setTimeout(function() {
         l.addClass("imageLabel-box-active")
       },
       0),
     i
-})
 }
-export default imageLabel

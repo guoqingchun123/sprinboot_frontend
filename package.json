@@ -21,7 +21,6 @@
     "echarts": "^4.2.1",
     "element-ui": "^2.10.1",
     "fuse.js": "3.4.4",
-    "jquery": "^3.4.1",
     "js-cookie": "^2.2.0",
     "moment": "^2.24.0",
     "normalize.css": "^8.0.1",
