@@ -1,5 +1,9 @@
 import http from '@/utils/http'
 
+//文件上传通用接口
+export function uploadFile(file,data) {
+  return http.upload('/api/portal/files/upload',file,data)
+}
 /*行政区域管理*/
 export function fetchDivisions(query) {
   return http.get('/api/center/divisions', {
@@ -55,4 +59,19 @@ export function fetchCorp(query) {
 // export function modifyDivision(data) {
 //   return http.put('/api/center/divisions', data)
 // }
-
+export function fetchProjects(query) {
+  return http.get('/api/center/projects', {
+    params: query
+  })
+}
+export function fetchNoRegionProjects(query) {
+  return http.get('/api/center/noRegionProjects', {
+    params: query
+  })
+}
+export function removeRegionProjects(ids) {
+  return http.delete('/api/center/removeRegionProjects/' + ids)
+}
+export function addRegionProjects(data) {
+  return http.post('/api/center/addRegionProjects', data)
+}

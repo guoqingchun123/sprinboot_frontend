@@ -55,7 +55,8 @@ export default {
     dynamicExample: '动态',
     ComplexExample: '复合',
     authority: '权限管理',
-    basic: '基础数据'
+    basic: '基础数据',
+    public: '政务公开'
   },
   navbar: {
     logOut: '退出登录',
