@@ -75,19 +75,24 @@ export default {
     },
     //移除项目
     handleRegionInfo(row) {
-      removeRegionProjects(row.projectId).then(response => {
-        if (this.tableInstance.fetchData) {
-          this.tableInstance.fetchData()
-        }
-        this.$message({
-          type: 'success',
-          message: '移除项目成功'
+      this.$confirm('此操作将移除该项目, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        removeRegionProjects(row.projectId).then(response => {
+          if (this.tableInstance.fetchData) {
+            this.tableInstance.fetchData()
+          }
+          this.$message({
+            type: 'success',
+            message: '移除项目成功'
+          })
         })
       }).catch(() => {
         this.$message({
-          showClose: true,
-          type: 'error',
-          message: '移除项目失败'
+          message: '移除项目失败',
+          type: 'error'
         })
       })
     },
@@ -98,10 +103,10 @@ export default {
         projects: this.dialogTableInstance.table.selection
       }
       addRegionProjects(param).then(response => {
-        this.dialogTableVisible = false
         if (this.tableInstance.fetchData) {
           this.tableInstance.fetchData()
         }
+        this.dialogTableVisible = false
         this.$message({
           type: 'success',
           message: '新增项目成功'

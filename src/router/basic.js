@@ -26,12 +26,29 @@ const basicRouter = {
       }
     },
     {
+      path: 'corps',
+      component: () => import('@/views/basic/corp'),
+      name: 'ListCorp',
+      meta: {
+        title: '企业管理'
+      }
+    },
+    {
       path: 'regions',
       component: () => import('@/views/basic/region'),
-      name: 'ListRegion',
+      name: 'Regions',
       meta: {
         title: '小区建档'
       }
+    },
+    {
+      path: 'floors',
+      component: () => import('@/views/basic/bld'),
+      name: 'Floors',
+      meta: {
+        title: '楼层维护'
+      },
+      hidden: true
     }
   ]
 }
