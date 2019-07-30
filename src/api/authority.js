@@ -154,6 +154,11 @@ export function saveGrants(userId, data) {
 
 /******************************************************令牌管理 begin*******************************************************/
 
+//导入令牌种子文件
+export function importToken(file,data) {
+  return http.upload('/api/portal/import',file,data)
+}
+
 //令牌信息查询
 export function fetchToken(query) {
   return http.get('/api/portal/token', {

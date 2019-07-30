@@ -1,6 +1,6 @@
 import Layout from '@/layout'
 
-const basicRouter = {
+const publicRouter = {
   path: '/public',
   alwaysShow: true,
   component: Layout,
@@ -27,4 +27,4 @@ const basicRouter = {
     }
   ]
 }
-export default basicRouter
+export default publicRouter

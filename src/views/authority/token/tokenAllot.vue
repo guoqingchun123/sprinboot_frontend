@@ -3,25 +3,19 @@
     <bv-table ref="table" title="用户一览" :pagination="true" :filter.sync="filter" :fetch-api="fetchUsers" @on-mounted="(table) => tableInstance = table">
       <div slot="search">
         <bv-col>
-          <el-form-item label="用户编号" prop="id">
-            <el-input v-model="filter.id" />
+          <el-form-item label="用户编号" prop="userId">
+            <el-input v-model="filter.userId" />
           </el-form-item>
         </bv-col>
         <bv-col>
-          <el-form-item label="用户姓名" prop="name">
-            <el-input v-model="filter.name" />
-          </el-form-item>
-        </bv-col>
-        <bv-col>
-          <el-form-item label="员工编号" prop="empId">
-            <el-input v-model="filter.empId" />
+          <el-form-item label="用户姓名" prop="userName">
+            <el-input v-model="filter.userName" />
           </el-form-item>
         </bv-col>
       </div>
-      <el-table-column label="用户编号" prop="id" align="center" sortable="custom" />
-      <el-table-column label="用户姓名" prop="name" align="center" sortable="custom" />
-      <el-table-column label="员工编号" prop="empId" align="center" sortable="custom" />
-      <el-table-column label="用户状态" prop="status" align="center" :formatter="userStateFormatter" />
+      <el-table-column label="用户编号" prop="userId" align="center" sortable="custom" />
+      <el-table-column label="用户姓名" prop="userName" align="center" sortable="custom" />
+      <el-table-column label="用户状态" prop="userStatus" align="center" :formatter="userStateFormatter" />
       <el-table-column fixed="right" label="操作" align="center">
         <template slot-scope="scope">
           <el-button view="details" type="text" @click="tokenManagement(scope.row)">管理令牌</el-button>
@@ -42,7 +36,7 @@
         </div>
         <el-table-column type="selection" width="55" />
         <el-table-column label="序列号" prop="deviceSn" align="center" sortable="custom" />
-        <el-table-column label="状态" prop="state" align="center" sortable="custom" :formatter="perTokenStateFormatter" />
+        <el-table-column label="状态" prop="deviceState" align="center" sortable="custom" :formatter="perTokenStateFormatter" />
         <el-table-column label="最后修改日期" prop="lastModifyDate" align="center" :formatter="dateFormatter" />
       </bv-table>
     </bv-dialog>
@@ -89,7 +83,7 @@
 </template>
 
 <script>
-  import { fetchUsers,
+  import {fetchUsers,
     fetchPersonToken,
     lostPersonToken,
     deadPersonToken,
@@ -116,12 +110,11 @@
         dialogFormVisibleAdd: false,
         modifyType: null,
         role: {
-          id: null,
-          name: null,
-          empId:null,
-          status: null,
+          userId: null,
+          userName: null,
+          userStatus: null,
           deviceSn: null,
-          state: null,
+          deviceState: null,
           lastModifyDate: null
         },
         //表单校验规则
@@ -156,13 +149,13 @@
         if (!this.tableInstanceDialog||!this.tableInstanceDialog.selection||this.tableInstanceDialog.selection.length != 1){
           return false
         }
-        return this.tableInstanceDialog.selection[0].state === '0001'
+        return this.tableInstanceDialog.selection[0].deviceState === '0001'
       },
       startLostShow(){
         if (!this.tableInstanceDialog||!this.tableInstanceDialog.selection||this.tableInstanceDialog.selection.length != 1){
           return false
         }
-        if(this.tableInstanceDialog.selection[0].state === '0000'|| this.tableInstanceDialog.selection[0].state === '0001'){
+        if(this.tableInstanceDialog.selection[0].deviceState === '0000'|| this.tableInstanceDialog.selection[0].deviceState === '0001'){
           return true
         }
         return false
@@ -171,14 +164,14 @@
         if (!this.tableInstanceDialog||!this.tableInstanceDialog.selection||this.tableInstanceDialog.selection.length != 1){
           return false
         }
-        return this.tableInstanceDialog.selection[0].state === '0002'
+        return this.tableInstanceDialog.selection[0].deviceState === '0002'
       },
       deadShow(){
         if (!this.tableInstanceDialog||!this.tableInstanceDialog.selection||this.tableInstanceDialog.selection.length != 1){
           return false
         }
-        if(this.tableInstanceDialog.selection[0].state === '0000'|| this.tableInstanceDialog.selection[0].state === '0001'
-           || this.tableInstanceDialog.selection[0].state === '0002'){
+        if(this.tableInstanceDialog.selection[0].deviceState === '0000'|| this.tableInstanceDialog.selection[0].deviceState === '0001'
+           || this.tableInstanceDialog.selection[0].deviceState === '0002'){
           return true
         }
         return false
@@ -187,20 +180,20 @@
         if (!this.tableInstanceDialog||!this.tableInstanceDialog.selection||this.tableInstanceDialog.selection.length != 1){
           return false
         }
-        return this.tableInstanceDialog.selection[0].state === '9999'
+        return this.tableInstanceDialog.selection[0].deviceState === '9999'
       },
       startBackShow(){
         if (!this.tableInstanceDialog||!this.tableInstanceDialog.selection||this.tableInstanceDialog.selection.length != 1){
           return false
         }
-        if(this.tableInstanceDialog.selection[0].state === '0000'|| this.tableInstanceDialog.selection[0].state === '0001'|| this.tableInstanceDialog.selection[0].state === '0002'){
+        if(this.tableInstanceDialog.selection[0].deviceState === '0000'|| this.tableInstanceDialog.selection[0].deviceState === '0001'|| this.tableInstanceDialog.selection[0].deviceState === '0002'){
           return true
         }
         return false
       },
       //令牌状态
       perTokenStateFormatter(row){
-        switch (row.state) {
+        switch (row.deviceState) {
           case '9999':return "未激活";
           case '0000':return "已激活";
           case '0001':return "已锁定";
@@ -238,7 +231,7 @@
          }
         let data = {}
         data.deviceSn = this.unallotToken.deviceSn
-        data.userId = this.role.id
+        data.userId = this.role.userId
         allotPersonToken(data).then(ret => {
           //新增成功  返回文件id  插入数据
           this.$message({
@@ -383,12 +376,12 @@
       },
       //用户状态
       userStateFormatter(row){
-        switch (row.status) {
+        switch (row.userStatus) {
           case '0000':return "正常";
         }
       },
       fetchPersonToken1(data) {
-        data.id = this.role.id;
+        data.id = this.role.userId;
         return fetchPersonToken(data);
       }
     }

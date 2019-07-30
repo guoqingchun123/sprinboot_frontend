@@ -42,7 +42,7 @@
 </template>
 
 <script>
-  import { importToken } from '@/views/authority/token/travels'
+  import { importToken } from '@/api/authority'
   const maxFileSize = 20;
   export default {
     data() {
