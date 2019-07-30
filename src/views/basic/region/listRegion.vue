@@ -221,7 +221,6 @@
       },
       //查看项目详情
       queryProjInfo(row) {
-        console.log(row)
         this.$emit('on-query-project', row.regionId)
       },
       //维护小区档案
