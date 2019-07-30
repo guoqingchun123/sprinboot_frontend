@@ -30,7 +30,7 @@ const authorityRouter = {
       meta: {
         title: '角色管理'
       }
-    },, {
+    }, {
       path: 'token',
       component: () => import('@/views/authority/token'),
       name: 'token',
