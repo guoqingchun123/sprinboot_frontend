@@ -35,6 +35,10 @@ export function fetchAllDivisions() {
   return http.get('/api/center/fetchAllDivisions')
 }
 
+export function fetchCityDivisionRegions() {
+  return http.get('/api/center/cityDivisionRegions')
+}
+
 /*小区管理*/
 export function fetchRegions(query) {
   return http.get('/api/center/regions', {
@@ -63,18 +67,7 @@ export function fetchCorp(query) {
     params: query
   })
 }
-//
-// export function removeDivisions(ids) {
-//   return http.delete('/api/center/divisions/' + ids)
-// }
-//
-// export function createDivision(data) {
-//   return http.post('/api/center/divisions', data)
-// }
-//
-// export function modifyDivision(data) {
-//   return http.put('/api/center/divisions', data)
-// }
+
 export function fetchProjects(query) {
   return http.get('/api/center/projects', {
     params: query

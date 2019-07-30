@@ -71,7 +71,7 @@
           </bv-col>
           <bv-col>
             <el-form-item label="内容" prop="content">
-              <bv-editor v-model="item.content" upload-action="/api/file/uploads" style="width: 35.3vw;" />
+              <bv-editor v-model="item.content" upload-action="/file/uploads" style="width: 35.3vw;" />
             </el-form-item>
           </bv-col>
         </bv-row>
