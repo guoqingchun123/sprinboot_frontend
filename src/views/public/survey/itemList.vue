@@ -25,7 +25,7 @@
       <el-table-column label="问题类型" prop="questionType" align="center" sortable="custom" :formatter="questionTypeFormatter" />
       <el-table-column label="题目" prop="summary" align="center" sortable="custom" />
     </bv-table>
-    
+
     <bv-dialog title="问题维护" :visible.sync="dialogFormVisible">
       <bv-form ref="dialogForm" :model="item" :rules="rules">
         <bv-row layout="dialog-1">
@@ -73,9 +73,9 @@
 </template>
 
 <script>
-  
+
   import {fetchSurveyItems, createSurveyItem, modifySurveyItem, removeSurveyItem} from '@/api/public'
-  
+
   export default {
     name: 'ListSurveyItem',
     props: {

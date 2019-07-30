@@ -7,7 +7,7 @@
         </div>
       </el-col>
       <el-col :span="12" class="operates">
-        <bv-button type="danger" icon="el-icon-finished" @click="startPublise">发布</bv-button>
+        <bv-button type="danger" icon="el-icon-position" @click="startPublise">发布</bv-button>
         <bv-button type="primary" icon="el-icon-back" @click="returnPrePage">返回</bv-button>
       </el-col>
     </bv-row>

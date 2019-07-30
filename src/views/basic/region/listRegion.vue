@@ -64,6 +64,27 @@
         </bv-row>
         <bv-row>
           <bv-col>
+            <el-form-item label="监控点编号数量" prop="optionsNum">
+              <el-input-number v-model="optionsNum" :min="0" :max="99" label="监控点编号不能为空" @change="handleChange"/>
+            </el-form-item>
+          </bv-col>
+          <bv-col>
+            <el-form-item v-for="(option, index) in item.options"
+                          :key="'options' + index"
+                          label="监控点编号"
+                          :prop="'options.' + index + '.itemName'"
+                          :rules="{
+                            required: true, message: '监控点编号不能为空', trigger: 'blur'
+                          }"
+            >
+              <el-input v-model.trim="option.itemName">
+                <template slot="prepend">{{ index + 1 }}</template>
+              </el-input>
+            </el-form-item>
+          </bv-col>
+        </bv-row>
+        <bv-row>
+          <bv-col>
             <el-form-item label="小区地址" prop="address">
               <el-input v-model.trim="item.address" type="textarea" :rows="1" style="width: 36vw"/>
             </el-form-item>
@@ -87,7 +108,9 @@
       return {
         filter: {},
         tableInstance: {},
-        item: {},
+        item: {
+          options: []
+        },
         fetchRegions,
         rules: {
           regionName: [
@@ -95,7 +118,7 @@
             {max: 150, message: '限制为150位以下', trigger: 'blur'}
           ],
           divisionCode: [
-            {required: true, message:'行政区代码不能为空', trigger: 'change'}
+            {required: true, message: '行政区代码不能为空', trigger: 'change'}
           ],
           divisionName: [
             {required: true, message: '请输入行政区名称', trigger: 'blur'},
@@ -108,7 +131,8 @@
         },
         dialogFormVisible: false,
         modifyType: null,
-        divisions: []
+        divisions: [],
+        optionsNum: 0
       }
     },
     mounted() {
@@ -119,7 +143,10 @@
     methods: {
       // 弹窗用
       initRegion() {
-        this.item = {}
+        this.item = {
+          options: []
+        }
+        this.optionsNum = 0
       },
       divisionFormat(row, column, cellValue) {
         for (let i in this.divisions) {
@@ -143,6 +170,23 @@
           }
         }
       },
+      handleChange(value) {
+        let flag = this.item.options.length;
+        if (flag < value) {
+          //增加视频点
+          for (let i = flag; i < value; i++) {
+            this.item.options.push({
+              itemValue: value,
+              itemName: ''
+            })
+          }
+        } else {
+          //删除视频点
+          for (let i = value; i < flag; i++) {
+            this.item.options.pop()
+          }
+        }
+      },
       deleteShow() {
         if (!this.tableInstance || !this.tableInstance.selection || this.tableInstance.selection.length === 0) {
           return false
@@ -162,6 +206,18 @@
       },
       startModify() {
         this.item = {...this.tableInstance.table.selection[0]};
+        let videoList = this.item.videoNo.split(',');
+        let options = [];
+        for (let i in videoList) {
+          options.push({
+            itemValue: Number(i)+1,
+            itemName: videoList[i]
+          })
+        }
+        this.item = Object.assign({}, this.item, {
+          options: options
+        })
+        this.optionsNum = this.item.options.length;
         this.dialogFormVisible = true;
         this.modifyType = 'modify';
         this.$refs.dialogForm && this.$refs.dialogForm.clearValidate()
@@ -176,6 +232,8 @@
           if (!valid) {
             return false;
           }
+          let videoNo = this.item.options.map(item => item.itemName).join(',');
+          this.item.videoNo = videoNo;
           if (this.modifyType === 'modify') {
             modifyRegion(this.item).then(() => {
               this.tableInstance.table.clearSelection()
