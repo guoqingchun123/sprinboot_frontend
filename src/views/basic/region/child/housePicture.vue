@@ -37,7 +37,11 @@
               </el-upload>
             </div>
             <el-table-column label="文件名" prop="showName" align="center" sortable="custom" />
-            <el-table-column label="上传时间" prop="manageTime" align="center" sortable="custom" />
+            <el-table-column label="上传时间" prop="manageTime" align="center" sortable="custom">
+              <template slot-scope="scope">
+                {{ scope.row.manageTime | formatDateTime }}
+              </template>
+            </el-table-column>
             <el-table-column align="center" label="操作">
               <template slot-scope="scope">
                 <bv-button icon="el-icon-delete" type="text" @click="deleteFile(scope.row)">删除</bv-button>

@@ -45,21 +45,26 @@ export function uppercaseFirst(string) {
 }
 
 /**
- * 弹窗考勤时间格式化
+ * 格式化时间戳
  * @param val
  * @returns {string}
  */
-export function formatDateByAttendDialog(val) {
+export function formatDateTime(val) {
   let unixTime = val.toString()
   let a = unixTime.replace("/Date(", "").replace(")/", "");
   let date = new Date(parseInt(a));
+  var y = date.getFullYear();
+  var m = date.getMonth() + 1;
+  m = m < 10 ? ('0' + m) : m;
+  var d = date.getDate();
+  d = d < 10 ? ('0' + d) : d;
   let h = date.getHours();
   h = h < 10 ? ('0' + h) : h;
   let minute = date.getMinutes();
   let second = date.getSeconds();
   minute = minute < 10 ? ('0' + minute) : minute;
   second = second < 10 ? ('0' + second) : second;
-  return h + ':' + minute + ':' + second;
+  return y + '-' + m + '-' + d+' '+h + ':' + minute + ':' + second;
 }
 
 /**
