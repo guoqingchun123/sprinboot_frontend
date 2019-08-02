@@ -74,15 +74,18 @@
             children: [
               {
                 code: 'aerialView',
-                name: '鸟瞰图'
+                name: '鸟瞰图',
+                isLeaf: true
               },
               {
                 code: 'salesOffice',
-                name: '售楼处'
+                name: '售楼处',
+                isLeaf: true
               },
               {
                 code: 'constructionSite',
-                name: '施工现场'
+                name: '施工现场',
+                isLeaf: true
               }
             ]
           }
