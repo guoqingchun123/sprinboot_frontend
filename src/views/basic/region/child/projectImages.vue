@@ -68,7 +68,7 @@
       return {
         items: [
           {
-            code: 'projectAlbum',
+            code: 'regionImage',
             name: '项目相册',
             children: [
               {
@@ -90,7 +90,7 @@
         //上传的文件列表
         fileList: [],
         fetchRegionFiles,
-        subType: 'projectAlbum',
+        subType: 'regionImage',
         subTypeName: '项目相册',
         uploadShow: false,
         loading: false

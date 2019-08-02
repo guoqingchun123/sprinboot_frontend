@@ -68,7 +68,7 @@
       return {
         items: [
           {
-            code: 'familyRelationship',
+            code: 'houseHold',
             name: '户型关系',
             children: [
               {
@@ -86,7 +86,7 @@
         //上传的文件列表
         fileList: [],
         fetchRegionFiles,
-        subType: 'familyRelationship',
+        subType: 'houseHold',
         subTypeName: '户型关系',
         uploadShow: false,
         loading: false
