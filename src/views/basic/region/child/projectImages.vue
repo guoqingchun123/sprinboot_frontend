@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container" v-loading="loading">
+  <div v-loading="loading" class="app-container">
     <el-row type="flex" class="fit-scroll">
       <el-col :sm="6">
         <bv-scrollbar>
@@ -9,9 +9,9 @@
                    style="margin-bottom: 20px"
                    @node-click="changeSelect"
           >
-          <span slot-scope="{ node, data }" class="tree-node-operates">
-            <span>{{ node.label }}</span>
-          </span>
+            <span slot-scope="{ node, data }" class="tree-node-operates">
+              <span>{{ node.label }}</span>
+            </span>
           </bv-tree>
         </bv-scrollbar>
       </el-col>
@@ -32,8 +32,9 @@
                 :show-file-list="false"
                 accept=".jpg,.jpeg,.png,.JPG,.JPEG"
                 :limit="1"
-                :file-list="fileList">
-                <bv-button icon="el-icon-picture" v-if="uploadShow">点击上传</bv-button>
+                :file-list="fileList"
+              >
+                <bv-button v-if="uploadShow" icon="el-icon-picture">点击上传</bv-button>
               </el-upload>
             </div>
             <el-table-column label="文件名" prop="showName" align="center" sortable="custom" />
@@ -90,8 +91,9 @@
         //上传的文件列表
         fileList: [],
         fetchRegionFiles,
-        subType: 'regionImage',
-        subTypeName: '项目相册',
+        fileType: 'regionImage',
+        subType: null,
+        subName: null,
         uploadShow: false,
         loading: false
       }
@@ -99,18 +101,23 @@
     methods: {
       fetchTableData_(data) {
         data.keyId = this.region.regionId;
-        data.subType = this.subType;
+        data.fileType = this.fileType;
+        if (this.subType) {
+          data.subType = this.subType;
+        }
         return fetchRegionFiles(data)
       },
       //tree on-change
       changeSelect(node) {
-        this.tableTitle = node.name+'一览';
-        this.subType = node.code;
-        this.subTypeName = node.name;
-        if (this.subType != 'projectAlbum') {
-          this.uploadShow = true
+        this.tableTitle = node.name + '一览';
+        if (node.isLeaf) {
+          this.uploadShow = true;
+          this.subType = node.code;
+          this.subName = node.name;
         } else {
-          this.uploadShow = false
+          this.uploadShow = false;
+          this.subType = null;
+          this.subName = null;
         }
         this.tableInstance.fetchData();
       },
@@ -130,11 +137,11 @@
         let data = {
           name: item.file.name,
           keyId: _that.region.regionId,
-          fileType: _that.subType,
+          fileType: _that.fileType,
           subType: _that.subType,
           subTypeName: _that.subTypeName
         }
-        uploadFile(file, data).then(response => {
+        uploadFile(file, data).then(() => {
           _that.fileList = [];
           _that.loading = false;
           this.tableInstance.fetchData();
