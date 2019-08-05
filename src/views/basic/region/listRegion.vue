@@ -206,7 +206,10 @@
       },
       startModify() {
         this.item = {...this.tableInstance.table.selection[0]};
-        let videoList = this.item.videoNo.split(',');
+        let videoList = [];
+        if(this.item.videoNo) {
+          videoList = this.item.videoNo.split(',');
+        }
         let options = [];
         for (let i in videoList) {
           options.push({
