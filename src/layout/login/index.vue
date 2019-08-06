@@ -6,7 +6,7 @@
     </div>
     <div class="login-banner">
       <el-carousel trigger="click" height="600px">
-        <el-carousel-item v-for="item in banners" :key="item">
+        <el-carousel-item v-for="item in banners" :key="item" style="text-align: center">
           <img :src="item">
         </el-carousel-item>
       </el-carousel>
