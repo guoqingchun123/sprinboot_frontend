@@ -4,9 +4,12 @@ import VueMatomo from 'vue-matomo'
 //import Cookies from 'js-cookie'
 
 import 'normalize.css/normalize.css' // A modern alternative to CSS resets
+// import 'vue-tour/dist/vue-tour.css'
 
 import './plugins/element'
 import './plugins/component'
+import './plugins/amap'
+// import './plugins/vueTour'
 //import Element from 'element-ui'
 //import 'element-ui/lib/theme-chalk/index.css'
 

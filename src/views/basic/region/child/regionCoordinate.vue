@@ -15,7 +15,7 @@
                 <el-input v-model.trim="item.lnglat" :disabled="true" />
               </el-form-item>
             </el-col>
-            <el-col v-bind="$CONST.col.layout3">
+            <el-col v-bind="$CONST.col.layout3" class="upload-step">
               <el-form-item label="上传小区logo" prop="uploadSeed">
                 <el-upload
                    ref="uploadFile"
@@ -37,19 +37,20 @@
                 </el-upload>
               </el-form-item>
             </el-col>
-            <el-col v-bind="$CONST.col.layout3" style="text-align: center">
+            <el-col v-bind="$CONST.col.layout3" style="text-align: center" class="save-step">
               <bv-button type="success" icon="el-icon-finished" @click="saveRegionData">保存</bv-button>
             </el-col>
           </el-row>
         </bv-form>
       </el-col>
     </el-row>
+    <!--<v-tour name="myTour" :steps="steps" :options="myOptions"></v-tour>-->
   </div>
 </template>
 
 <script>
-  import AMapJS from "amap-js"
   import {uploadFile, modifyRegionLnglat} from '@/api/basic'
+  import { lazyAMapApiLoaderInstance } from 'vue-amap';
 
   export default {
     name: 'RegionCoordinate',
@@ -77,67 +78,88 @@
         //logo缩略图
         logoPath: this.region.logoPath,
         //楼栋坐标描点图
-        viewPath: this.region.viewPath
+        viewPath: this.region.viewPath,
+        //vue-tour
+        /*myOptions: {
+          useKeyboardNavigation: false,
+          labels: {
+            buttonSkip: '跳过引导',
+            buttonPrevious: '上一步',
+            buttonNext: '下一步',
+            buttonStop: '完成引导'
+          }
+        },
+        steps: [
+          {
+            target: '#mapContainer',
+            content: `选取小区坐标`,
+            params: {
+              placement: 'right'
+            }
+          },
+          {
+            target: '.upload-step',
+            content: '上传小区logo',
+            params: {
+              placement: 'left'
+            }
+          },
+          {
+            target: '.save-step',
+            content: '保存数据',
+            params: {
+              placement: 'top'
+            }
+          }
+        ]*/
       }
     },
-    mounted() {
+    mounted: function () {
       let _that = this;
-      const aMapJSAPILoader = new AMapJS.AMapJSAPILoader({
-        key: "8493be8a99d103cbed76edb91479bf7f",
-        v: "1.4.14", // 版本号
-        params: {}, // 请求参数
-        //pulgins:['AMap.Autocomplete'],
-        protocol: "https:" // 请求协议
-      });
-      const aMapUILoader = new AMapJS.AMapUILoader({
-        v: "1.0" // UI组件库版本号
-      });
-      aMapJSAPILoader.load().then(AMap => {
-        aMapUILoader.load().then(initAMapUI => {
-          const regionMap = new AMap.Map('mapContainer', {
-              center: [_that.region.x, _that.region.y], //初始地图中心点
-              resizeEnable: true, //是否监控地图容器尺寸变化
-              zoom: 15,
-              zooms: [10, 18]
-            }
-          );
-          let marker = new AMap.Marker({
-            position: regionMap.getCenter(),
-            icon: '//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png',
-            draggable: true,
-            cursor: 'move',
-            raiseOnDrag: true
-          });
-          marker.setMap(regionMap);
-          marker.on("dragend", function (e) {
-            _that.item.lnglat = e.lnglat.getLng() + ',' + e.lnglat.getLat();
-          });
-
-          AMap.plugin('AMap.Autocomplete', () => {
-            //输入提示
-            let autoOptions = {
-              input: "tipinput",
-              city: "赤峰市",
-              citylimit: "true"
-            };
-            let auto = new AMap.Autocomplete(autoOptions);
-            let placeSearch = new AMap.PlaceSearch({
-              pageSize: 1, // 单页显示结果条数
-              pageIndex: 1, // 页码
-              map: regionMap
-            });  //构造地点查询类
-            AMap.event.addListener(auto, "select", select);//注册监听，当选中某条记录时会触发
-            function select(e) {
-              placeSearch.search(e.poi.name, function (status, result) {
-                if (!util.isEmpty(result.poiList.pois)) {
-                  let poi = result.poiList.pois[0];
-                  marker.setPosition(poi.location); //更新点标记位置
-                }
-              });
-            }
-          })
+      lazyAMapApiLoaderInstance.load().then(() => {
+        const regionMap = new AMap.Map('mapContainer', {
+          center: [_that.region.x, _that.region.y], //初始地图中心点
+          resizeEnable: true, //是否监控地图容器尺寸变化
+          zoom: 15,
+          zooms: [10, 18]
         });
-      })
+        const marker = new AMap.Marker({
+          position: regionMap.getCenter(),
+          icon: '//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png',
+          draggable: true,
+          cursor: 'move',
+          raiseOnDrag: true
+        });
+        marker.setMap(regionMap);
+        marker.on("dragend", function (e) {
+          _that.item.lnglat = e.lnglat.getLng() + ',' + e.lnglat.getLat();
+        });
+        //输入提示
+        const autoOptions = {
+          input: "tipinput",
+          city: "赤峰市",
+          citylimit: "true"
+        };
+        let auto = new AMap.Autocomplete(autoOptions);
+        let placeSearch = new AMap.PlaceSearch({
+          pageSize: 1, // 单页显示结果条数
+          pageIndex: 1, // 页码
+          map: regionMap
+        });  //构造地点查询类
+        AMap.event.addListener(auto, "select", select);//注册监听，当选中某条记录时会触发
+        function select(e) {
+          placeSearch.search(e.poi.name, function (status, result) {
+            if (result.poiList.pois && result.poiList.pois.length>0) {
+              let poi = result.poiList.pois[0];
+              if(poi.location) {
+                _that.item.lnglat = poi.location.lng + ',' + poi.location.lat;
+                marker.setPosition(poi.location); //更新点标记位置
+              }
+            }
+          });
+        }
+      });
+
     },
     methods: {
       //自定义上传接口

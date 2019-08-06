@@ -22,7 +22,7 @@
       <el-table-column label="行政区代码" prop="divisionCode" align="center" />
       <el-table-column label="行政区名称" prop="divisionName" align="center" sortable="custom" />
     </bv-table>
-    
+
     <bv-dialog title="行政区维护" :visible.sync="dialogFormVisible">
       <bv-form ref="dialogForm" :model="item" :rules="rules">
         <bv-row layout="dialog-2">
@@ -67,10 +67,9 @@
 </template>
 
 <script>
-  
+
   import {fetchDivisions, showRemoveBtn, removeDivisions, modifyDivision, createDivision} from '@/api/basic'
-  import AMapJS from "amap-js"
-  
+  import { lazyAMapApiLoaderInstance } from 'vue-amap';
   export default {
     name: 'ListDivision',
     data() {
@@ -117,14 +116,7 @@
       },
       initMap() {
         var vm = this;
-        const aMapJSAPILoader = new AMapJS.AMapJSAPILoader({
-          key: "8493be8a99d103cbed76edb91479bf7f",
-          v: "1.4.14", // 版本号
-          params: {}, // 请求参数
-          protocol: "https:" // 请求协议
-        });
-  
-        aMapJSAPILoader.load().then(AMap => {
+        lazyAMapApiLoaderInstance.load().then(() => {
           const map = new AMap.Map(vm.$refs.map, {
               center: [118.916202, 42.271235], //初始地图中心点
               resizeEnable: true, //是否监控地图容器尺寸变化
@@ -143,7 +135,7 @@
               y: e.lnglat.lat
             })
           })
-        })
+        });
       },
       startCreate() {
         this.dialogFormVisible = true;
