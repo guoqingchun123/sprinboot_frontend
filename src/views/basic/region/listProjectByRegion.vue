@@ -88,11 +88,11 @@ export default {
             type: 'success',
             message: '移除项目成功'
           })
-        })
-      }).catch(() => {
-        this.$message({
-          message: '移除项目失败',
-          type: 'error'
+        }).catch(() => {
+          this.$message({
+            message: '移除项目失败',
+            type: 'error'
+          })
         })
       })
     },
