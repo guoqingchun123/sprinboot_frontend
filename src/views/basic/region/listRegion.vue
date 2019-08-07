@@ -28,7 +28,7 @@
       </el-table-column>
     </bv-table>
 
-    <bv-dialog title="小区信息维护" :visible.sync="dialogFormVisible" top="5vh">
+    <bv-dialog title="小区信息维护" :visible.sync="dialogFormVisible" top="5vh" @close="dialogClose">
       <bv-form ref="dialogForm" :model="item" :rules="rules" class="dialog-form" label-width="120px"
                label-position="right">
         <bv-row>
@@ -226,8 +226,10 @@
         this.$refs.dialogForm && this.$refs.dialogForm.clearValidate()
       },
       cancelModify() {
-        this.initRegion();
         this.dialogFormVisible = false;
+      },
+      dialogClose() {
+        this.initRegion();
         this.modifyType = null;
       },
       confirmModify() {

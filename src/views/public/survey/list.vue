@@ -33,8 +33,8 @@
         </template>
       </el-table-column>
     </bv-table>
-    
-    <bv-dialog title="调查问卷维护" :visible.sync="dialogFormVisible">
+
+    <bv-dialog title="调查问卷维护" :visible.sync="dialogFormVisible" @close="dialogClose">
       <bv-form ref="dialogForm" :model="item" :rules="rules">
         <bv-row layout="dialog-1">
           <bv-col>
@@ -95,7 +95,7 @@
         <bv-button view="cancel" @click="cancelModify()">取消</bv-button>
       </div>
     </bv-dialog>
-    
+
     <bv-dialog :title="'调查问卷预览===>' + item.title" :visible.sync="dialogViewFormVisible">
       <el-card v-for="(surveyItem, i) in item.surveyItems" :key="surveyItem.sysId" class="box-card">
         <div slot="header" class="clearfix">
@@ -119,10 +119,10 @@
 </template>
 
 <script>
-  
+
   import {fetchSurveys, createSurvey, modifySurvey, removeSurvey, selectSurvey, publishSurvey} from '@/api/public'
   import {fetchCityDivisionRegions} from '@/api/basic'
-  
+
   export default {
     name: 'ListSurvey',
     data() {
@@ -223,8 +223,10 @@
         })
       },
       cancelModify() {
-        this.initData();
         this.dialogFormVisible = false;
+      },
+      dialogClose() {
+        this.initData();
         this.modifyType = null;
       },
       confirmModify() {

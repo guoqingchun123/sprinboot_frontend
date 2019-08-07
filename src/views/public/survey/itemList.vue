@@ -26,7 +26,7 @@
       <el-table-column label="题目" prop="summary" align="center" sortable="custom" />
     </bv-table>
 
-    <bv-dialog title="问题维护" :visible.sync="dialogFormVisible">
+    <bv-dialog title="问题维护" :visible.sync="dialogFormVisible" @close="dialogClose">
       <bv-form ref="dialogForm" :model="item" :rules="rules">
         <bv-row layout="dialog-1">
           <bv-col>
@@ -155,8 +155,10 @@
         this.$refs.dialogForm && this.$refs.dialogForm.clearValidate()
       },
       cancelModify() {
-        this.initData();
         this.dialogFormVisible = false;
+      },
+      dialogClose() {
+        this.initData();
         this.modifyType = null;
       },
       confirmModify() {

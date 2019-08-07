@@ -23,8 +23,8 @@
       <el-table-column label="角色代码" prop="roleId" align="center" />roleId
       <el-table-column label="角色名称" prop="roleName" align="center" sortable="custom" />
     </bv-table>
-    
-    <bv-dialog title="角色维护" :visible.sync="dialogFormVisible">
+
+    <bv-dialog title="角色维护" :visible.sync="dialogFormVisible" @close="dialogClose">
       <bv-form ref="dialogForm" :model="item" :rules="rules">
         <bv-row layout="dialog-2">
           <bv-col>
@@ -45,7 +45,7 @@
         <bv-button view="cancel" @click="cancelModify()">取消</bv-button>
       </div>
     </bv-dialog>
-    
+
     <bv-dialog title="角色授权" :visible.sync="dialogGrantVisible" top="5vh" width="1200px">
       <bv-scrollbar>
         <el-tree ref="tree" :data="routes" node-key="id" :props="{label: showLabel}" show-checkbox :default-expand-all="true" style="margin-bottom: 20px">
@@ -78,7 +78,7 @@
   import {asyncRoutes, constantRoutes} from '@/router'
   import {fetchRoles, createRole, modifyRole, removeRoles, fetchRoutes, saveRoutes, showRemove} from '@/api/authority'
   import {route as routeUtils, element as elementUtils} from '@bestvike/utils'
-  
+
   export default {
     name: 'ListRole',
     data() {
@@ -93,11 +93,11 @@
         // 字典
         roleStatusOptions: null,
         authorityRoutes: [],
-        
+
         tableInstance: {},
-        
+
         fetchRoles,
-        
+
         rules: {
           roleId: [
             {required: true, message: '请输入角色代码', trigger: 'blur'},
@@ -137,8 +137,10 @@
         this.$refs.dialogForm && this.$refs.dialogForm.clearValidate()
       },
       cancelModify() {
-        this.initRole()
         this.dialogFormVisible = false;
+      },
+      dialogClose() {
+        this.initRole();
         this.modifyType = null;
       },
       confirmModify() {
@@ -146,7 +148,7 @@
           if (!valid) {
             return false
           }
-          
+
           if (this.modifyType === 'modify') {
             let item = {...this.item};
             delete item.permissions;
@@ -271,7 +273,7 @@
       showLabel(data) {
         return this.$filters.transTitle(data.meta)
       },
-      
+
       // 辅助函数
       isIndeterminate(meta) {
         // data.meta

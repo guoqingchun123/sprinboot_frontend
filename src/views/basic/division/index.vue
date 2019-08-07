@@ -23,7 +23,7 @@
       <el-table-column label="行政区名称" prop="divisionName" align="center" sortable="custom" />
     </bv-table>
 
-    <bv-dialog title="行政区维护" :visible.sync="dialogFormVisible">
+    <bv-dialog title="行政区维护" :visible.sync="dialogFormVisible" @close="dialogClose">
       <bv-form ref="dialogForm" :model="item" :rules="rules">
         <bv-row layout="dialog-2">
           <bv-col>
@@ -152,8 +152,10 @@
         this.initMap(this);
       },
       cancelModify() {
-        this.initDivision();
         this.dialogFormVisible = false;
+      },
+      dialogClose() {
+        this.initDivision();
         this.modifyType = null;
       },
       confirmModify() {
