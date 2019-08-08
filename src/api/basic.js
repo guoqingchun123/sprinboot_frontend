@@ -46,6 +46,12 @@ export function fetchRegions(query) {
   })
 }
 
+export function fetchAllRegions(query) {
+  return http.get('/api/center/fetchAllRegions', {
+    params: query
+  })
+}
+
 export function showRegionRemoveBtn(ids) {
   return http.get('/api/center/showRemoveBtn/' + ids)
 }

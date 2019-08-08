@@ -179,10 +179,11 @@
                }
              }
              _that.item.lnglats = lnglats
-            console.log(lnglats);//获取路径/范围
-
           }else {
-            console.log(overlays);
+            _that.$message({
+                            message: '小区范围不能为空',
+                            type: 'warning'
+                          });
           }
         }
         document.getElementById('close').onclick = function(){
@@ -203,6 +204,34 @@
         marker.on("dragend", function (e) {
           _that.item.lnglat = e.lnglat.getLng() + ',' + e.lnglat.getLat();
         });
+
+        //显示小区范围
+        let lnglatList = []
+        if (_that.region.lnglats){
+          var pathLnglat = _that.region.lnglats.split(';');
+          for (let i in pathLnglat) {
+            lnglatList.push(pathLnglat[i].split(","))
+          }
+        }
+        /*var path = [
+          [118.95355,42.251746],
+          [118.954371,42.250443],
+          [118.957509,42.251007],
+          [118.956839,42.252163]
+        ]
+        console.log(path)*/
+        var polygon = new AMap.Polygon({
+                                         path: lnglatList,
+                                         strokeColor: "#FF33FF",
+                                         strokeWeight: 6,
+                                         strokeOpacity: 0.2,
+                                         fillOpacity: 0.4,
+                                         fillColor: '#1791fc',
+                                         zIndex: 50,
+                                       })
+
+        regionMap.add(polygon)
+        regionMap.setFitView([ polygon ])
         //输入提示
         const autoOptions = {
           input: "tipinput",
