@@ -8,7 +8,7 @@
         </div>
       </el-col>
       <el-col :span="8">
-        <bv-form :model="item" :rules="rules">
+        <bv-form ref="dialogForm" :model="item" :rules="rules">
           <el-row :gutter="$CONST.row.gutter">
             <el-col v-bind="$CONST.col.layout3">
               <el-form-item label="坐标" prop="lnglat">
@@ -64,7 +64,7 @@
       return {
         loading: false,
         item: {
-          lnglat: this.region.x + ',' + this.region.y
+          lnglat: (this.region.x && this.region.y) ? this.region.x + ',' + this.region.y : ''
         },
         rules: {
           lnglat: [
@@ -118,7 +118,7 @@
       let _that = this;
       lazyAMapApiLoaderInstance.load().then(() => {
         const regionMap = new AMap.Map('mapContainer', {
-          center: [_that.region.x, _that.region.y], //初始地图中心点
+          center: (this.region.x && this.region.y) ? [_that.region.x, _that.region.y] : [118.916202, 42.271235], //初始地图中心点
           resizeEnable: true, //是否监控地图容器尺寸变化
           zoom: 15,
           zooms: [10, 18]
@@ -192,16 +192,21 @@
         })
       },
       saveRegionData() {
-        let data = {
-          regionId: this.region.regionId,
-          submitCoo: this.item.lnglat,
-          logoPath: this.logoPath,
-          viewPath: this.viewPath
-        }
-        modifyRegionLnglat(data).then(response => {
+        this.$refs.dialogForm.validate((valid) => {
+          if (!valid) {
+            return false;
+          }
+          let data = {
+            regionId: this.region.regionId,
+            submitCoo: this.item.lnglat,
+            logoPath: this.logoPath,
+            viewPath: this.viewPath
+          }
+          modifyRegionLnglat(data).then(response => {
             this.$message.success('保存成功')
-        }).catch(() => {
-          this.$message.error('保存失败')
+          }).catch(() => {
+            this.$message.error('保存失败')
+          })
         })
       }
     }
