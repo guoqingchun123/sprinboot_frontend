@@ -5,6 +5,16 @@
         <div class="regionMap">
           <span style="width:8rem;">请输入关键字检索</span>
           <input id='tipinput' type="text" autocomplete="off" style="z-index:999">
+          <div class="input-card" style='width: 24rem;'>
+            <div class="input-item">
+              <input type="radio" name='func' value='polygon' ><span class="input-text" style='width:5rem;'>划定小区范围</span>
+            </div>
+            <div class="input-item">
+              <input id="clear" type="button" class="btn" value="清除" />
+              <input id="close" type="button" class="btn" value="关闭绘图" />
+              <input id="save" type="button" class="btn" value="保存" />
+            </div>
+          </div>
         </div>
       </el-col>
       <el-col :span="8">
@@ -13,6 +23,11 @@
             <el-col v-bind="$CONST.col.layout3">
               <el-form-item label="坐标" prop="lnglat">
                 <el-input v-model.trim="item.lnglat" :disabled="true" />
+              </el-form-item>
+            </el-col>
+            <el-col v-bind="$CONST.col.layout3">
+              <el-form-item label="坐标组" prop="lnglats">
+                <el-input type="textarea" :rows="4" v-model.trim="item.lnglats" :disabled="true" />
               </el-form-item>
             </el-col>
             <el-col v-bind="$CONST.col.layout3" class="upload-step">
@@ -64,11 +79,15 @@
       return {
         loading: false,
         item: {
-          lnglat: this.region.x + ',' + this.region.y
+          lnglat: this.region.x + ',' + this.region.y,
+          lnglats: this.region.lnglats
         },
         rules: {
           lnglat: [
             {required: true, message:'小区坐标不能为空', trigger: 'blur'},
+          ],
+          lnglats: [
+            {required: true, message:'小区区域坐标不能为空', trigger: 'blur'},
           ]
         },
         //上传的文件列表
@@ -123,6 +142,56 @@
           zoom: 15,
           zooms: [10, 18]
         });
+
+        var mouseTool = new AMap.MouseTool(regionMap);
+        //监听draw事件可获取画好的覆盖物
+        var overlays = [];
+        mouseTool.on('draw',function(e){
+          overlays.push(e.obj);
+        })
+        function draw(){
+          mouseTool.polygon({
+                              fillColor:'#00b0ff',
+                              strokeColor:'#80d8ff'
+                              //同Polygon的Option设置
+                            });
+
+        }
+        var radios = document.getElementsByName('func');
+        for(var i=0;i<radios.length;i+=1){
+          radios[i].onchange = function(e){
+            draw()
+          }
+        }
+        document.getElementById('clear').onclick = function(){
+          regionMap.remove(overlays)
+          overlays = [];
+        }
+        document.getElementById('save').onclick = function(){
+          if (overlays[0]!=null){
+            var lnglatsMap = overlays[0].B.path;
+            console.log(lnglatsMap);
+            var lnglats = '';
+             for(var i = 0; i<lnglatsMap.length; i++){
+              lnglats += lnglatsMap[i].lng + ',' +lnglatsMap[i].lat;
+               if (i != lnglatsMap.length-1) {
+                 lnglats += ';'
+               }
+             }
+             _that.item.lnglats = lnglats
+            console.log(lnglats);//获取路径/范围
+
+          }else {
+            console.log(overlays);
+          }
+        }
+        document.getElementById('close').onclick = function(){
+          mouseTool.close(true)//关闭，并清除覆盖物
+          for(var i=0;i<radios.length;i+=1){
+            radios[i].checked = false;
+          }
+        }
+
         const marker = new AMap.Marker({
           position: regionMap.getCenter(),
           icon: '//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png',
@@ -195,6 +264,7 @@
         let data = {
           regionId: this.region.regionId,
           submitCoo: this.item.lnglat,
+          submitCooS: this.item.lnglats,
           logoPath: this.logoPath,
           viewPath: this.viewPath
         }

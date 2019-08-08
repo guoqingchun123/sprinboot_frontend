@@ -9,5 +9,5 @@ VueAMap.initAMapApiLoader({
   key: '8493be8a99d103cbed76edb91479bf7f',
   v: "1.4.14", // 版本号
   // 插件集合 （插件按需引入）
-  plugin: ['AMap.Autocomplete', 'AMap.PlaceSearch']
+  plugin: ['AMap.Autocomplete', 'AMap.PlaceSearch','AMap.MouseTool']
 });
