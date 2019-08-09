@@ -65,8 +65,8 @@
 </template>
 
 <script>
-  import {uploadFile, modifyRegionLnglat} from '@/api/basic'
-  import { lazyAMapApiLoaderInstance } from 'vue-amap';
+  import {modifyRegionLnglat, uploadFile} from '@/api/basic'
+  import {lazyAMapApiLoaderInstance} from 'vue-amap';
 
   export default {
     name: 'RegionCoordinate',
@@ -232,7 +232,7 @@
                                        })
 
         regionMap.add(polygon)
-        regionMap.setFitView([ polygon ])
+        regionMap.setFitView([polygon])
         //输入提示
         const autoOptions = {
           input: "tipinput",
