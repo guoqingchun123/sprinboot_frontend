@@ -7,7 +7,8 @@
           <input id='tipinput' type="text" autocomplete="off" style="z-index:999">
           <div class="input-card" style='width: 24rem;'>
             <div class="input-item">
-              <input type="radio" name='func' value='polygon' ><span class="input-text" style='width:5rem;'>划定小区范围</span>
+              <input id="polygon" type="radio" name='func' value='polygon' >
+              <label for="polygon" class="input-text">划定小区范围</label>
             </div>
             <div class="input-item">
               <input id="clear" type="button" class="btn" value="清除" />
@@ -321,6 +322,11 @@
       left: 15px;
       z-index: 999;
       background: white;
+
+      .input-text {
+        width:5rem;
+        cursor: pointer;
+      }
     }
   }
   .el-upload.el-upload--text {
