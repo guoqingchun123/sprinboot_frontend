@@ -7,6 +7,7 @@
         </div>
       </el-col>
       <el-col :span="12" class="operates">
+        <bv-button type="success" icon="el-icon-position" @click="startPreview">小区预览</bv-button>
         <bv-button type="danger" icon="el-icon-position" @click="startPublise">发布</bv-button>
         <bv-button type="primary" icon="el-icon-back" @click="returnPrePage">返回</bv-button>
       </el-col>
@@ -85,6 +86,10 @@
       startPublise() {
         this.initData()
         this.dialogVisible = true
+      },
+      startPreview() {
+        // window.open('http://222.74.69.146:180/houses/sales/'+this.region.regionId)
+        window.open(process.env.VUE_APP_ADDR + '/houses/sales/'+this.region.regionId)
       },
       //确认发布
       confirmPublise() {
