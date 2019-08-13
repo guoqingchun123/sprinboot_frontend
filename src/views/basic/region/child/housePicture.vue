@@ -91,7 +91,7 @@
         fetchRegionFiles,
         fileType: 'houseHold',
         subType: null,
-        subName: null,
+        subTypeName: null,
         uploadShow: false,
         loading: false
       }
@@ -111,11 +111,11 @@
         if (node.isLeaf) {
           this.uploadShow = true;
           this.subType = node.code;
-          this.subName = node.name;
+          this.subTypeName = node.name;
         } else {
           this.uploadShow = false;
           this.subType = null;
-          this.subName = null;
+          this.subTypeName = null;
         }
         this.tableInstance.fetchData();
       },
