@@ -30,7 +30,13 @@ export function refresh(refreshToken) {
 export function getInfo() {
   return http.get('/api/authority/info')
 }
-
+/******************************************************用户中心 BEGIN*******************************************************/
+export function verifyPass(password) {
+  return http.get('/api/portal/users/verifyPass/' + password)
+}
+export function modifyPass(password) {
+  return http.put('/api/portal/users/modifyPass/' + password)
+}
 /******************************************************角色管理 BEGIN*******************************************************/
 export function fetchRoles(query) {
   return http.get('/api/portal/roles', {
