@@ -46,20 +46,18 @@
           <img v-if="imageUrl" :src="imageUrl" class="avatar fit-cover" @error="showDefaultAvatar">
           <i v-else class="el-icon-plus avatar-uploader-icon" />
         </el-upload>
-        <el-button @click="saveAvatar">保存头像</el-button>
+        <el-button class="save-pic-btn" @click="saveAvatar">保存头像</el-button>
       </el-tab-pane>
       <el-tab-pane label="参数设置" name="setting" lazy>
-        <div>
+        <div class="setting-item">
           <span>{{ $t('settings.tagsView') }}</span>
           <el-switch v-model="tagsView" class="drawer-switch" />
         </div>
-
-        <div>
+        <div class="setting-item">
           <span>{{ $t('settings.fixedHeader') }}</span>
           <el-switch v-model="fixedHeader" class="drawer-switch" @change="changeFixedHeader" />
         </div>
-
-        <div>
+        <div class="setting-item">
           <span>{{ $t('settings.sidebarLogo') }}</span>
           <el-switch v-model="sidebarLogo" class="drawer-switch" />
         </div>
@@ -294,5 +292,11 @@ export default {
   }
   .forget-pass-tooltip {
     margin-top: 10px;
+  }
+  .setting-item {
+    line-height: 36px;
+  }
+  .save-pic-btn {
+    margin-left: 2vw;
   }
 </style>
