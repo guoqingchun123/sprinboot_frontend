@@ -3,16 +3,16 @@
     <div id="mapContainer" class="regionMap"></div>
     <div id="markerContent" v-for="region in regions">
       <div class="region" :id="region.regionId">
-       <p class="region-text" v-text="region.regionName"></p>
-       <i class="region-jiantou"></i>
+        <p class="region-text" v-text="region.regionName"></p>
+        <i class="region-jiantou"></i>
       </div>
       <el-card :id="region.regionId+'Div'">
-          <div slot="header" class="layui-card-header">
-             {{region.regionName}}
-          </div>
-          <div class="layui-card-body">
+        <div slot="header">
+          {{region.regionName}}
+        </div>
+        <div>
           <img :src="region.logoPath" style="width:150px;height:150px">
-       </div>
+        </div>
       </el-card>
     </div>
   </div>
