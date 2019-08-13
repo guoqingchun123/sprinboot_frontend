@@ -88,7 +88,7 @@
         this.dialogVisible = true
       },
       startPreview() {
-        // window.open('http://222.74.69.146:180/houses/sales/'+this.region.regionId)
+        // window.open('http://172.10.10.196:81/houses/sales/'+this.region.regionId)
         window.open(process.env.VUE_APP_ADDR + '/houses/sales/'+this.region.regionId)
       },
       //确认发布
