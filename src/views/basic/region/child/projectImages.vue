@@ -45,6 +45,7 @@
             </el-table-column>
             <el-table-column align="center" label="操作">
               <template slot-scope="scope">
+                <bv-button icon="el-icon-picture-outline" type="text" @click="preview(scope.row)">预览</bv-button>
                 <bv-button icon="el-icon-delete" type="text" @click="deleteFile(scope.row)">删除</bv-button>
               </template>
             </el-table-column>
@@ -177,6 +178,9 @@
             })
           })
         }
+      },
+      preview(row) {
+        window.open(row.viewUrl)
       }
     }
   }
