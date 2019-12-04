@@ -10,6 +10,7 @@ import Layout from '@/layout'
 import authorityRouter from './authority'
 import basicRouter from './basic'
 import publicRouter from './public'
+import voteRouter from "./vote";
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -112,6 +113,7 @@ export const asyncRoutes = [
   authorityRouter,
   basicRouter,
   publicRouter,
+  voteRouter,
   {
     path: '/error',
     component: Layout,

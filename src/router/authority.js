@@ -14,7 +14,7 @@ const authorityRouter = {
       component: () => import('@/views/authority/router'),
       name: 'ListRouter',
       meta: {
-        title: '路由一览'
+        title: '菜单管理'
       }
     }, {
       path: 'users',
