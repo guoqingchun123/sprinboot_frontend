@@ -23,8 +23,8 @@
       <el-table-column type="selection" width="55" />
       <el-table-column label="表决事项" prop="voteClass" align="center" :formatter="voteClassFormatter" />
       <el-table-column label="表决名称" prop="stdName" align="center" sortable="custom" />
-      <el-table-column label="执行标准" prop="voteDescribe" align="center" sortable="custom" />
-      <el-table-column label="维护时间" prop="manageTime" align="center" sortable="custom" />
+      <el-table-column label="执行标准" prop="stdDesc" align="center" sortable="custom" />
+      <el-table-column label="维护时间" prop="manageTime" align="center" sortable="custom" :formatter="dateFormatter"/>
       <el-table-column label="维护用户" prop="manageUser" align="center" sortable="custom" />
     </bv-table>
     
@@ -39,8 +39,8 @@
             </el-form-item>
           </bv-col>
           <bv-col>
-            <el-form-item label="执行标准" prop="voteDescribe">
-              <el-input v-model="item.voteDescribe" style="width: 35.3vw;" :disabled="true" placeholder="根据事项模式及其他页面输入项自动生成" />
+            <el-form-item label="执行标准" prop="stdDesc">
+              <el-input v-model="item.stdDesc" style="width: 35.3vw;" :disabled="true" placeholder="根据事项模式及其他页面输入项自动生成" />
             </el-form-item>
           </bv-col>
           <bv-col>
@@ -100,8 +100,9 @@
 
 <script>
   
-  import {fetchVoteStandards, createVoteStandard, modifyVoteStandard} from '@/api/vote'
+  import {fetchVoteStandards, createVoteStandard, modifyVoteStandard, removeVoteStandard} from '@/api/vote'
   import {isEmpty} from 'element-ui/src/utils/util';
+  import moment from 'moment'
   
   export default {
     name: 'ListStandard',
@@ -167,17 +168,20 @@
       initData() {
         this.item = {}
       },
+      dateFormatter(row) {
+        return moment(row.lastModifyDate).format('YYYY-MM-DD hh:mm:ss')
+      },
       initDescribe() {
         let vm = this;
         let itemsName = "";
         if (vm.item.voteMode === '2') { // 选举类
-          vm.show = false;
+          vm.showCalculate = false;
           itemsName = "以获得选票数由高到低排序，前#{计算基数}名候选项，视为入选";
           if (!isEmpty(vm.item.denominator)) {
             itemsName = "以获得选票数由高到低排序，前" + vm.item.denominator + "名候选项，视为入选";
           }
         } else if (vm.item.voteMode === '1') { // 表决类
-          vm.show = true;
+          vm.showCalculate = true;
           itemsName = "";
           let calculateGist = "";
           let voteTypeMsg = "";
@@ -218,7 +222,7 @@
           itemsName = "根据事项模式及其他页面输入项自动生成";
         }
         vm.item = Object.assign({}, vm.item, {
-          voteDescribe: itemsName
+          stdDesc: itemsName
         })
       },
       voteClassFormatter(row, column, cellValue) {
@@ -284,18 +288,18 @@
         })
       },
       startRemove() {
-        this.$confirm('此操作将删除该公开信息, 是否继续?', '提示', {
+        this.$confirm('此操作将删除该表决标准, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          // removePublish(this.tableInstance.table.selection.map(item => item.publishId).join()).then(() => {
-          //   this.$message({
-          //     message: '删除成功',
-          //     type: 'success'
-          //   })
-          //   this.tableInstance.fetchData()
-          // })
+          removeVoteStandard(this.tableInstance.table.selection.map(item => item.sysGuid).join()).then(() => {
+            this.$message({
+              message: '删除成功',
+              type: 'success'
+            });
+            this.tableInstance.fetchData()
+          })
         }).catch(() => {
           /*this.$message({
             message: '取消删除',

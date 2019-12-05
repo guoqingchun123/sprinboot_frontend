@@ -14,3 +14,7 @@ export function createVoteStandard(data) {
 export function modifyVoteStandard(data) {
   return http.put('/api/public/voteStandard', data)
 }
+
+export function removeVoteStandard(ids) {
+  return http.delete('/api/public/voteStandard/' + ids)
+}
