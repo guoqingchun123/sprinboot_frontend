@@ -25,7 +25,7 @@
         <div slot="operates">
           <bv-button show="oneOrMore" view="add" @click="addRegionProjecs">新增</bv-button>
         </div>
-        <el-table-column type="selection" width="50" />
+        <bv-table-column type="selection" />
         <el-table-column prop="projectId" label="项目编号" sortable />
         <el-table-column prop="projectName" label="项目名称" sortable />
         <el-table-column prop="address" label="项目地址" sortable />
