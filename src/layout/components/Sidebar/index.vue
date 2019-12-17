@@ -53,7 +53,7 @@ export default {
       return path
     },
     showLogo() {
-      return this.$store.state.settings.sidebarLogo
+      return this.$store.state.settings.layout.sidebarLogo
     },
     variables() {
       return variables

@@ -1,5 +1,3 @@
-@import './variables.scss';
-
 #app {
 
   // 主体区域 Main container
@@ -65,7 +63,9 @@
     }
 
     .svg-icon {
-      margin-right: 16px;
+      width: 1.2em;
+      height: 1.2em;
+      margin-right: 10px;
     }
 
     .el-menu {
@@ -73,8 +73,16 @@
       height: 100%;
       width: 100% !important;
 
+      .el-submenu__icon-arrow {
+        margin-top: -5px;
+      }
+
       .el-submenu {
         margin-bottom: -1px;
+
+        .nest-menu .el-submenu__icon-arrow {
+          margin-right: 16px;
+        }
 
         &.is-opened {
           .el-menu-item, .el-submenu__title {

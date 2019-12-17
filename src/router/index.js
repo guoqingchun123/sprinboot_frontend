@@ -7,11 +7,10 @@ Vue.use(Router)
 import Layout from '@/layout'
 
 /* Router Modules */
-import authorityRouter from './authority'
-import basicRouter from './basic'
-import publicRouter from './public'
-import voteRouter from "./vote";
+// import authorityRouter from './modules/authority'
+// import manageRouter from './modules/manage'
 
+//import recordRouter from './modules/record'
 /**
  * Note: sub-menu only appear when route children.length >= 1
  * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
@@ -47,19 +46,18 @@ export const constantRoutes = [
     children: [
       {
         path: '/redirect/:path*',
-        component: () => import('@/views/redirect/index')
+        component: () => import('@/views/redirect')
       }
     ]
   },
   {
     path: '/login',
-    component: () => import('@/layout/login/index'),
+    component: () => import('@/layout/login'),
     hidden: true
   },
   {
     path: '/auth-redirect',
-
-    component: () => import('@/layout/login/authRedirect'),
+    component: () => import('@/layout/login/auth-redirect'),
     hidden: true
   },
   {
@@ -77,11 +75,10 @@ export const constantRoutes = [
     component: Layout,
     redirect: 'profile',
     hidden: true,
-    img: "odd",
     children: [
       {
         path: 'profile',
-        component: () => import('@/layout/userProfile/index'),
+        component: () => import('@/layout/userProfile'),
         name: 'UserProfile',
         meta: {
           title: '用户中心'
@@ -97,23 +94,21 @@ export const constantRoutes = [
     children: [
       {
         path: 'dashboard',
-        component: () => import('@/views/dashboard/index'),
+        component: () => import('@/views/dashboard'),
         name: 'Dashboard',
-        meta: {title: '${dashboard}', icon: 'dashboard', noCache: true, affix: true}
+        meta: { title: '首页', icon: 'dashboard', noCache: true, affix: true }
       }
     ]
   }
 ]
 
 /**
- * asyncRoutes
+ * errorRoutes
  * the routes that need to be dynamically loaded based on user roles
- */
-export const asyncRoutes = [
-  authorityRouter,
-  basicRouter,
-  publicRouter,
-  voteRouter,
+*/
+export const errorRoutes = [
+  // manageRouter,
+  // authorityRouter,
   {
     path: '/error',
     component: Layout,
@@ -121,7 +116,7 @@ export const asyncRoutes = [
     name: 'ErrorPages',
     hidden: true,
     meta: {
-      title: '${errorPages}',
+      title: '错误页面',
       icon: '404',
       authority: false
     },
@@ -130,37 +125,23 @@ export const asyncRoutes = [
         path: '401',
         component: () => import('@/layout/errorPage/401'),
         name: 'Page401',
-        meta: {title: '${page401}', noCache: true}
+        meta: { title: '401', noCache: true }
       },
       {
         path: '404',
         component: () => import('@/layout/errorPage/404'),
         name: 'Page404',
-        meta: {title: '${page404}', noCache: true}
-      }
-    ]
-  },
-  {
-    path: '/error-log',
-    component: Layout,
-    hidden: true,
-    redirect: 'noRedirect',
-    children: [
-      {
-        path: 'log',
-        component: () => import('@/views/errorLog/index'),
-        name: 'ErrorLog',
-        meta: {title: '${errorLog}', icon: 'bug', authority: false}
+        meta: { title: '404', noCache: true }
       }
     ]
   },
 
-  {path: '*', redirect: '/404', hidden: true, meta: {authority: false}}
+  { path: '*', redirect: '/404', hidden: true, meta: { authority: false } }
 ]
 
 const createRouter = () => new Router({
   // mode: 'history', // require service support
-  scrollBehavior: () => ({y: 0}),
+  scrollBehavior: () => ({ y: 0 }),
   routes: constantRoutes
 })
 

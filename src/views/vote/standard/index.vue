@@ -20,7 +20,7 @@
           </el-form-item>
         </bv-col>
       </div>
-      <el-table-column type="selection" width="55" />
+      <bv-table-column type="selection" />
       <el-table-column label="表决事项" prop="voteClass" align="center" :formatter="voteClassFormatter" />
       <el-table-column label="表决名称" prop="stdName" align="center" sortable="custom" />
       <el-table-column label="执行标准" prop="stdDesc" align="center" sortable="custom" />

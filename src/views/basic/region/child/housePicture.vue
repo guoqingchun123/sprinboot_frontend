@@ -1,5 +1,12 @@
 <template>
-  <div v-loading="loading" class="app-container">
+  <div>
+    <bv-file
+      catalog-types="house-picture"
+      :key-id="region.regionId"
+      :titles="{dataTitle: '户型关系一览'}"
+    />
+
+    <!--  v-loading="loading" class="app-container"
     <el-row type="flex" class="fit-scroll">
       <el-col :sm="6">
         <bv-scrollbar>
@@ -52,14 +59,19 @@
           </bv-table>
         </bv-scrollbar>
       </el-col>
-    </el-row>
+    </el-row>-->
   </div>
 </template>
 
 <script>
+  import { File } from '@bestvike/components'
+
   import {fetchRegionFiles, uploadFile, deleteFile} from '@/api/basic'
   export default {
     name: 'HousePicture',
+    components: {
+      BvFile: File
+    },
     props: {
       region: {
         type: Object,

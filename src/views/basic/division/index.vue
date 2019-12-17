@@ -18,7 +18,7 @@
           </el-form-item>
         </bv-col>
       </div>
-      <el-table-column type="selection" width="55" />
+      <bv-table-column type="selection" />
       <el-table-column label="行政区代码" prop="divisionCode" align="center" />
       <el-table-column label="行政区名称" prop="divisionName" align="center" sortable="custom" />
     </bv-table>

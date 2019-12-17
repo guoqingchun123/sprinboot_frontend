@@ -5,7 +5,7 @@ import RavenVue from 'raven-js/plugins/vue'
 
 if (process.env.VUE_APP_ERRORLOG === 'true') {
   Raven.config(
-    'http://7ea2b09bfdbc47209708d2250a48b9d1@sentry.bestvike.com/2',
+    'https://1283afe18f314551925ebf7bb213ce82@sentry.bestvike.com/7',
     {
       environment: process.env.NODE_ENV,
       release: process.env.VUE_APP_VERSION

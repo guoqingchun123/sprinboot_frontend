@@ -1,7 +1,7 @@
 <template>
   <div class="app-container" v-loading="loading">
-    <el-row :gutter="20">
-      <el-col :span="16" id="mapContainer">
+    <bv-row :gutter="20">
+      <bv-col :span="16" id="mapContainer">
         <div class="regionMap">
           <span style="width:8rem;">请输入关键字检索</span>
           <input id='tipinput' type="text" autocomplete="off" style="z-index:999">
@@ -17,21 +17,21 @@
             </div>
           </div>
         </div>
-      </el-col>
-      <el-col :span="8">
+      </bv-col>
+      <bv-col :span="8">
         <bv-form ref="dialogForm" :model="item" :rules="rules">
-          <el-row :gutter="$CONST.row.gutter">
-            <el-col v-bind="$CONST.col.layout3">
+          <bv-row>
+            <bv-col>
               <el-form-item label="坐标" prop="lnglat">
                 <el-input v-model.trim="item.lnglat" :disabled="true" />
               </el-form-item>
-            </el-col>
-            <el-col v-bind="$CONST.col.layout3">
+            </bv-col>
+            <bv-col>
               <el-form-item label="坐标组" prop="lnglats">
                 <el-input type="textarea" :rows="4" v-model.trim="item.lnglats" :disabled="true" />
               </el-form-item>
-            </el-col>
-            <el-col v-bind="$CONST.col.layout3" class="upload-step">
+            </bv-col>
+            <bv-col class="upload-step">
               <el-form-item label="上传小区logo" prop="uploadSeed">
                 <el-upload
                    ref="uploadFile"
@@ -52,14 +52,14 @@
                   </div>
                 </el-upload>
               </el-form-item>
-            </el-col>
-            <el-col v-bind="$CONST.col.layout3" style="text-align: center" class="save-step">
+            </bv-col>
+            <bv-col style="text-align: center" class="save-step">
               <bv-button type="success" icon="el-icon-finished" @click="saveRegionData">保存</bv-button>
-            </el-col>
-          </el-row>
+            </bv-col>
+          </bv-row>
         </bv-form>
-      </el-col>
-    </el-row>
+      </bv-col>
+    </bv-row>
     <!--<v-tour name="myTour" :steps="steps" :options="myOptions"></v-tour>-->
   </div>
 </template>

@@ -19,7 +19,8 @@ router.beforeEach(async(to, from, next) => {
   if (hasToken) {
     if (to.path === '/login') {
       // if is logged in, redirect to the home page
-      next({ path: '/' })
+      /// next({ path: '/' })
+      next()
       NProgress.done()
     } else {
       // determine whether the user has obtained his permission roles through getInfo
@@ -30,7 +31,7 @@ router.beforeEach(async(to, from, next) => {
         try {
           // get user info
           // note: roles must be a object array! such as: ['admin'] or ,['developer','editor']
-          const { routes } = await store.dispatch('user/getInfo')
+          const { routes, settingsMap } = await store.dispatch('user/getInfo')
 
           // generate accessible routes map based on roles
           const accessRoutes = await store.dispatch('permission/generateRoutes', routes)
@@ -38,10 +39,22 @@ router.beforeEach(async(to, from, next) => {
           // dynamically add accessible routes
           router.addRoutes(accessRoutes)
 
+          store.dispatch('settings/setSettings', settingsMap)
+          store.dispatch('message/initSocket').then(() => {})
+
           // hack method to ensure that addRoutes is complete
           // set the replace: true, so the navigation will not leave a history record
-          next({ ...to, replace: true })
+          const { route } = router.resolve(to.path)
+          if (!route || route.path === '/404') {
+            next({ path: '/dashboard', replace: true })
+          } else {
+            next({ ...to, replace: true })
+          }
         } catch (error) {
+          /// console.log(error)
+          if (!error.response || !error.response.status || error.response.status !== 401) {
+            console.error(error)
+          }
           // remove token and go to login page to re-login
           await store.dispatch('user/resetToken')
           /// Message.error(error || 'Has Error')

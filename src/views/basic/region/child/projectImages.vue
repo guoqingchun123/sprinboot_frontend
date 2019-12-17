@@ -1,5 +1,11 @@
 <template>
-  <div v-loading="loading" class="app-container">
+  <div>
+    <bv-file
+      catalog-types="project-image"
+      :key-id="region.regionId"
+      :titles="{dataTitle: '项目相册一览'}"
+    />
+    <!--
     <el-row type="flex" class="fit-scroll">
       <el-col :sm="6">
         <bv-scrollbar>
@@ -53,13 +59,19 @@
         </bv-scrollbar>
       </el-col>
     </el-row>
+    -->
   </div>
 </template>
 
 <script>
+  import { File } from '@bestvike/components'
+
   import {fetchRegionFiles, uploadFile, deleteFile} from '@/api/basic'
   export default {
     name: 'ProjectImages',
+    components: {
+      BvFile: File
+    },
     props: {
       region: {
         type: Object,

@@ -14,7 +14,7 @@
           </el-form-item>
         </bv-col>
       </div>
-      <el-table-column type="selection" width="55"/>
+      <bv-table-column type="selection"/>
       <el-table-column label="小区名称" prop="regionName" align="center" sortable="custom"/>
       <el-table-column label="小区地址" prop="address" align="center" sortable="custom"/>
       <el-table-column label="所属行政区" prop="divisionCode" :formatter="divisionFormat" align="center" sortable="custom"/>
@@ -38,8 +38,8 @@
             </el-form-item>
           </bv-col>
         </bv-row>
-        <bv-row :gutter="$CONST.row.gutter">
-          <bv-col v-bind="$CONST.col.layout2">
+        <bv-row>
+          <bv-col>
             <el-form-item label="所属行政区" prop="divisionCode">
               <el-select v-model="item.divisionCode" placeholder="请选择所属行政区">
                 <el-option
@@ -51,7 +51,7 @@
               </el-select>
             </el-form-item>
           </bv-col>
-          <bv-col v-bind="$CONST.col.layout2">
+          <bv-col>
             <el-form-item label="预售许可日期" prop="preSaleDate">
               <el-date-picker
                 v-model="item.preSaleDate"

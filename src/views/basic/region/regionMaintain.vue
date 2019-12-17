@@ -33,7 +33,7 @@
       <div slot="footer">
         <bv-form ref="dialogForm" :model="item" :rules="rules">
           <bv-row>
-            <bv-col v-bind="$CONST.col.layout2">
+            <bv-col layout="100%">
               <el-form-item label="发布日期" prop="publishDate">
                 <el-date-picker
                   v-model="item.publishDate"

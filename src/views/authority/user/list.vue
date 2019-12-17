@@ -18,7 +18,7 @@
         </bv-col>
       </div>
       <!--列表展示字段-->
-      <el-table-column type="selection" width="55" />
+      <bv-table-column type="selection" />
       <el-table-column label="用户编号" prop="userId" sortable="custom" />
       <el-table-column label="用户姓名" prop="userName" sortable="custom" />
       <el-table-column label="用户别名" prop="alias" sortable="custom" />

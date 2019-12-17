@@ -25,7 +25,7 @@
           </el-form-item>
         </bv-col>
       </div>
-      <el-table-column type="selection" width="55" />
+      <bv-table-column type="selection" />
       <el-table-column label="信息类别" prop="dataType" align="center" :formatter="dataTypeFormatter" />
       <el-table-column label="标题" prop="title" align="center" sortable="custom" />
       <el-table-column label="发布日期" prop="publishDate" align="center" sortable="custom" />
@@ -87,12 +87,12 @@
 <script>
   
   import {fetchPublishes, createPublish, modifyPublish, removePublish} from '@/api/public'
-  import {BvEditor} from '@bestvike/components'
+  import {Editor} from '@bestvike/components'
   
   export default {
     name: 'ListPublish',
     components: {
-      BvEditor
+      BvEditor: Editor
     },
     data() {
       return {

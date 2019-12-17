@@ -8,8 +8,8 @@
           </el-form-item>
         </bv-col>
         <bv-col>
-          <el-form-item label="令牌状态" prop="deviceState">
-            <el-select v-model="filter.deviceState" placeholder="请选择令牌状态">
+          <el-form-item label="令牌状态" prop="state">
+            <el-select v-model="filter.state" placeholder="请选择令牌状态">
               <el-option
                 v-for="item in tokenStateOptions"
                 :key="item.value"
@@ -21,7 +21,7 @@
         </bv-col>
       </div>
       <el-table-column label="序列号" prop="deviceSn" align="center" sortable="custom" />
-      <el-table-column label="状态" prop="deviceState" align="center" sortable="custom" :formatter="tokenStateFormatter" />
+      <el-table-column label="状态" prop="state" align="center" sortable="custom" :formatter="tokenStateFormatter" />
       <el-table-column label="分配人编号" prop="userId" align="center" sortable="custom" />
       <el-table-column label="最后修改日期" prop="lastModifyDate" align="center" :formatter="dateFormatter" />
     </bv-table>
@@ -46,7 +46,7 @@
         loading: false,
         role: {
           deviceSn: null,
-          deviceState: null,
+          state: null,
           lastModifyDate: null,
         },
         tokenStateOptions: [
@@ -79,7 +79,7 @@
       },
       //令牌状态
       tokenStateFormatter(row){
-        switch (row.deviceState) {
+        switch (row.state) {
           case '9999':return "未激活";
           case '0000':return "已激活";
           case '0001':return "已锁定";

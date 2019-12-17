@@ -21,7 +21,7 @@
           </el-form-item>
         </bv-col>
       </div>
-      <el-table-column type="selection" width="55" />
+      <bv-table-column type="selection" />
       <el-table-column label="问题类型" prop="questionType" align="center" sortable="custom" :formatter="questionTypeFormatter" />
       <el-table-column label="题目" prop="summary" align="center" sortable="custom" />
     </bv-table>

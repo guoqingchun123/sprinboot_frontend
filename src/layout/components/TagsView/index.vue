@@ -1,36 +1,65 @@
 <template>
-  <div id="tags-view-container" class="tags-view-container">
-    <scroll-pane ref="scrollPane" class="tags-view-wrapper">
-      <router-link
-        v-for="tag in visitedViews"
-        ref="tag"
-        :key="tag.path"
-        :class="isActive(tag)?'active':''"
-        :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
-        tag="span"
-        class="tags-view-item"
-        @click.middle.native="closeSelectedTag(tag)"
-        @contextmenu.prevent.native="openMenu(tag,$event)"
-      >
-        {{ generateTitle(tag.title) }}
-        <span v-if="!tag.meta.affix" class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)" />
-      </router-link>
-    </scroll-pane>
-    <ul v-show="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
-      <li @click="refreshSelectedTag(selectedTag)">
-        {{ $t('tagsView.refresh') }}
-      </li>
-      <li v-if="!(selectedTag.meta&&selectedTag.meta.affix)" @click="closeSelectedTag(selectedTag)">
-        {{
-          $t('tagsView.close') }}
-      </li>
-      <li @click="closeOthersTags">
-        {{ $t('tagsView.closeOthers') }}
-      </li>
-      <li @click="closeAllTags(selectedTag)">
-        {{ $t('tagsView.closeAll') }}
-      </li>
-    </ul>
+  <div id="tags-view-container" class="tags-view-container" :class="tabsStyle">
+    <div v-if="tabsStyle === 'default'">
+      <scroll-pane ref="scrollPane" class="tags-view-wrapper">
+        <router-link
+          v-for="tag in visitedViews"
+          ref="tag"
+          :key="tag.path"
+          :class="isActive(tag)?'active':''"
+          :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
+          tag="span"
+          class="tags-view-item"
+          @click.middle.native="closeSelectedTag(tag)"
+          @contextmenu.prevent.native="openMenu(tag, $event)"
+        >
+          <bv-icon v-if="isHome(tag)" icon-class="home" />
+          <span v-else>{{ generateTitle(tag.title) }}</span>
+          <span v-if="!tag.meta.affix" class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)" />
+        </router-link>
+      </scroll-pane>
+      <ul v-show="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
+        <li @click="refreshSelectedTag(selectedTag)">
+          {{ $t('tagsView.refresh') }}
+        </li>
+        <li v-if="!(selectedTag.meta&&selectedTag.meta.affix)" @click="closeSelectedTag(selectedTag)">
+          {{
+            $t('tagsView.close') }}
+        </li>
+        <li @click="closeOthersTags">
+          {{ $t('tagsView.closeOthers') }}
+        </li>
+        <li @click="closeAllTags(selectedTag)">
+          {{ $t('tagsView.closeAll') }}
+        </li>
+      </ul>
+    </div>
+    <div class="tabs-container" v-else>
+      <el-tabs type="card" v-model="activeTab" @tab-click="onTabClick" @tab-remove="closeSelectedTag">
+        <el-tab-pane
+          v-for="tag in visitedViews"
+          :key="tag.path"
+          :name="tag.path"
+          :closable="!tag.meta.affix"
+        >
+          <template slot="label">
+            <bv-icon v-if="isHome(tag)" icon-class="home" />
+            <span v-else>{{ generateTitle(tag.title) }}</span>
+          </template>
+        </el-tab-pane>
+      </el-tabs>
+      <div class="context">
+        <el-dropdown @command="handleCommand">
+          <bv-button svg-icon="down" />
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item command="refresh">{{ $t('tagsView.refresh') }}</el-dropdown-item>
+            <el-dropdown-item v-if="!(selectedTag && selectedTag.meta && selectedTag.meta.affix)" command="close">{{ $t('tagsView.close') }}</el-dropdown-item>
+            <el-dropdown-item command="closeOthers">{{ $t('tagsView.closeOthers') }}</el-dropdown-item>
+            <el-dropdown-item command="closeAll">{{ $t('tagsView.closeAll') }}</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -48,7 +77,8 @@ export default {
       top: 0,
       left: 0,
       selectedTag: {},
-      affixTags: []
+      affixTags: [],
+      activeTab: ''
     }
   },
   computed: {
@@ -60,6 +90,9 @@ export default {
     },
     routes() {
       return this.$store.state.permission.routes
+    },
+    tabsStyle() {
+      return this.$store.state.settings.tabs.style || 'default'
     }
   },
   watch: {
@@ -73,16 +106,35 @@ export default {
       } else {
         document.body.removeEventListener('click', this.closeMenu)
       }
+    },
+    activeTab(value) {
+      this.visitedViews.forEach(visitedView => {
+        if (value === visitedView.path) {
+          this.selectedTag = visitedView
+          return false
+        }
+      })
     }
   },
   mounted() {
     this.initTags()
     this.addTags()
+    if (this.tabsStyle === 'legacy') {
+      this.activeTab = this.$route.path
+    }
   },
   methods: {
+    isHome(tag) {
+      return tag.name === 'Dashboard'
+    },
     generateTitle: i18n.generateTitle, // generateTitle by vue-i18n
     isActive(route) {
-      return route.path === this.$route.path
+      if (process.env.VUE_APP_DETAIL_SEPRATE === 'false' && route.meta && route.meta.match && this.$route.meta && this.$route.meta.match) {
+        return route.meta.match === this.$route.meta.match
+      } else {
+        return route.path === this.$route.path
+      }
+      // return route.path === this.$route.path
     },
     filterAffixTags(routes, basePath = '/') {
       let tags = []
@@ -114,6 +166,9 @@ export default {
         }
       }
     },
+    onTabClick(tab) {
+      this.$router.push(tab.name)
+    },
     addTags() {
       const { name } = this.$route
       if (name) {
@@ -122,19 +177,28 @@ export default {
       return false
     },
     moveToCurrentTag() {
-      const tags = this.$refs.tag
-      this.$nextTick(() => {
-        for (const tag of tags) {
-          if (tag.to.path === this.$route.path) {
-            this.$refs.scrollPane.moveToTarget(tag)
-            // when query is different then update
-            if (tag.to.fullPath !== this.$route.fullPath) {
-              this.$store.dispatch('tagsView/updateVisitedView', this.$route)
+      if (this.tabsStyle === 'default') {
+        const tags = this.$refs.tag
+        this.$nextTick(() => {
+          for (const tag of tags) {
+            if (tag.to.path === this.$route.path) {
+              this.$refs.scrollPane.moveToTarget(tag)
+              // when query is different then update
+              if (tag.to.fullPath !== this.$route.fullPath) {
+                this.$store.dispatch('tagsView/updateVisitedView', this.$route)
+              }
+              break
             }
-            break
           }
-        }
-      })
+        })
+      } else if (this.tabsStyle === 'legacy') {
+        this.$nextTick(() => {
+          if (this.activeTab !== this.$route.path) {
+            this.$store.dispatch('tagsView/updateVisitedView', this.$route)
+            this.activeTab = this.$route.path
+          }
+        })
+      }
     },
     refreshSelectedTag(view) {
       this.$store.dispatch('tagsView/delCachedView', view).then(() => {
@@ -147,6 +211,14 @@ export default {
       })
     },
     closeSelectedTag(view) {
+      if (typeof view === 'string') {
+        this.visitedViews.forEach(visitedView => {
+          if (visitedView.path === view) {
+            view = visitedView
+            return false
+          }
+        })
+      }
       this.$store.dispatch('tagsView/delView', view).then(({ visitedViews }) => {
         if (this.isActive(view)) {
           this.toLastView(visitedViews, view)
@@ -201,6 +273,17 @@ export default {
     },
     closeMenu() {
       this.visible = false
+    },
+    handleCommand(command) {
+      if (command === 'refresh') {
+        this.refreshSelectedTag(this.selectedTag)
+      } else if (command === 'close') {
+        this.closeSelectedTag(this.selectedTag)
+      } else if (command === 'closeOthers') {
+        this.closeOthersTags()
+      } else if (command === 'closeAll') {
+        this.closeAllTags(this.selectedTag)
+      }
     }
   }
 }
@@ -213,8 +296,10 @@ export default {
   height: $tagsViewHeight;
   width: 100%;
   background: #fff;
-  border-bottom: 1px solid #d8dce5;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12), 0 0 3px 0 rgba(0, 0, 0, .04);
+  &.default {
+    border-bottom: 1px solid #d8dce5;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12), 0 0 3px 0 rgba(0, 0, 0, .04);
+  }
   .tags-view-wrapper {
     .tags-view-item {
       display: inline-block;
@@ -235,10 +320,7 @@ export default {
       &:last-of-type {
         margin-right: 15px;
       }
-      &.active {
-        background-color: #42b983;
-        color: #fff;
-        border-color: #42b983;
+      /*&.active {
         &::before {
           content: '';
           background: #fff;
@@ -249,7 +331,7 @@ export default {
           position: relative;
           margin-right: 2px;
         }
-      }
+      }*/
     }
   }
   .contextmenu {
@@ -277,6 +359,7 @@ export default {
 </style>
 
 <style lang="scss">
+@import "@/styles/variables.scss";
 //reset element css of el-icon-close
 .tags-view-wrapper {
   .tags-view-item {
@@ -293,11 +376,51 @@ export default {
         display: inline-block;
         vertical-align: -3px;
       }
-      &:hover {
-        background-color: #b4bccc;
-        color: #fff;
+    }
+  }
+}
+.tags-view-container {
+  .el-tabs--card > .el-tabs__header {
+    margin-bottom: 0;
+  }
+  .tabs-container {
+    display: flex;
+    justify-content: space-between;
+
+    .el-tabs {
+      width: calc(100% - 30px);
+
+      .el-tabs__nav-next, .el-tabs__nav-prev {
+        height: $tagsViewTabsHeight;
+        line-height: $tagsViewTabsHeight;
+        width: 20px;
+        text-align: center;
+
+        &:hover, &:focus {
+          color: #3693f3;
+          border-color: #c3dffb;
+          background-color: #ebf4fe;
+        }
       }
     }
+  }
+  .context, .el-tabs__item {
+    height: $tagsViewTabsHeight;
+    line-height: $tagsViewTabsHeight;
+  }
+  .context {
+    width: 30px;
+    flex-basis: 30px;
+    text-align: center;
+    .el-button {
+      padding: 8px 5px 7px 6px;
+      border-radius: 0;
+    }
+  }
+
+  .svg-icon {
+    width: 1.2em;
+    height: 1.2em;
   }
 }
 </style>

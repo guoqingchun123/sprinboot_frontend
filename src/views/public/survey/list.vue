@@ -19,7 +19,7 @@
           </el-form-item>
         </bv-col>
       </div>
-      <el-table-column :selectable="selectable" type="selection" width="55"/>
+      <bv-table-column :selectable="selectable" type="selection" />
       <el-table-column label="问卷标题" prop="title" align="center" sortable="custom"/>
       <el-table-column label="问卷摘要" prop="summary" align="center" sortable="custom"/>
       <el-table-column label="问卷状态" prop="surveyStatus" align="center" sortable="custom" :formatter="surveyStatusFormatter"/>

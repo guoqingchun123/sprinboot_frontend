@@ -8,7 +8,7 @@
           </el-form-item>
         </bv-col>
       </div>
-      <el-table-column type="selection" width="55" />
+      <bv-table-column type="selection" />
       <el-table-column label="企业编号" prop="corpId" align="center" sortable="custom" />
       <el-table-column label="企业名称" prop="compName" align="center" sortable="custom" />
     </bv-table>

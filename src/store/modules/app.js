@@ -1,18 +1,25 @@
 import Cookies from 'js-cookie'
 import { getLanguage } from '@/lang/index'
-import { initDicts } from '@/api/authority'
+import { initDepts } from '@/api/support'
+import { initDicts, initEnums } from '@/api/manage/dictionary'
 
 const state = {
   sidebar: {
-    opened: Cookies.get('sidebarStatus') ? !!+Cookies.get('sidebarStatus') : true,
+    opened: Cookies.get('sidebar') ? Cookies.get('sidebar') === 'opened' : true,
     withoutAnimation: false
   },
   device: 'desktop',
   language: getLanguage(),
   size: Cookies.get('size') || 'medium',
   theme: Cookies.get('theme') || '#409EFF',
+  depts: null,
   // 字典配置
-  dicts: {}
+  dicts: {},
+  // 枚举
+  enums: {},
+  needLogin: false,
+  loginHandler: {},
+  loginPromise: null
 }
 
 const mutations = {
@@ -20,13 +27,13 @@ const mutations = {
     state.sidebar.opened = !state.sidebar.opened
     state.sidebar.withoutAnimation = false
     if (state.sidebar.opened) {
-      Cookies.set('sidebarStatus', 1)
+      Cookies.set('sidebar', 'opened')
     } else {
-      Cookies.set('sidebarStatus', 0)
+      Cookies.set('sidebar', 'closed')
     }
   },
   CLOSE_SIDEBAR: (state, withoutAnimation) => {
-    Cookies.set('sidebarStatus', 0)
+    Cookies.set('sidebar', 'closed')
     state.sidebar.opened = false
     state.sidebar.withoutAnimation = withoutAnimation
   },
@@ -52,9 +59,26 @@ const mutations = {
     state.theme = theme
     Cookies.set('theme', theme)
   },
+  SET_DEPTS: (state, data) => {
+    const { depts } = data
+    state.depts = depts
+  },
   SET_DICTS: (state, data) => {
     const { code, dicts } = data
     state.dicts[code] = dicts
+  },
+  SET_ENUMS: (state, data) => {
+    const { code, enums } = data
+    state.enums[code] = enums
+  },
+  SET_NEED_LOGIN: (state, needLogin) => {
+    state.needLogin = needLogin
+  },
+  SET_LOGIN_HANDLER: (state, loginHandler) => {
+    state.loginHandler = loginHandler
+  },
+  SET_LOGIN_PROMISE: (state, loginPromise) => {
+    state.loginPromise = loginPromise
   }
 }
 
@@ -80,6 +104,65 @@ const actions = {
   setTheme({ commit }, theme) {
     commit('SET_THEME', theme)
   },
+  triggerLogin({ commit, state }, needLogin) {
+    if (!needLogin) {
+      commit('SET_NEED_LOGIN', false)
+    } else {
+      commit('SET_NEED_LOGIN', true)
+      if (!state.loginPromise) {
+        let loginPromise = new Promise((resolve, reject) => {
+          commit('SET_LOGIN_HANDLER', {
+            resolve: resolve,
+            reject: reject
+          })
+        })
+        commit('SET_LOGIN_PROMISE', loginPromise)
+        return loginPromise
+      }
+      return state.loginPromise
+    }
+  },
+  confirmLogin({ commit, state }) {
+    commit('SET_NEED_LOGIN', false)
+    state.loginHandler.resolve('成功')
+    commit('SET_LOGIN_HANDLER', {})
+    commit('SET_LOGIN_PROMISE', null)
+  },
+  cancelLogin({ commit }) {
+    commit('SET_NEED_LOGIN', false)
+    state.loginHandler.reject({
+      response: {
+        data: {
+          message: '取消登录'
+        }
+      }
+    })
+    commit('SET_LOGIN_HANDLER', {})
+    commit('SET_LOGIN_PROMISE', null)
+  },
+  fetchDepts({ commit, state }) {
+    return new Promise((resolve, reject) => {
+      if (state.depts) {
+        resolve(state.depts)
+      } else {
+        initDepts().then(response => {
+          const { data } = response
+          commit('SET_DEPTS', {
+            depts: data
+          })
+          resolve(data)
+        }).catch(error => {
+          reject(error)
+        })
+      }
+    })
+  },
+  setDicts({ commit }, { code, dicts }) {
+    commit('SET_DICTS', {
+      code,
+      dicts
+    })
+  },
   fetchDicts({ commit, state }, code) {
     return new Promise((resolve, reject) => {
       if (state.dicts[code]) {
@@ -90,6 +173,24 @@ const actions = {
           commit('SET_DICTS', {
             code,
             dicts: data
+          })
+          resolve(data)
+        }).catch(error => {
+          reject(error)
+        })
+      }
+    })
+  },
+  fetchEnums({ commit, state }, code) {
+    return new Promise((resolve, reject) => {
+      if (state.enums[code]) {
+        resolve(state.enums[code])
+      } else {
+        initEnums(code).then(response => {
+          const { data } = response
+          commit('SET_ENUMS', {
+            code,
+            enums: data
           })
           resolve(data)
         }).catch(error => {

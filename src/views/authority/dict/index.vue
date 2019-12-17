@@ -20,11 +20,11 @@
                   @on-mounted="(table) => tableInstance = table"
         >
           <div slot="operates">
-            <bv-button show="none" view="add" @click="startCreate()">新增</bv-button>
+            <bv-button show="none" view="create" @click="startCreate()">新增</bv-button>
             <bv-button show="one" view="modify" @click="startModify()">修改</bv-button>
             <bv-button show="oneOrMore" view="remove" @click="startRemove()">删除</bv-button>
           </div>
-          <el-table-column type="selection" width="55" />
+          <bv-table-column type="selection" />
           <el-table-column label="字典代码" prop="code" align="center" />
           <el-table-column label="字典名称" prop="name" align="center" />
         </bv-table>
