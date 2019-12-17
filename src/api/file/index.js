@@ -1,4 +1,4 @@
-import http from '@/utils/http-portal'
+import http from '@/utils/http'
 
 export function fetchAllCatalogs() {
   return http.get('/api/file/catalogs/all')

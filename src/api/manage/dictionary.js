@@ -1,4 +1,4 @@
-import http from '@/utils/http-portal'
+import http from '@/utils/http'
 
 export function initDicts(code) {
   return http.get('/api/dicts/' + code)

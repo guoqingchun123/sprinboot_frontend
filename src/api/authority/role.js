@@ -1,4 +1,4 @@
-import http from '@/utils/http-portal'
+import http from '@/utils/http'
 
 export function fetchRoles(query) {
   return http.get('/api/roles', {
