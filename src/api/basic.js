@@ -1,4 +1,4 @@
-import http from '@/utils/http'
+import http from '@/utils/http-center'
 
 //文件上传通用接口
 export function uploadFile(file,data) {
