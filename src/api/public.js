@@ -1,4 +1,4 @@
-import http from '@/utils/http'
+import http from '@/utils/http-public'
 
 /*政务公开*/
 export function fetchPublishes(query) {

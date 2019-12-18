@@ -1,4 +1,4 @@
-import http from '@/utils/http'
+import http from '@/utils/http-public'
 
 /*公共事项表决*/
 export function fetchVoteStandards(query) {

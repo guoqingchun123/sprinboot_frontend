@@ -15,7 +15,7 @@ process.env.VUE_APP_CODE = 'hmis'
 // id不同的详情页是否允许同时打开多个
 process.env.VUE_APP_DETAIL_SEPRATE = false
 
-const name = pkg.name || 'hmis' // page title
+const name = '赤峰房产信息平台' // page title
 // If your port is set to 80,
 // use administrator privileges to execute the command line.
 // For example, Mac: sudo npm run
