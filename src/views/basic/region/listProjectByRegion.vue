@@ -3,7 +3,7 @@
     <bv-table title="项目一览" :pagination="true" :filter.sync="filter" :fetch-api="fetchProjs_" @on-mounted="(table) => tableInstance = table">
       <div slot="operates">
         <bv-button view="create" @click="initProject()">新增项目</bv-button>
-        <bv-button type="primary" icon="el-icon-back" @click="returnPre()">返回</bv-button>
+        <bv-button icon="el-icon-back" @click="returnPre()">返回</bv-button>
       </div>
       <div slot="search">
         <bv-col>

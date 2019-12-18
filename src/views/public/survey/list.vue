@@ -28,8 +28,8 @@
       <el-table-column label="结束日期" prop="stopDate" align="center" sortable="custom"/>
       <el-table-column fixed="right" label="操作" align="center">
         <template slot-scope="scope">
-          <bv-button view="details" :disabled="scope.row.surveyStatus === '0001'" authority="maintain" type="text" @click="startSurveyItems(scope.row)">维护问卷明细</bv-button>
-          <bv-button view="view" type="text" @click="startView(scope.row)">预览</bv-button>
+          <bv-button view="details" :disabled="scope.row.surveyStatus === '0001'" authority="maintain" @click="startSurveyItems(scope.row)">维护问卷明细</bv-button>
+          <bv-button view="view" @click="startView(scope.row)">预览</bv-button>
         </template>
       </el-table-column>
     </bv-table>

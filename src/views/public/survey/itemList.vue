@@ -5,7 +5,7 @@
         <bv-button show="none" view="create" authority="create" @click="startCreate()">新增</bv-button>
         <bv-button show="one" view="modify" authority="modify" @click="startModify()">修改</bv-button>
         <bv-button v-if="deleteShow()" view="remove" authority="remove" @click="startRemove()">删除</bv-button>
-        <bv-button type="primary" icon="el-icon-back" @click="returnPrePage">返回</bv-button>
+        <bv-button icon="el-icon-back" @click="returnPrePage">返回</bv-button>
       </div>
       <div slot="search">
         <bv-col>

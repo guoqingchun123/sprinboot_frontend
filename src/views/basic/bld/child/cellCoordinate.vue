@@ -9,10 +9,10 @@
       <el-col :span="4">
         <el-row>
           <el-col :span="12" style="text-align: center">
-            <bv-button type="success" icon="el-icon-success" @click="saveData" :disabled="disabledBtn">确定</bv-button>
+            <bv-button icon="el-icon-success" @click="saveData" :disabled="disabledBtn">确定</bv-button>
           </el-col>
           <el-col :span="12" style="text-align: center">
-            <bv-button type="danger" icon="el-icon-delete-solid" @click="clearData" :disabled="disabledBtn">清空</bv-button>
+            <bv-button icon="el-icon-delete-solid" @click="clearData" :disabled="disabledBtn">清空</bv-button>
           </el-col>
         </el-row>
       </el-col>

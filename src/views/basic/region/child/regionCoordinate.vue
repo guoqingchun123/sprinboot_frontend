@@ -11,9 +11,9 @@
               <label for="polygon" class="input-text">划定小区范围</label>
             </div>
             <div class="input-item">
-              <bv-button id="clear" type="success" icon="el-icon-error" class="btn">清除</bv-button>
-              <bv-button id="close" type="success" icon="el-icon-circle-close" class="btn">关闭绘图</bv-button>
-              <bv-button id="save" type="success" icon="el-icon-success" class="btn">保存</bv-button>
+              <bv-button id="clear" icon="el-icon-error" class="btn">清除</bv-button>
+              <bv-button id="close" icon="el-icon-circle-close" class="btn">关闭绘图</bv-button>
+              <bv-button id="save" icon="el-icon-success" class="btn">保存</bv-button>
             </div>
           </div>
         </div>
