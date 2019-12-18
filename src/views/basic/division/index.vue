@@ -2,7 +2,7 @@
   <div class="app-container">
     <bv-table title="行政区划" :pagination="true" :filter.sync="filter" :fetch-api="fetchDivisions" @on-mounted="(table) => tableInstance = table">
       <div slot="operates">
-        <bv-button show="none" view="add" authority="add" @click="startCreate()">新增</bv-button>
+        <bv-button show="none" view="create" authority="create" @click="startCreate()">新增</bv-button>
         <bv-button show="one" view="modify" authority="modify" @click="startModify()">修改</bv-button>
         <bv-button v-if="deleteShow() && testShow" view="remove" authority="remove" @click="startRemove()">删除</bv-button>
       </div>
@@ -25,7 +25,7 @@
 
     <bv-dialog title="行政区维护" :visible.sync="dialogFormVisible" @close="dialogClose">
       <bv-form ref="dialogForm" :model="item" :rules="rules">
-        <bv-row layout="dialog-2">
+        <bv-row :layout="2">
           <bv-col>
             <el-form-item label="行政区代码" prop="divisionCode">
               <el-input v-if="modifyType === 'create'" v-model.trim="item.divisionCode" />
@@ -38,14 +38,14 @@
             </el-form-item>
           </bv-col>
         </bv-row>
-        <bv-row layout="dialog-1">
+        <bv-row :layout="1">
           <bv-col>
             <div class="app">
               <div id="map" ref="map" style="height: 450px" />
             </div>
           </bv-col>
         </bv-row>
-        <bv-row layout="dialog-2">
+        <bv-row :layout="2">
           <bv-col>
             <el-form-item label="经度" prop="x">
               <el-input v-model.trim="item.x" :disabled="true" />

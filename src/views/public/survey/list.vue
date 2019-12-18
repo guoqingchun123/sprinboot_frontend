@@ -2,8 +2,8 @@
   <div class="app-container">
     <bv-table title="调查问卷一览" :pagination="true" :filter.sync="filter" :fetch-api="fetchSurveys" @on-mounted="(table) => tableInstance = table">
       <div slot="operates">
-        <bv-button show="none" view="add" authority="add" @click="startCreate()">新增</bv-button>
-        <bv-button show="one" type="success" icon="el-icon-position" @click="startPublish()">发布</bv-button>
+        <bv-button show="none" view="create" authority="create" @click="startCreate()">新增</bv-button>
+        <bv-button show="one" icon="el-icon-position" authority="publish" @click="startPublish()">发布</bv-button>
         <bv-button show="one" view="modify" authority="modify" @click="startModify()">修改</bv-button>
         <bv-button v-if="deleteShow()" view="remove" authority="remove" @click="startRemove()">删除</bv-button>
       </div>
@@ -28,15 +28,15 @@
       <el-table-column label="结束日期" prop="stopDate" align="center" sortable="custom"/>
       <el-table-column fixed="right" label="操作" align="center">
         <template slot-scope="scope">
-          <el-button view="details" :disabled="scope.row.surveyStatus === '0001'" type="text" @click="startSurveyItems(scope.row)">维护问卷明细</el-button>
-          <el-button view="view" type="text" @click="startView(scope.row)">预览</el-button>
+          <bv-button view="details" :disabled="scope.row.surveyStatus === '0001'" authority="maintain" type="text" @click="startSurveyItems(scope.row)">维护问卷明细</bv-button>
+          <bv-button view="view" type="text" @click="startView(scope.row)">预览</bv-button>
         </template>
       </el-table-column>
     </bv-table>
 
     <bv-dialog title="调查问卷维护" :visible.sync="dialogFormVisible" @close="dialogClose">
       <bv-form ref="dialogForm" :model="item" :rules="rules">
-        <bv-row layout="dialog-1">
+        <bv-row :layout="1">
           <bv-col>
             <el-form-item label="标题" prop="title">
               <el-input v-model="item.title" style="width: 35.3vw;"/>
@@ -48,7 +48,7 @@
             </el-form-item>
           </bv-col>
         </bv-row>
-        <bv-row layout="dialog-1">
+        <bv-row :layout="1">
           <bv-col>
             <el-form-item label="调查范围" prop="surveyScopes">
               <el-cascader v-model="item.surveyScopes"
@@ -57,7 +57,7 @@
             </el-form-item>
           </bv-col>
         </bv-row>
-        <bv-row layout="dialog-2">
+        <bv-row :layout="2">
           <bv-col>
             <el-form-item label="开始日期" prop="startDate">
               <el-date-picker

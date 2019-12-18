@@ -20,7 +20,7 @@
     </el-col>
     <bv-dialog title="图档类型维护" :visible.sync="dialogFormVisible" v-if="dialogFormVisible">
       <bv-form ref="dialogForm" :model="item" :rules="rules">
-        <bv-row layout="dialog-2">
+        <bv-row :layout="2">
           <bv-col>
             <bv-form-item v-if="modifyType === 'create'" label="编号" prop="code">
               <bv-input v-model.trim="item.code" />

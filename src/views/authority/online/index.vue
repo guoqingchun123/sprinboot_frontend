@@ -21,7 +21,7 @@
     </bv-table>
     <bv-dialog title="推送消息" :visible.sync="dialogFormVisible">
       <bv-form ref="dialogForm" :model="item" :rules="rules">
-        <bv-row layout="dialog-2">
+        <bv-row :layout="2">
           <bv-col>
             <bv-form-item label="消息类型" prop="type">
               <bv-radio-group v-model="item.type" :items="[{code: 'alert', name: '弹窗'}]" />

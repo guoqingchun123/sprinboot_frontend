@@ -5,7 +5,7 @@
       <!--按钮操作-->
       <div slot="operates">
         <bv-button show="one" view="grant" @click="initGrant()">授权</bv-button>
-        <bv-button show="none" view="add" authority="add" @click="startCreate()">新增</bv-button>
+        <bv-button show="none" view="create" authority="create" @click="startCreate()">新增</bv-button>
         <bv-button show="one" view="modify" @click="initUserEdit()">修改</bv-button>
         <bv-button show="oneOrMore" view="remove" @click="startRemove()">删除</bv-button>
         <bv-button show="one" view="remove" @click="resetPass()">重置密码</bv-button>

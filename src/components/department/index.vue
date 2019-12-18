@@ -21,7 +21,7 @@
     </bv-tree>
     <bv-dialog title="维护部门" :visible.sync="dialogFormVisible">
       <bv-form ref="dialogForm" :model="item" :rules="rules">
-        <bv-row layout="dialog-2">
+        <bv-row :layout="2">
           <bv-col>
             <bv-form-item label="部门名称" prop="name">
               <el-input v-model="item.name" />

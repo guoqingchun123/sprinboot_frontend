@@ -26,7 +26,7 @@
 
     <bv-dialog title="角色维护" :visible.sync="dialogFormVisible">
       <bv-form ref="dialogForm" :model="item" :rules="rules">
-        <bv-row layout="dialog-2">
+        <bv-row :layout="2">
           <bv-col>
             <bv-form-item label="角色代码" prop="id">
               <bv-input v-if="modifyType === 'create'" v-model.trim="item.id" />

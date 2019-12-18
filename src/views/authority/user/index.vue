@@ -39,7 +39,7 @@
     </bv-table>
     <bv-dialog title="维护用户信息" :visible.sync="dialogFormVisible">
       <bv-form ref="dialogForm" :model="user" :rules="rules">
-        <bv-row layout="dialog-2">
+        <bv-row :layout="2">
           <!--<bv-col>
             <bv-form-item label="用户登录名" prop="id">
               <bv-input v-model="user.avatar" />

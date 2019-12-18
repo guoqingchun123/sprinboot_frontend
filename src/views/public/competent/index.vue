@@ -1,68 +1,27 @@
 <template>
   <div class="app-container">
-    <bv-table title="行政区划" :pagination="true" :filter.sync="filter" :fetch-api="fetchDivisions" @on-mounted="(table) => tableInstance = table">
-      <div slot="operates">
-        <bv-button show="none" view="add" authority="add" @click="startCreate()">新增</bv-button>
-        <bv-button show="one" view="modify" authority="modify" @click="startModify()">修改</bv-button>
-        <bv-button v-if="deleteShow() && testShow" view="remove" authority="remove" @click="startRemove()">删除</bv-button>
-      </div>
-      <div slot="search">
+    <h3>机构简介</h3>
+    <bv-form ref="dialogForm" :model="item" :rules="rules">
+      <bv-row>
         <bv-col>
-          <el-form-item label="行政区代码" prop="divisionCode">
-            <el-input v-model="filter.divisionCode" />
+          <el-form-item label="机构名称" prop="competentName">
+            <el-input v-model.trim="item.competentName" />
+          </el-form-item>
+        </bv-col>
+      </bv-row>
+      <bv-row >
+        <bv-col>
+          <el-form-item label="经度" prop="x">
+            <el-input v-model.trim="item.x" :disabled="true" />
           </el-form-item>
         </bv-col>
         <bv-col>
-          <el-form-item label="行政区名称" prop="divisionName">
-            <el-input v-model="filter.divisionName" />
+          <el-form-item label="纬度" prop="y">
+            <el-input v-model.trim="item.y" :disabled="true" />
           </el-form-item>
         </bv-col>
-      </div>
-      <bv-table-column type="selection" />
-      <el-table-column label="行政区代码" prop="divisionCode" align="center" />
-      <el-table-column label="行政区名称" prop="divisionName" align="center" sortable="custom" />
-    </bv-table>
-
-    <bv-dialog title="行政区维护" :visible.sync="dialogFormVisible" @close="dialogClose">
-      <bv-form ref="dialogForm" :model="item" :rules="rules">
-        <bv-row layout="dialog-2">
-          <bv-col>
-            <el-form-item label="行政区代码" prop="divisionCode">
-              <el-input v-if="modifyType === 'create'" v-model.trim="item.divisionCode" />
-              <span v-else v-text="item.divisionCode" />
-            </el-form-item>
-          </bv-col>
-          <bv-col>
-            <el-form-item label="行政区名称" prop="divisionName">
-              <el-input v-model.trim="item.divisionName" />
-            </el-form-item>
-          </bv-col>
-        </bv-row>
-        <bv-row layout="dialog-1">
-          <bv-col>
-            <div class="app">
-              <div id="map" ref="map" style="height: 450px" />
-            </div>
-          </bv-col>
-        </bv-row>
-        <bv-row layout="dialog-2">
-          <bv-col>
-            <el-form-item label="经度" prop="x">
-              <el-input v-model.trim="item.x" :disabled="true" />
-            </el-form-item>
-          </bv-col>
-          <bv-col>
-            <el-form-item label="纬度" prop="y">
-              <el-input v-model.trim="item.y" :disabled="true" />
-            </el-form-item>
-          </bv-col>
-        </bv-row>
-      </bv-form>
-      <div slot="footer">
-        <bv-button view="save" @click="confirmModify()">保存</bv-button>
-        <bv-button view="cancel" @click="cancelModify()">取消</bv-button>
-      </div>
-    </bv-dialog>
+      </bv-row>
+    </bv-form>
   </div>
 </template>
 

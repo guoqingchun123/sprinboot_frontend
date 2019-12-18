@@ -49,7 +49,7 @@
 
     <bv-dialog title="验证密码" :visible.sync="dialogFormVisibleToken" :close-on-press-escape="true">
       <bv-form ref="verifyPassForm" :model="item" :rules="rules">
-        <bv-row layout="dialog-2">
+        <bv-row :layout="2">
           <bv-col>
             <el-form-item label="动态令牌密码：" prop="devicePwd" style="white-space: nowrap">
               <el-input v-model="item.devicePwd" placeholder="请输入动态令牌密码" />
@@ -65,7 +65,7 @@
 
     <bv-dialog title="令牌发放" :visible.sync="dialogFormVisibleAdd" :close-on-press-escape="true">
       <bv-form ref="tokenGrantForm" :model="unallotToken" :rules="rules">
-        <bv-row layout="dialog-2">
+        <bv-row :layout="2">
           <bv-col>
             <el-form-item label="令牌序列号" prop="deviceSn" style="white-space: nowrap">
               <el-select v-model="unallotToken.deviceSn" placeholder="请输入令牌序列号" filterable>

@@ -2,7 +2,7 @@
   <div class="app-container">
     <bv-table :title="title" :pagination="true" :filter.sync="filter" :fetch-api="fetchSurveyItems_" @on-mounted="(table) => tableInstance = table">
       <div slot="operates">
-        <bv-button show="none" view="add" authority="add" @click="startCreate()">新增</bv-button>
+        <bv-button show="none" view="create" authority="create" @click="startCreate()">新增</bv-button>
         <bv-button show="one" view="modify" authority="modify" @click="startModify()">修改</bv-button>
         <bv-button v-if="deleteShow()" view="remove" authority="remove" @click="startRemove()">删除</bv-button>
         <bv-button type="primary" icon="el-icon-back" @click="returnPrePage">返回</bv-button>
@@ -28,7 +28,7 @@
 
     <bv-dialog title="问题维护" :visible.sync="dialogFormVisible" @close="dialogClose">
       <bv-form ref="dialogForm" :model="item" :rules="rules">
-        <bv-row layout="dialog-1">
+        <bv-row :layout="1">
           <bv-col>
             <el-form-item label="问题类型" prop="questionType">
               <el-radio-group v-model="item.questionType" placeholder="请选择问题类型" @change="questionTypeChange">

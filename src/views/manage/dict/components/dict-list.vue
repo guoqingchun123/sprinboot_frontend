@@ -17,7 +17,7 @@
     </bv-table>
     <bv-dialog title="字典维护" :visible.sync="dialogFormVisible" v-if="dialogFormVisible">
       <bv-form ref="dialogForm" :model="item" :rules="rules">
-        <bv-row layout="dialog-2">
+        <bv-row :layout="2">
           <bv-col>
             <bv-form-item label="字典代码" prop="code">
               <bv-input v-if="modifyType === 'create'" v-model.trim="item.code" />

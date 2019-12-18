@@ -53,7 +53,7 @@
 
     <bv-dialog title="字典维护" :visible.sync="dialogFormVisible">
       <bv-form ref="dialogForm" :model="item" :rules="rules">
-        <bv-row layout="dialog-2">
+        <bv-row :layout="2">
           <bv-col>
             <el-form-item label="字典代码" prop="code">
               <el-input v-if="modifyType === 'create'" v-model.trim="item.code" />

@@ -4,7 +4,7 @@
       <h3>时间戳同步</h3>
     </div>
     <el-form ref="tokenSynForm" :rules="rules" :model="filter" status-icon label-width="100px" label-position="right" style="width: 90%;">
-      <bv-row layout="dialog-2">
+      <bv-row :layout="2">
         <bv-col>
           <el-form-item label="设备类型:" prop="deviceType">
             <el-select v-model="filter.deviceId" placeholder="请选择">

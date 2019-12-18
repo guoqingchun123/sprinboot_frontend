@@ -2,7 +2,7 @@
   <div class="app-container">
     <bv-table title="表决标准一览" :pagination="true" :filter.sync="filter" :fetch-api="fetchVoteStandards" @on-mounted="(table) => tableInstance = table">
       <div slot="operates">
-        <bv-button show="none" view="add" authority="add" @click="startCreate()">新增</bv-button>
+        <bv-button show="none" view="create" authority="create" @click="startCreate()">新增</bv-button>
         <bv-button show="one" view="modify" authority="modify" @click="startModify()">修改</bv-button>
         <bv-button v-if="deleteShow()" view="remove" authority="remove" @click="startRemove()">删除</bv-button>
       </div>
@@ -30,7 +30,7 @@
     
     <bv-dialog v-if="dialogFormVisible" title="表决标准维护" :visible.sync="dialogFormVisible">
       <bv-form ref="dialogForm" :model="item" :rules="rules">
-        <bv-row layout="dialog-1">
+        <bv-row :layout="1">
           <bv-col>
             <el-form-item label="表决模式" prop="voteMode">
               <el-radio-group v-model="item.voteMode" placeholder="请选择表决事项" @change="initDescribe">

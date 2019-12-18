@@ -3,7 +3,7 @@
     <bv-table title="小区一览" :pagination="true" :filter.sync="filter" :fetch-api="fetchRegions"
               @on-mounted="(table) => tableInstance = table">
       <div slot="operates">
-        <bv-button show="none" view="add" authority="add" @click="startCreate()">新增</bv-button>
+        <bv-button show="none" view="create" authority="create" @click="startCreate()">新增</bv-button>
         <bv-button show="one" view="modify" authority="modify" @click="startModify()">修改</bv-button>
         <bv-button v-if="deleteShow()" view="remove" authority="remove" @click="startRemove()">删除</bv-button>
       </div>
