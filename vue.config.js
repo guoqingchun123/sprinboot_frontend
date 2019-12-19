@@ -33,13 +33,6 @@ if (process.env.VUE_APP_ANALYSIS === 'true') {
   }
 }
 if (process.env.VUE_APP_MOCK !== 'true') {
-  proxy['/hmis/api'] = {
-    target: process.env.VUE_APP_API_SERVER,
-    changeOrigin: true,
-    pathRewrite: {
-      '/hmis/api': '/api'
-    }
-  }
   proxy['/api'] = {
     target: process.env.VUE_APP_API_PORTAL,
     changeOrigin: true
