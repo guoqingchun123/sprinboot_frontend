@@ -34,7 +34,7 @@
         <bv-row>
           <bv-col>
             <el-form-item label="小区名称" prop="regionName">
-              <el-input v-model.trim="item.regionName" style="width: 36vw"/>
+              <el-input v-model.trim="item.regionName" />
             </el-form-item>
           </bv-col>
         </bv-row>
@@ -86,7 +86,7 @@
         <bv-row>
           <bv-col>
             <el-form-item label="小区地址" prop="address">
-              <el-input v-model.trim="item.address" type="textarea" :rows="1" style="width: 36vw"/>
+              <el-input v-model.trim="item.address" type="textarea" :rows="1" />
             </el-form-item>
           </bv-col>
         </bv-row>

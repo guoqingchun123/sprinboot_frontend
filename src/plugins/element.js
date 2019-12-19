@@ -9,7 +9,7 @@ import {
   Upload, Tree,
   Card, Row, Col,
   Dropdown, DropdownMenu, DropdownItem, Tag, ColorPicker,DatePicker,TimePicker,Autocomplete,Steps,Step,Cascader,
-  Loading, Popover, Message, MessageBox, Transfer } from 'element-ui'
+  Loading, Popover, Message, MessageBox, Transfer, InputNumber } from 'element-ui'
 import Cookies from 'js-cookie'
 
 Vue.prototype.$ELEMENT = { size: Cookies.get('size') || 'medium' }
@@ -66,6 +66,8 @@ Vue.use(Cascader)
 Vue.use(Loading.directive)
 Vue.use(Popover)
 Vue.use(Transfer)
+Vue.use(InputNumber)
+
 // Vue.prototype.$loading = Loading.service
 Vue.prototype.$message = Message
 const MsgBox = MessageBox;

@@ -1,9 +1,10 @@
 import http from '@/utils/http-center'
 
 //文件上传通用接口
-export function uploadFile(file,data) {
-  return http.upload('/api/portal/files/upload',file,data)
+export function uploadFile(file, data) {
+  return http.upload('/api/portal/files/upload', file, data)
 }
+
 export function deleteFile(ids) {
   return http.delete('/api/portal/files/' + ids)
 }
@@ -67,6 +68,7 @@ export function createRegion(data) {
 export function modifyRegion(data) {
   return http.put('/api/center/region', data)
 }
+
 /*企业管理*/
 export function fetchCorp(query) {
   return http.get('/api/center/corps', {
@@ -79,50 +81,63 @@ export function fetchProjects(query) {
     params: query
   })
 }
+
 export function fetchNoRegionProjects(query) {
   return http.get('/api/center/noRegionProjects', {
     params: query
   })
 }
+
 export function removeRegionProjects(ids) {
   return http.delete('/api/center/removeRegionProjects/' + ids)
 }
+
 export function addRegionProjects(data) {
   return http.post('/api/center/addRegionProjects', data)
 }
+
 export function modifyRegionLnglat(data) {
   return http.put('/api/center/regionLnglat', data)
 }
+
 export function updateRegionState(data) {
   return http.put('/api/center/regionState', data)
 }
+
 export function fetchRegionFiles(query) {
   return http.get('/api/portal/files', {
     params: query
   })
 }
+
 export function fetchRegion(id) {
-  return http.get('/api/center/region/'+id)
+  return http.get('/api/center/region/' + id)
 }
+
 export function addBldCoordinate(data) {
   return http.put('/api/center/bldCoordinate', data)
 }
+
 export function fetchRegionBlds(query) {
   return http.get('/api/center/blds', {
     params: query
   })
 }
+
 export function fetchBldFloors(query) {
   return http.get('/api/center/bldFloors', {
     params: query
   })
 }
+
 export function updateBldFloor(data) {
   return http.put('/api/center/bldFloor', data)
 }
+
 export function addCellCoordinate(data) {
   return http.post('/api/center/cellCoordinate', data)
 }
+
 export function fetchFloor(query) {
   return http.get('/api/center/floor', {
     params: query

@@ -7,8 +7,8 @@
         </div>
       </el-col>
       <el-col :span="12" class="operates">
-        <bv-button icon="el-icon-picture" @click="startPreview">小区预览</bv-button>
-        <bv-button icon="el-icon-position" @click="startPublise">发布</bv-button>
+        <bv-button type="primary" icon="el-icon-picture" @click="startPreview">小区预览</bv-button>
+        <bv-button type="success" icon="el-icon-position" @click="startPublise">发布</bv-button>
         <bv-button icon="el-icon-back" @click="returnPrePage">返回</bv-button>
       </el-col>
     </bv-row>

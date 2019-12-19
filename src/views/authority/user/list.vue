@@ -4,11 +4,11 @@
     <bv-table ref="table" title="用户一览" :pagination="true" :filter.sync="filter" :fetch-api="fetchUsers" @on-mounted="(table) => tableInstance = table">
       <!--按钮操作-->
       <div slot="operates">
-        <bv-button show="one" view="grant" @click="initGrant()">授权</bv-button>
+        <bv-button show="one" view="grant" authority="grant" @click="initGrant()">授权</bv-button>
         <bv-button show="none" view="create" authority="create" @click="startCreate()">新增</bv-button>
-        <bv-button show="one" view="modify" @click="initUserEdit()">修改</bv-button>
-        <bv-button show="oneOrMore" view="remove" @click="startRemove()">删除</bv-button>
-        <bv-button show="one" view="remove" @click="resetPass()">重置密码</bv-button>
+        <bv-button show="one" view="modify" authority="modify" @click="initUserEdit()">修改</bv-button>
+        <bv-button show="oneOrMore" view="remove" authority="remove" @click="startRemove()">删除</bv-button>
+        <bv-button show="one" icon="el-icon-refresh-left" authority="reset" @click="resetPass()">重置密码</bv-button>
       </div>
       <div slot="search">
         <bv-col>
