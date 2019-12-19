@@ -3,7 +3,7 @@
     <bv-row>
       <bv-form :model="item">
         <bv-col v-bind="$CONST.col.layout3">
-          <el-form-item label="上传楼栋图" prop="uploadSeed">
+          <bv-form-item label="上传楼栋图" prop="uploadSeed">
             <el-upload
               ref="uploadFile"
               drag
@@ -22,7 +22,7 @@
                 只能上传.jpg/.jpeg/.png/.JPG/.JPEG文件
               </div>
             </el-upload>
-          </el-form-item>
+          </bv-form-item>
         </bv-col>
         <bv-col v-bind="$CONST.col.layout3" style="margin-left: 12vw">
           <bv-button type="success" icon="el-icon-finished" @click="saveBldData">保存</bv-button>

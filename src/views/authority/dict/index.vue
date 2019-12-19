@@ -25,21 +25,21 @@
             <bv-button show="oneOrMore" view="remove" @click="startRemove()">删除</bv-button>
           </div>
           <bv-table-column type="selection" />
-          <el-table-column label="字典代码" prop="code" align="center" />
-          <el-table-column label="字典名称" prop="name" align="center" />
+          <bv-table-column label="字典代码" prop="code" align="center" />
+          <bv-table-column label="字典名称" prop="name" align="center" />
         </bv-table>
 
         <bv-form v-show="formVisible" ref="form" title="字典维护" :model="item" :rules="rules">
           <bv-row>
             <bv-col>
-              <el-form-item label="字典代码" prop="code">
+              <bv-form-item label="字典代码" prop="code">
                 <span v-text="item.code" />
-              </el-form-item>
+              </bv-form-item>
             </bv-col>
             <bv-col>
-              <el-form-item label="字典名称" prop="name">
+              <bv-form-item label="字典名称" prop="name">
                 <el-input v-model="item.name" />
-              </el-form-item>
+              </bv-form-item>
             </bv-col>
           </bv-row>
           <bv-row>
@@ -55,15 +55,15 @@
       <bv-form ref="dialogForm" :model="item" :rules="rules">
         <bv-row :layout="2">
           <bv-col>
-            <el-form-item label="字典代码" prop="code">
+            <bv-form-item label="字典代码" prop="code">
               <el-input v-if="modifyType === 'create'" v-model.trim="item.code" />
               <span v-else v-text="item.code" />
-            </el-form-item>
+            </bv-form-item>
           </bv-col>
           <bv-col>
-            <el-form-item label="字典名称" prop="name">
+            <bv-form-item label="字典名称" prop="name">
               <el-input v-model.trim="item.name" />
-            </el-form-item>
+            </bv-form-item>
           </bv-col>
         </bv-row>
       </bv-form>

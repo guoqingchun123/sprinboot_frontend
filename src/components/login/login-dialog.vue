@@ -2,7 +2,7 @@
   <bv-dialog title="登录" width="480px" :visible.sync="needLogin">
     <bv-form ref="loginForm" class="login-form" :inline="false" label-width="0" :model="loginForm" :rules="loginRules">
       <el-tooltip v-if="loginType === 'password' || loginType === 'any' || loginType === 'both'" v-model="capsTooltip" content="大小写锁定键已打开" placement="right" manual>
-        <bv-form-item prop="password" class="item-container">
+        <bv-form-item  prop="password" class="item-container">
           <span class="svg-container">
             <bv-icon icon-class="password" />
           </span>
@@ -17,9 +17,9 @@
             @keyup.native="checkCapslock"
             @blur="capsTooltip = false"
           />
-        </bv-form-item>
+        </bv-form-item >
       </el-tooltip>
-      <bv-form-item v-if="loginType === 'passtoken' || loginType === 'both'" prop="passtoken" class="item-container">
+      <bv-form-item  v-if="loginType === 'passtoken' || loginType === 'both'" prop="passtoken" class="item-container">
         <span class="svg-container">
           <bv-icon icon-class="password" />
         </span>
@@ -34,9 +34,9 @@
           @keyup.native="checkCapslock"
           @blur="capsTooltip = false"
         />
-      </bv-form-item>
+      </bv-form-item >
 
-      <bv-form-item v-if="needValidateCode" prop="validateCode">
+      <bv-form-item  v-if="needValidateCode" prop="validateCode">
         <el-col :span="18" class="item-container">
           <span class="svg-container">
             <bv-icon icon-class="validateCode" />
@@ -54,7 +54,7 @@
             <img :src="validateCodeUrl" @click="refreshValidateCode">
           </el-col>
         </el-tooltip>
-      </bv-form-item>
+      </bv-form-item >
       <el-button style="display:none" @click.native.prevent="doLogin">登录</el-button>
     </bv-form>
     <div slot="footer">

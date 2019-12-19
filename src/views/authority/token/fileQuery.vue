@@ -3,12 +3,12 @@
     <bv-table ref="table" v-loading="loading" title="信息列表" :pagination="true" :filter.sync="filter" :fetch-api="fetchToken" @on-mounted="(table) => tableInstance = table">
       <div slot="search">
         <bv-col>
-          <el-form-item label="系列号" prop="deviceSn">
+          <bv-form-item label="系列号" prop="deviceSn">
             <el-input v-model="filter.deviceSn" />
-          </el-form-item>
+          </bv-form-item>
         </bv-col>
         <bv-col>
-          <el-form-item label="令牌状态" prop="state">
+          <bv-form-item label="令牌状态" prop="state">
             <el-select v-model="filter.state" placeholder="请选择令牌状态">
               <el-option
                 v-for="item in tokenStateOptions"
@@ -17,13 +17,13 @@
                 :value="item.value"
               />
             </el-select>
-          </el-form-item>
+          </bv-form-item>
         </bv-col>
       </div>
-      <el-table-column label="序列号" prop="deviceSn" align="center" sortable="custom" />
-      <el-table-column label="状态" prop="state" align="center" sortable="custom" :formatter="tokenStateFormatter" />
-      <el-table-column label="分配人编号" prop="userId" align="center" sortable="custom" />
-      <el-table-column label="最后修改日期" prop="lastModifyDate" align="center" :formatter="dateFormatter" />
+      <bv-table-column label="序列号" prop="deviceSn" align="center" sortable="custom" />
+      <bv-table-column label="状态" prop="state" align="center" sortable="custom" :formatter="tokenStateFormatter" />
+      <bv-table-column label="分配人编号" prop="userId" align="center" sortable="custom" />
+      <bv-table-column label="最后修改日期" prop="lastModifyDate" align="center" :formatter="dateFormatter" />
     </bv-table>
   </div>
 </template>

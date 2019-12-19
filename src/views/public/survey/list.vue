@@ -9,84 +9,84 @@
       </div>
       <div slot="search">
         <bv-col>
-          <el-form-item label="标题" prop="title">
+          <bv-form-item label="标题" prop="title">
             <el-input v-model="filter.title"/>
-          </el-form-item>
+          </bv-form-item>
         </bv-col>
         <bv-col>
-          <el-form-item label="摘要" prop="summary">
+          <bv-form-item label="摘要" prop="summary">
             <el-input v-model="filter.summary"/>
-          </el-form-item>
+          </bv-form-item>
         </bv-col>
       </div>
       <bv-table-column :selectable="selectable" type="selection" />
-      <el-table-column label="问卷标题" prop="title" align="center" sortable="custom"/>
-      <el-table-column label="问卷摘要" prop="summary" align="center" sortable="custom"/>
-      <el-table-column label="问卷状态" prop="surveyStatus" align="center" sortable="custom" :formatter="surveyStatusFormatter"/>
-      <el-table-column label="经办人" prop="agentPerson" align="center" sortable="custom"/>
-      <el-table-column label="开始日期" prop="startDate" align="center" sortable="custom"/>
-      <el-table-column label="结束日期" prop="stopDate" align="center" sortable="custom"/>
-      <el-table-column fixed="right" label="操作" align="center">
+      <bv-table-column label="问卷标题" prop="title" align="center" sortable="custom"/>
+      <bv-table-column label="问卷摘要" prop="summary" align="center" sortable="custom"/>
+      <bv-table-column label="问卷状态" prop="surveyStatus" align="center" sortable="custom" :formatter="surveyStatusFormatter"/>
+      <bv-table-column label="经办人" prop="agentPerson" align="center" sortable="custom"/>
+      <bv-table-column label="开始日期" prop="startDate" align="center" sortable="custom"/>
+      <bv-table-column label="结束日期" prop="stopDate" align="center" sortable="custom"/>
+      <bv-table-column fixed="right" label="操作" align="center">
         <template slot-scope="scope">
           <bv-button view="details" :disabled="scope.row.surveyStatus === '0001'" authority="maintain" @click="startSurveyItems(scope.row)">维护问卷明细</bv-button>
           <bv-button view="view" @click="startView(scope.row)">预览</bv-button>
         </template>
-      </el-table-column>
+      </bv-table-column>
     </bv-table>
 
     <bv-dialog title="调查问卷维护" :visible.sync="dialogFormVisible" @close="dialogClose">
       <bv-form ref="dialogForm" :model="item" :rules="rules">
         <bv-row :layout="1">
           <bv-col>
-            <el-form-item label="标题" prop="title">
+            <bv-form-item label="标题" prop="title">
               <el-input v-model="item.title" style="width: 35.3vw;"/>
-            </el-form-item>
+            </bv-form-item>
           </bv-col>
           <bv-col>
-            <el-form-item label="摘要" prop="summary">
+            <bv-form-item label="摘要" prop="summary">
               <el-input v-model.trim="item.summary" type="textarea" :rows="1" style="width: 35.3vw;"/>
-            </el-form-item>
+            </bv-form-item>
           </bv-col>
         </bv-row>
         <bv-row :layout="1">
           <bv-col>
-            <el-form-item label="调查范围" prop="surveyScopes">
+            <bv-form-item label="调查范围" prop="surveyScopes">
               <el-cascader v-model="item.surveyScopes"
                            :options="surveyScopesOptions"
                            :props="{ checkStrictly: true }" clearable filterable style="width: 35.3vw;"/>
-            </el-form-item>
+            </bv-form-item>
           </bv-col>
         </bv-row>
         <bv-row :layout="2">
           <bv-col>
-            <el-form-item label="开始日期" prop="startDate">
+            <bv-form-item label="开始日期" prop="startDate">
               <el-date-picker
                 v-model="item.startDate"
                 type="date"
                 value-format="yyyy-MM-dd"
                 placeholder="选择日期"
               />
-            </el-form-item>
+            </bv-form-item>
           </bv-col>
           <bv-col>
-            <el-form-item label="结束日期" prop="stopDate">
+            <bv-form-item label="结束日期" prop="stopDate">
               <el-date-picker
                 v-model="item.stopDate"
                 type="date"
                 value-format="yyyy-MM-dd"
                 placeholder="选择日期"
               />
-            </el-form-item>
+            </bv-form-item>
           </bv-col>
           <bv-col>
-            <el-form-item label="经办人" prop="agentPerson">
+            <bv-form-item label="经办人" prop="agentPerson">
               <el-input v-model="item.agentPerson"/>
-            </el-form-item>
+            </bv-form-item>
           </bv-col>
           <bv-col>
-            <el-form-item label="手机号码" prop="agentPhone">
+            <bv-form-item label="手机号码" prop="agentPhone">
               <el-input v-model.trim="item.agentPhone"/>
-            </el-form-item>
+            </bv-form-item>
           </bv-col>
         </bv-row>
       </bv-form>

@@ -17,14 +17,14 @@
       <bv-form ref="itemForm" class="form-static" :title="formTitle" v-show="dictItemVisible">
         <bv-row>
             <bv-col>
-              <bv-form-item label="字典代码" prop="code">
+              <bv-form-item  label="字典代码" prop="code">
                 <bv-input v-text="item.code" />
-              </bv-form-item>
+              </bv-form-item >
             </bv-col>
             <bv-col>
-              <bv-form-item label="字典名称" prop="name">
+              <bv-form-item  label="字典名称" prop="name">
                 <bv-input v-text="item.name" />
-              </bv-form-item>
+              </bv-form-item >
             </bv-col>
           </bv-row>
       </bv-form>

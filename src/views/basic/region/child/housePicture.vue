@@ -44,18 +44,18 @@
                 <bv-button v-if="uploadShow" icon="el-icon-picture">点击上传</bv-button>
               </el-upload>
             </div>
-            <el-table-column label="文件名" prop="showName" align="center" sortable="custom" />
-            <el-table-column label="上传时间" prop="manageTime" align="center" sortable="custom">
+            <bv-table-column label="文件名" prop="showName" align="center" sortable="custom" />
+            <bv-table-column label="上传时间" prop="manageTime" align="center" sortable="custom">
               <template slot-scope="scope">
                 {{ scope.row.manageTime | formatDateTime }}
               </template>
-            </el-table-column>
-            <el-table-column align="center" label="操作">
+            </bv-table-column>
+            <bv-table-column align="center" label="操作">
               <template slot-scope="scope">
                 <bv-button icon="el-icon-picture-outline" type="text" @click="preview(scope.row)">预览</bv-button>
                 <bv-button icon="el-icon-delete" type="text" @click="deleteFile(scope.row)">删除</bv-button>
               </template>
-            </el-table-column>
+            </bv-table-column>
           </bv-table>
         </bv-scrollbar>
       </el-col>

@@ -9,38 +9,36 @@
       </div>
       <div slot="search">
         <bv-col>
-          <el-form-item label="小区名称" prop="regionName">
+          <bv-form-item label="小区名称" prop="regionName">
             <el-input v-model="filter.regionName"/>
-          </el-form-item>
+          </bv-form-item>
         </bv-col>
       </div>
       <bv-table-column type="selection"/>
-      <el-table-column label="小区名称" prop="regionName" align="center" sortable="custom"/>
-      <el-table-column label="小区地址" prop="address" align="center" sortable="custom"/>
-      <el-table-column label="所属行政区" prop="divisionCode" :formatter="divisionFormat" align="center" sortable="custom"/>
-      <el-table-column label="预售许可日期" prop="preSaleDate" align="center" sortable="custom"/>
-      <el-table-column label="状态" prop="state" :formatter="stateFormat" align="center" sortable="custom"/>
-      <el-table-column align="center" label="操作">
+      <bv-table-column label="小区名称" prop="regionName" align="center" sortable="custom"/>
+      <bv-table-column label="小区地址" prop="address" align="center" sortable="custom"/>
+      <bv-table-column label="所属行政区" prop="divisionCode" :formatter="divisionFormat" align="center" sortable="custom"/>
+      <bv-table-column label="预售许可日期" prop="preSaleDate" align="center" sortable="custom"/>
+      <bv-table-column label="状态" prop="state" :formatter="stateFormat" align="center" sortable="custom"/>
+      <bv-table-column align="center" label="操作">
         <template slot-scope="scope">
           <bv-button icon="el-icon-paperclip" type="text" @click="queryProjInfo(scope.row)">查看项目详情</bv-button>
           <bv-button icon="el-icon-edit-outline" type="text" @click="handleRegionInfo(scope.row)">维护小区档案</bv-button>
         </template>
-      </el-table-column>
+      </bv-table-column>
     </bv-table>
-
+    
     <bv-dialog title="小区信息维护" :visible.sync="dialogFormVisible" top="5vh" @close="dialogClose">
-      <bv-form ref="dialogForm" :model="item" :rules="rules" class="dialog-form" label-width="120px"
+      <bv-form ref="dialogForm" :model="item" :rules="rules" label-width="120px"
                label-position="right">
-        <bv-row>
+        <bv-row :layout="2">
           <bv-col>
-            <el-form-item label="小区名称" prop="regionName">
-              <el-input v-model.trim="item.regionName" />
-            </el-form-item>
+            <bv-form-item class="form-item-fill" label="小区名称" prop="regionName">
+              <bv-input v-model.trim="item.regionName"/>
+            </bv-form-item>
           </bv-col>
-        </bv-row>
-        <bv-row>
           <bv-col>
-            <el-form-item label="所属行政区" prop="divisionCode">
+            <bv-form-item class="form-item-fill" label="所属行政区" prop="divisionCode">
               <el-select v-model="item.divisionCode" placeholder="请选择所属行政区">
                 <el-option
                   v-for="division in divisions"
@@ -49,45 +47,39 @@
                   :value="division.divisionCode"
                 />
               </el-select>
-            </el-form-item>
+            </bv-form-item>
           </bv-col>
           <bv-col>
-            <el-form-item label="预售许可日期" prop="preSaleDate">
+            <bv-form-item class="form-item-fill" label="预售许可日期" prop="preSaleDate">
               <el-date-picker
                 v-model="item.preSaleDate"
                 type="date"
                 placeholder="选择日期"
                 value-format="yyyy-MM-dd"
               />
-            </el-form-item>
+            </bv-form-item>
           </bv-col>
-        </bv-row>
-        <bv-row>
           <bv-col>
-            <el-form-item label="监控点编号数量" prop="optionsNum">
+            <bv-form-item class="form-item-fill" label="监控点编号数量" prop="optionsNum">
               <el-input-number v-model="optionsNum" :min="0" :max="99" label="监控点编号不能为空" @change="handleChange"/>
-            </el-form-item>
+            </bv-form-item>
           </bv-col>
-          <bv-col>
-            <el-form-item v-for="(option, index) in item.options"
-                          :key="'options' + index"
-                          label="监控点编号"
+          <bv-col :key="'options' + index" v-for="(option, index) in item.options">
+            <bv-form-item class="form-item-fill" label="监控点编号"
                           :prop="'options.' + index + '.itemName'"
                           :rules="{
                             required: true, message: '监控点编号不能为空', trigger: 'blur'
                           }"
             >
-              <el-input v-model.trim="option.itemName">
+              <bv-input v-model.trim="option.itemName">
                 <template slot="prepend">{{ index + 1 }}</template>
-              </el-input>
-            </el-form-item>
+              </bv-input>
+            </bv-form-item>
           </bv-col>
-        </bv-row>
-        <bv-row>
-          <bv-col>
-            <el-form-item label="小区地址" prop="address">
-              <el-input v-model.trim="item.address" type="textarea" :rows="1" />
-            </el-form-item>
+          <bv-col layout="100%">
+            <bv-form-item class="form-item-fill" label="小区地址" prop="address">
+              <bv-input v-model.trim="item.address" type="textarea" :rows="1"/>
+            </bv-form-item>
           </bv-col>
         </bv-row>
       </bv-form>
@@ -101,7 +93,7 @@
 
 <script>
   import {fetchRegions, fetchAllDivisions, createRegion, modifyRegion, removeRegion} from '@/api/basic'
-
+  
   export default {
     name: 'ListRegion',
     data() {
@@ -207,13 +199,13 @@
       startModify() {
         this.item = {...this.tableInstance.table.selection[0]};
         let videoList = [];
-        if(this.item.videoNo) {
+        if (this.item.videoNo) {
           videoList = this.item.videoNo.split(',');
         }
         let options = [];
         for (let i in videoList) {
           options.push({
-            itemValue: Number(i)+1,
+            itemValue: Number(i) + 1,
             itemName: videoList[i]
           })
         }

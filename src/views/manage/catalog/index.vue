@@ -22,27 +22,27 @@
       <bv-form ref="dialogForm" :model="item" :rules="rules">
         <bv-row :layout="2">
           <bv-col>
-            <bv-form-item v-if="modifyType === 'create'" label="编号" prop="code">
+            <bv-form-item  v-if="modifyType === 'create'" label="编号" prop="code">
               <bv-input v-model.trim="item.code" />
-            </bv-form-item>
-            <bv-form-item v-else label="编号">
+            </bv-form-item >
+            <bv-form-item  v-else label="编号">
               <span v-text="item.code" />
-            </bv-form-item>
+            </bv-form-item >
           </bv-col>
           <bv-col>
-            <bv-form-item label="名称" prop="name">
+            <bv-form-item  label="名称" prop="name">
               <bv-input v-model.trim="item.name" />
-            </bv-form-item>
+            </bv-form-item >
           </bv-col>
           <bv-col v-if="(modifyType === 'create' && currentLevel > 1) || (modifyType === 'modify' && currentLevel > 2)">
-            <bv-form-item label="大类" prop="keyType">
+            <bv-form-item  label="大类" prop="keyType">
               <span>{{ item.keyType | comboShow(item.keyTypeName) }}</span>
-            </bv-form-item>
+            </bv-form-item >
           </bv-col>
           <bv-col v-if="(modifyType === 'create' && currentLevel > 2) || (modifyType === 'modify' && currentLevel > 3)">
-            <bv-form-item label="小类" prop="subType">
+            <bv-form-item  label="小类" prop="subType">
               <span>{{ item.subType | comboShow(item.subTypeName) }}</span>
-            </bv-form-item>
+            </bv-form-item >
           </bv-col>
         </bv-row>
       </bv-form>

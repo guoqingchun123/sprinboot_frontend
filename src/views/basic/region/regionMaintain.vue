@@ -34,14 +34,14 @@
         <bv-form ref="dialogForm" :model="item" :rules="rules">
           <bv-row>
             <bv-col layout="100%">
-              <el-form-item label="发布日期" prop="publishDate">
+              <bv-form-item label="发布日期" prop="publishDate">
                 <el-date-picker
                   v-model="item.publishDate"
                   type="date"
                   value-format="yyyy-MM-dd"
                   placeholder="选择日期"
                 />
-              </el-form-item>
+              </bv-form-item>
             </bv-col>
           </bv-row>
         </bv-form>

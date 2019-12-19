@@ -49,27 +49,27 @@
     </div>
     <bv-dialog title="修改密码" :visible.sync="modifyPasswordVisible" width="450px" @close="onDialogClose">
       <bv-form ref="passwordForm" :inline="false" :model="item" :rules="rules">
-        <bv-form-item label="原密码" prop="password">
+        <bv-form-item  label="原密码" prop="password">
           <el-input
             v-model="item.password"
             placeholder="原密码"
             type="password"
           />
-        </bv-form-item>
-        <bv-form-item label="新密码" prop="newPassword">
+        </bv-form-item >
+        <bv-form-item  label="新密码" prop="newPassword">
           <el-input
             v-model="item.newPassword"
             placeholder="新密码"
             type="password"
           />
-        </bv-form-item>
-        <bv-form-item label="确认密码" prop="confirmPassword">
+        </bv-form-item >
+        <bv-form-item  label="确认密码" prop="confirmPassword">
           <el-input
             v-model="item.confirmPassword"
             placeholder="确认密码"
             type="password"
           />
-        </bv-form-item>
+        </bv-form-item >
       </bv-form>
       <div slot="footer">
         <bv-button view="save" @click="savePassword">保存</bv-button>

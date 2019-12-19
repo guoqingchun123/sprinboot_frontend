@@ -9,14 +9,14 @@
       </div>
       <div slot="search">
         <bv-col>
-          <bv-form-item label="角色代码" prop="id">
+          <bv-form-item  label="角色代码" prop="id">
             <el-input v-model="filter.id" />
-          </bv-form-item>
+          </bv-form-item >
         </bv-col>
         <bv-col>
-          <bv-form-item label="角色名称" prop="name">
+          <bv-form-item  label="角色名称" prop="name">
             <el-input v-model="filter.name" />
-          </bv-form-item>
+          </bv-form-item >
         </bv-col>
       </div>
       <bv-table-column type="selection" :selectable="selectableCheckBox" />
@@ -28,18 +28,18 @@
       <bv-form ref="dialogForm" :model="item" :rules="rules">
         <bv-row :layout="2">
           <bv-col>
-            <bv-form-item label="角色代码" prop="id">
+            <bv-form-item  label="角色代码" prop="id">
               <bv-input v-if="modifyType === 'create'" v-model.trim="item.id" />
               <span v-else v-text="item.id" />
-            </bv-form-item>
+            </bv-form-item >
           </bv-col>
           <bv-col>
-            <bv-form-item label="角色名称" prop="name">
+            <bv-form-item  label="角色名称" prop="name">
               <bv-input v-model.trim="item.name" />
-            </bv-form-item>
+            </bv-form-item >
           </bv-col>
           <bv-col layout="100%">
-            <bv-form-item class="form-item-fill" label="授权" prop="grants">
+            <bv-form-item  class="form-item-fill" label="授权" prop="grants">
               <el-tree ref="formTree" :data="routes" node-key="id" :props="{label: showLabel}" show-checkbox :default-expand-all="true">
                 <span slot-scope="{ node, data }" class="tree-node-operates">
                   <span>{{ node.label }}</span>
@@ -57,7 +57,7 @@
                   </span>
                 </span>
               </el-tree>
-            </bv-form-item>
+            </bv-form-item >
           </bv-col>
         </bv-row>
       </bv-form>

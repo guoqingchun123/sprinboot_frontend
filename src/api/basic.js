@@ -58,15 +58,15 @@ export function showRegionRemoveBtn(ids) {
 }
 
 export function removeRegion(ids) {
-  return http.delete('/api/center/region/' + ids)
+  return http.delete('/api/center/regions/' + ids)
 }
 
 export function createRegion(data) {
-  return http.post('/api/center/region', data)
+  return http.post('/api/center/regions', data)
 }
 
 export function modifyRegion(data) {
-  return http.put('/api/center/region', data)
+  return http.put('/api/center/regions', data)
 }
 
 /*企业管理*/
@@ -111,7 +111,7 @@ export function fetchRegionFiles(query) {
 }
 
 export function fetchRegion(id) {
-  return http.get('/api/center/region/' + id)
+  return http.get('/api/center/regions/' + id)
 }
 
 export function addBldCoordinate(data) {

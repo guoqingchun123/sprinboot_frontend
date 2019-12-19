@@ -8,7 +8,7 @@
       </div>
       <div slot="search">
         <bv-col>
-          <el-form-item label="表决事项" prop="voteClass">
+          <bv-form-item label="表决事项" prop="voteClass">
             <el-select v-model="filter.voteClass" placeholder="请选择表决事项">
               <el-option
                 v-for="item in voteClasses"
@@ -17,34 +17,34 @@
                 :value="item.code"
               />
             </el-select>
-          </el-form-item>
+          </bv-form-item>
         </bv-col>
       </div>
       <bv-table-column type="selection" />
-      <el-table-column label="表决事项" prop="voteClass" align="center" :formatter="voteClassFormatter" />
-      <el-table-column label="表决名称" prop="stdName" align="center" sortable="custom" />
-      <el-table-column label="执行标准" prop="stdDesc" align="center" sortable="custom" />
-      <el-table-column label="维护时间" prop="manageTime" align="center" sortable="custom" :formatter="dateFormatter"/>
-      <el-table-column label="维护用户" prop="manageUser" align="center" sortable="custom" />
+      <bv-table-column label="表决事项" prop="voteClass" align="center" :formatter="voteClassFormatter" />
+      <bv-table-column label="表决名称" prop="stdName" align="center" sortable="custom" />
+      <bv-table-column label="执行标准" prop="stdDesc" align="center" sortable="custom" />
+      <bv-table-column label="维护时间" prop="manageTime" align="center" sortable="custom" :formatter="dateFormatter"/>
+      <bv-table-column label="维护用户" prop="manageUser" align="center" sortable="custom" />
     </bv-table>
     
     <bv-dialog v-if="dialogFormVisible" title="表决标准维护" :visible.sync="dialogFormVisible">
       <bv-form ref="dialogForm" :model="item" :rules="rules">
         <bv-row :layout="1">
           <bv-col>
-            <el-form-item label="表决模式" prop="voteMode">
+            <bv-form-item label="表决模式" prop="voteMode">
               <el-radio-group v-model="item.voteMode" placeholder="请选择表决事项" @change="initDescribe">
                 <el-radio-button v-for="item in voteModes" :key="item.code" :label="item.code">{{ item.name }}</el-radio-button>
               </el-radio-group>
-            </el-form-item>
+            </bv-form-item>
           </bv-col>
           <bv-col>
-            <el-form-item label="执行标准" prop="stdDesc">
+            <bv-form-item label="执行标准" prop="stdDesc">
               <el-input v-model="item.stdDesc" style="width: 35.3vw;" :disabled="true" placeholder="根据事项模式及其他页面输入项自动生成" />
-            </el-form-item>
+            </bv-form-item>
           </bv-col>
           <bv-col>
-            <el-form-item label="表决事项" prop="voteClass">
+            <bv-form-item label="表决事项" prop="voteClass">
               <el-select v-model="item.voteClass" style="width: 35.3vw;" placeholder="请选择表决事项">
                 <el-option
                   v-for="item in voteClasses"
@@ -53,40 +53,40 @@
                   :value="item.code"
                 />
               </el-select>
-            </el-form-item>
+            </bv-form-item>
           </bv-col>
           <bv-col>
-            <el-form-item label="表决名称" prop="stdName">
+            <bv-form-item label="表决名称" prop="stdName">
               <el-input v-model="item.stdName" style="width: 35.3vw;" />
-            </el-form-item>
+            </bv-form-item>
           </bv-col>
           <bv-col v-show="showCalculate">
-            <el-form-item label="表决方式" prop="calculateGist">
+            <bv-form-item label="表决方式" prop="calculateGist">
               <el-radio-group v-model="item.calculateGist" placeholder="请选择表决方式" @change="initDescribe">
                 <el-radio-button v-for="item in calculateGists" :key="item.code" :label="item.code">{{ item.name }}</el-radio-button>
               </el-radio-group>
-            </el-form-item>
+            </bv-form-item>
           </bv-col>
           <bv-col v-show="showCalculate">
-            <el-form-item label="表决类型" prop="voteType">
+            <bv-form-item label="表决类型" prop="voteType">
               <el-radio-group v-model="item.voteType" placeholder="请选择表决类型" @change="initDescribe">
                 <el-radio-button v-for="item in voteTypes" :key="item.code" :label="item.code">{{ item.name }}</el-radio-button>
               </el-radio-group>
-            </el-form-item>
+            </bv-form-item>
           </bv-col>
           <bv-col v-show="showCalculate">
-            <el-form-item label="计算方式" prop="calculateType">
+            <bv-form-item label="计算方式" prop="calculateType">
               <el-radio-group v-model="item.calculateType" placeholder="请选择计算方式" @change="initDescribe">
                 <el-radio-button v-for="item in calculateTypes" :key="item.code" :label="item.code">{{ item.name }}</el-radio-button>
               </el-radio-group>
-            </el-form-item>
+            </bv-form-item>
           </bv-col>
           <bv-col>
-            <el-form-item label="计算基数" prop="denominator">
+            <bv-form-item label="计算基数" prop="denominator">
               <el-input v-model="item.denominator" style="width: 35.3vw;" placeholder="表决类请填写表决通过比例，例如：2/3表示比例达到2/3视为表决通过;选举类请填写入围数，例如：2表示候选人或物比例最高的前2名视为入围"
                         @input="initDescribe"
               />
-            </el-form-item>
+            </bv-form-item>
           </bv-col>
         </bv-row>
       </bv-form>

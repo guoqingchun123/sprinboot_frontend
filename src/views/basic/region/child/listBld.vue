@@ -2,14 +2,14 @@
   <div class="app-container">
     <bv-table title="楼栋一览" :pagination="true" :filter.sync="filter" :fetch-api="fetchRegions_"
               @on-mounted="(table) => tableInstance = table">
-      <el-table-column label="楼栋编号" prop="bldNo" align="center" sortable="custom"/>
-      <el-table-column label="楼栋坐落" prop="bldAddress" align="center" sortable="custom"/>
-      <el-table-column label="预售许可日期" prop="preSaleDate" align="center" sortable="custom"/>
-      <el-table-column align="center" label="操作">
+      <bv-table-column label="楼栋编号" prop="bldNo" align="center" sortable="custom"/>
+      <bv-table-column label="楼栋坐落" prop="bldAddress" align="center" sortable="custom"/>
+      <bv-table-column label="预售许可日期" prop="preSaleDate" align="center" sortable="custom"/>
+      <bv-table-column align="center" label="操作">
         <template slot-scope="scope">
           <bv-button icon="el-icon-edit-outline" type="text" @click="handleBldInfo(scope.row)">查看楼层信息</bv-button>
         </template>
-      </el-table-column>
+      </bv-table-column>
     </bv-table>
   </div>
 </template>

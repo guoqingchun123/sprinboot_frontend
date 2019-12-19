@@ -23,9 +23,9 @@
       <bv-form ref="dialogForm" :model="item" :rules="rules">
         <bv-row :layout="2">
           <bv-col>
-            <bv-form-item label="部门名称" prop="name">
+            <bv-form-item  label="部门名称" prop="name">
               <el-input v-model="item.name" />
-            </bv-form-item>
+            </bv-form-item >
           </bv-col>
         </bv-row>
       </bv-form>

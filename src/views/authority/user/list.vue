@@ -12,19 +12,19 @@
       </div>
       <div slot="search">
         <bv-col>
-          <el-form-item label="用户姓名" prop="userName">
+          <bv-form-item label="用户姓名" prop="userName">
             <el-input v-model="filter.userName" />
-          </el-form-item>
+          </bv-form-item>
         </bv-col>
       </div>
       <!--列表展示字段-->
       <bv-table-column type="selection" />
-      <el-table-column label="用户编号" prop="userId" sortable="custom" />
-      <el-table-column label="用户姓名" prop="userName" sortable="custom" />
-      <el-table-column label="用户别名" prop="alias" sortable="custom" />
-      <el-table-column label="证件号码" prop="certNo" sortable="custom" />
-      <el-table-column label="联系电话" prop="phoneNo" sortable="custom" />
-      <el-table-column label="状态" prop="userStatus" sortable="custom" :formatter="userStatusFormatter" />
+      <bv-table-column label="用户编号" prop="userId" sortable="custom" />
+      <bv-table-column label="用户姓名" prop="userName" sortable="custom" />
+      <bv-table-column label="用户别名" prop="alias" sortable="custom" />
+      <bv-table-column label="证件号码" prop="certNo" sortable="custom" />
+      <bv-table-column label="联系电话" prop="phoneNo" sortable="custom" />
+      <bv-table-column label="状态" prop="userStatus" sortable="custom" :formatter="userStatusFormatter" />
     </bv-table>
     <!--新增，修改用户信息-->
     <user-edit :visible="dialogFormVisible" :item="item" @on-edit="userEdited" />

@@ -6,7 +6,7 @@
     <el-form ref="tokenSynForm" :rules="rules" :model="filter" status-icon label-width="100px" label-position="right" style="width: 90%;">
       <bv-row :layout="2">
         <bv-col>
-          <el-form-item label="设备类型:" prop="deviceType">
+          <bv-form-item label="设备类型:" prop="deviceType">
             <el-select v-model="filter.deviceId" placeholder="请选择">
               <el-option
                 v-for="item in options"
@@ -15,22 +15,22 @@
                 :value="item.value"
               />
             </el-select>
-          </el-form-item>
+          </bv-form-item>
         </bv-col>
         <bv-col>
-          <el-form-item label="设备编号" prop="deviceSn">
+          <bv-form-item label="设备编号" prop="deviceSn">
             <el-input v-model="filter.deviceSn" placeholder="请输入设备编号" name="deviceSn" auto-complete="on" />
-          </el-form-item>
+          </bv-form-item>
         </bv-col>
         <bv-col>
-          <el-form-item label="动态密码1" prop="firstDevicePwd">
+          <bv-form-item label="动态密码1" prop="firstDevicePwd">
             <el-input v-model="filter.firstDevicePwd" placeholder="请输入动态密码1" name="firstDevicePwd" auto-complete="on" />
-          </el-form-item>
+          </bv-form-item>
         </bv-col>
         <bv-col>
-          <el-form-item label="动态密码2" prop="secondDevicePwd">
+          <bv-form-item label="动态密码2" prop="secondDevicePwd">
             <el-input v-model="filter.secondDevicePwd" placeholder="请输入动态密码2" name="secondDevicePwd" auto-complete="on" />
-          </el-form-item>
+          </bv-form-item>
         </bv-col>
       </bv-row>
       <div align="center">

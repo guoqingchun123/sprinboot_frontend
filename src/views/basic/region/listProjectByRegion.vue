@@ -7,18 +7,18 @@
       </div>
       <div slot="search">
         <bv-col>
-          <el-form-item label="项目名称" prop="projectName">
+          <bv-form-item label="项目名称" prop="projectName">
             <el-input v-model="filter.projectName" />
-          </el-form-item>
+          </bv-form-item>
         </bv-col>
       </div>
-      <el-table-column label="项目名称" prop="projectName" align="center" sortable="custom" />
-      <el-table-column label="项目地址" prop="address" align="center" sortable="custom" />
-      <el-table-column align="center" label="操作">
+      <bv-table-column label="项目名称" prop="projectName" align="center" sortable="custom" />
+      <bv-table-column label="项目地址" prop="address" align="center" sortable="custom" />
+      <bv-table-column align="center" label="操作">
         <template slot-scope="scope">
           <bv-button icon="el-icon-delete" type="text" @click="handleRegionInfo(scope.row)">移除项目</bv-button>
         </template>
-      </el-table-column>
+      </bv-table-column>
     </bv-table>
     <bv-dialog title="新增项目" :visible.sync="dialogTableVisible">
       <bv-table ref="table" :pagination="true" :filter.sync="dialogFilter" :fetch-api="fetchNoRegionProjects" @on-mounted="(table) => dialogTableInstance = table">
@@ -26,9 +26,9 @@
           <bv-button show="oneOrMore" view="create" @click="addRegionProjecs">新增</bv-button>
         </div>
         <bv-table-column type="selection" />
-        <el-table-column prop="projectId" label="项目编号" sortable />
-        <el-table-column prop="projectName" label="项目名称" sortable />
-        <el-table-column prop="address" label="项目地址" sortable />
+        <bv-table-column prop="projectId" label="项目编号" sortable />
+        <bv-table-column prop="projectName" label="项目名称" sortable />
+        <bv-table-column prop="address" label="项目地址" sortable />
       </bv-table>
     </bv-dialog>
   </div>

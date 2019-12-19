@@ -8,7 +8,7 @@
       </div>
       <div slot="search">
         <bv-col>
-          <el-form-item label="信息类别" prop="publishType">
+          <bv-form-item label="信息类别" prop="publishType">
             <el-select v-model="filter.dataType" placeholder="请选择信息类别">
               <el-option
                 v-for="item in publishTypes"
@@ -17,26 +17,26 @@
                 :value="item.code"
               />
             </el-select>
-          </el-form-item>
+          </bv-form-item>
         </bv-col>
         <bv-col>
-          <el-form-item label="标题" prop="title">
+          <bv-form-item label="标题" prop="title">
             <el-input v-model="filter.title" />
-          </el-form-item>
+          </bv-form-item>
         </bv-col>
       </div>
       <bv-table-column type="selection" />
-      <el-table-column label="信息类别" prop="dataType" align="center" :formatter="dataTypeFormatter" />
-      <el-table-column label="标题" prop="title" align="center" sortable="custom" />
-      <el-table-column label="发布日期" prop="publishDate" align="center" sortable="custom" />
-      <el-table-column label="发布用户" prop="createUser" align="center" sortable="custom" />
+      <bv-table-column label="信息类别" prop="dataType" align="center" :formatter="dataTypeFormatter" />
+      <bv-table-column label="标题" prop="title" align="center" sortable="custom" />
+      <bv-table-column label="发布日期" prop="publishDate" align="center" sortable="custom" />
+      <bv-table-column label="发布用户" prop="createUser" align="center" sortable="custom" />
     </bv-table>
     
     <bv-dialog v-if="dialogFormVisible" title="公开信息维护" :visible.sync="dialogFormVisible">
       <bv-form ref="dialogForm" :model="item" :rules="rules">
         <bv-row :layout="2">
           <bv-col>
-            <el-form-item label="信息类别" prop="dataType">
+            <bv-form-item label="信息类别" prop="dataType">
               <el-select v-model="item.dataType" placeholder="请选择信息类别">
                 <el-option
                   v-for="item in publishTypes"
@@ -45,34 +45,34 @@
                   :value="item.code"
                 />
               </el-select>
-            </el-form-item>
+            </bv-form-item>
           </bv-col>
           <bv-col>
-            <el-form-item label="发布日期" prop="publishDate">
+            <bv-form-item label="发布日期" prop="publishDate">
               <el-date-picker
                 v-model="item.publishDate"
                 type="date"
                 value-format="yyyy-MM-dd"
                 placeholder="选择日期"
               />
-            </el-form-item>
+            </bv-form-item>
           </bv-col>
         </bv-row>
         <bv-row :layout="1">
           <bv-col>
-            <el-form-item label="标题" prop="title">
+            <bv-form-item label="标题" prop="title">
               <el-input v-model="item.title" style="width: 35.3vw;" />
-            </el-form-item>
+            </bv-form-item>
           </bv-col>
           <bv-col>
-            <el-form-item label="摘要" prop="summary">
+            <bv-form-item label="摘要" prop="summary">
               <el-input v-model.trim="item.summary" type="textarea" :rows="1" style="width: 35.3vw;" />
-            </el-form-item>
+            </bv-form-item>
           </bv-col>
           <bv-col>
-            <el-form-item label="内容" prop="content">
+            <bv-form-item label="内容" prop="content">
               <bv-editor v-model="item.content" upload-action="/file/uploads" style="width: 35.3vw;" />
-            </el-form-item>
+            </bv-form-item>
           </bv-col>
         </bv-row>
       </bv-form>

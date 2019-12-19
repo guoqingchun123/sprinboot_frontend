@@ -23,19 +23,19 @@
       <bv-form ref="dialogForm" :model="item" :rules="rules">
         <bv-row :layout="2">
           <bv-col>
-            <bv-form-item label="消息类型" prop="type">
+            <bv-form-item  label="消息类型" prop="type">
               <bv-radio-group v-model="item.type" :items="[{code: 'alert', name: '弹窗'}]" />
-            </bv-form-item>
+            </bv-form-item >
           </bv-col>
           <bv-col layout="100%">
-            <bv-form-item label="标题" prop="title">
+            <bv-form-item  label="标题" prop="title">
               <bv-input v-model.trim="item.title" />
-            </bv-form-item>
+            </bv-form-item >
           </bv-col>
           <bv-col layout="100%">
-            <bv-form-item class="form-item-fill" label="消息内容" prop="content">
+            <bv-form-item  class="form-item-fill" label="消息内容" prop="content">
               <bv-input type="textarea" :rows="2" v-model.trim="item.content" />
-            </bv-form-item>
+            </bv-form-item >
           </bv-col>
         </bv-row>
       </bv-form>

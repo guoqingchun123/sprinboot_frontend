@@ -1,18 +1,18 @@
 <template>
   <bv-dialog title="维护用户信息" :visible.sync="visible" :show-close="showClose">
     <bv-form ref="dialogForm" :model="item" :rules="rules" label-width="150px">
-      <el-form-item label="用户名" prop="userName">
+      <bv-form-item label="用户名" prop="userName">
         <el-input v-model="item.userName" clearable placeholder="请输入用户名" />
-      </el-form-item>
-      <el-form-item label="别名" prop="alias">
+      </bv-form-item>
+      <bv-form-item label="别名" prop="alias">
         <el-input v-model="item.alias" clearable placeholder="请输入别名" />
-      </el-form-item>
-      <el-form-item label="证件号码" prop="certNo">
+      </bv-form-item>
+      <bv-form-item label="证件号码" prop="certNo">
         <el-input v-model="item.certNo" clearable placeholder="请输入证件号码" />
-      </el-form-item>
-      <el-form-item label="联系电话" prop="phoneNo">
+      </bv-form-item>
+      <bv-form-item label="联系电话" prop="phoneNo">
         <el-input v-model="item.phoneNo" clearable placeholder="请输入联系电话" />
-      </el-form-item>
+      </bv-form-item>
     </bv-form>
     <div slot="footer">
       <el-button type="primary" @click="confirmModify()">保存</el-button>

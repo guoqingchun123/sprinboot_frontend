@@ -4,21 +4,21 @@
     <bv-form ref="dialogForm" :model="item" :rules="rules">
       <bv-row>
         <bv-col>
-          <el-form-item label="机构名称" prop="competentName">
+          <bv-form-item label="机构名称" prop="competentName">
             <el-input v-model.trim="item.competentName" />
-          </el-form-item>
+          </bv-form-item>
         </bv-col>
       </bv-row>
       <bv-row >
         <bv-col>
-          <el-form-item label="经度" prop="x">
+          <bv-form-item label="经度" prop="x">
             <el-input v-model.trim="item.x" :disabled="true" />
-          </el-form-item>
+          </bv-form-item>
         </bv-col>
         <bv-col>
-          <el-form-item label="纬度" prop="y">
+          <bv-form-item label="纬度" prop="y">
             <el-input v-model.trim="item.y" :disabled="true" />
-          </el-form-item>
+          </bv-form-item>
         </bv-col>
       </bv-row>
     </bv-form>

@@ -17,43 +17,43 @@
 
     <bv-row>
       <bv-col>
-        <bv-form-item label="显示标签页" prop="tagsView">
+        <bv-form-item  label="显示标签页" prop="tagsView">
           <el-switch v-model="settings.layout.tagsView" class="drawer-switch" />
-        </bv-form-item>
+        </bv-form-item >
       </bv-col>
 
       <bv-col>
-        <bv-form-item label="固定头部" prop="fixedHeader">
+        <bv-form-item  label="固定头部" prop="fixedHeader">
           <el-switch v-model="settings.layout.fixedHeader" class="drawer-switch" />
-        </bv-form-item>
+        </bv-form-item >
       </bv-col>
 
       <bv-col>
-        <bv-form-item label="显示侧边栏图标" prop="sidebarLogo">
+        <bv-form-item  label="显示侧边栏图标" prop="sidebarLogo">
           <el-switch v-model="settings.layout.sidebarLogo" class="drawer-switch" />
-        </bv-form-item>
+        </bv-form-item >
       </bv-col>
 
       <bv-col>
-        <bv-form-item label="标签页样式" prop="tabsStyle">
+        <bv-form-item  label="标签页样式" prop="tabsStyle">
           <bv-radio-group v-model="settings.tabs.style" :items="[{code: 'default', name: '默认'}, {code: 'legacy', name: '传统'}]" />
-        </bv-form-item>
+        </bv-form-item >
       </bv-col>
 
       <bv-col>
-        <bv-form-item label="每页显示条数" prop="tableLimit">
+        <bv-form-item  label="每页显示条数" prop="tableLimit">
           <el-input maxlength="4" v-model.number="settings.table.limit" />
-        </bv-form-item>
+        </bv-form-item >
       </bv-col>
       <bv-col>
-        <bv-form-item label="是否支持行点击" prop="rowSelect">
+        <bv-form-item  label="是否支持行点击" prop="rowSelect">
           <el-switch v-model="settings.table.rowSelect" class="drawer-switch" />
-        </bv-form-item>
+        </bv-form-item >
       </bv-col>
       <bv-col>
-        <bv-form-item label="是否打开隐私模式" prop="privacy">
+        <bv-form-item  label="是否打开隐私模式" prop="privacy">
           <el-switch v-model="settings.display.privacy" class="drawer-switch" />
-        </bv-form-item>
+        </bv-form-item >
       </bv-col>
     </bv-row>
   </bv-form>

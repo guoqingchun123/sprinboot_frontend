@@ -9,47 +9,47 @@
       </div>
       <div slot="search">
         <bv-col>
-          <el-form-item label="问题类型" prop="questionType">
+          <bv-form-item label="问题类型" prop="questionType">
             <el-radio-group v-model="filter.questionType" placeholder="请选择问题类型">
               <el-radio-button v-for="questionType in questionTypes" :key="questionType.code" :label="questionType.code">{{ questionType.name }}</el-radio-button>
             </el-radio-group>
-          </el-form-item>
+          </bv-form-item>
         </bv-col>
         <bv-col>
-          <el-form-item label="摘要" prop="summary">
+          <bv-form-item label="摘要" prop="summary">
             <el-input v-model="filter.summary" />
-          </el-form-item>
+          </bv-form-item>
         </bv-col>
       </div>
       <bv-table-column type="selection" />
-      <el-table-column label="问题类型" prop="questionType" align="center" sortable="custom" :formatter="questionTypeFormatter" />
-      <el-table-column label="题目" prop="summary" align="center" sortable="custom" />
+      <bv-table-column label="问题类型" prop="questionType" align="center" sortable="custom" :formatter="questionTypeFormatter" />
+      <bv-table-column label="题目" prop="summary" align="center" sortable="custom" />
     </bv-table>
 
     <bv-dialog title="问题维护" :visible.sync="dialogFormVisible" @close="dialogClose">
       <bv-form ref="dialogForm" :model="item" :rules="rules">
         <bv-row :layout="1">
           <bv-col>
-            <el-form-item label="问题类型" prop="questionType">
+            <bv-form-item label="问题类型" prop="questionType">
               <el-radio-group v-model="item.questionType" placeholder="请选择问题类型" @change="questionTypeChange">
                 <el-radio-button v-for="questionType in questionTypes" :key="questionType.code" :label="questionType.code">{{ questionType.name }}</el-radio-button>
               </el-radio-group>
-            </el-form-item>
+            </bv-form-item>
           </bv-col>
           <bv-col>
-            <el-form-item label="题目" prop="summary">
+            <bv-form-item label="题目" prop="summary">
               <el-input v-model.trim="item.summary" type="textarea" :rows="1" style="width: 35.3vw;" />
-            </el-form-item>
+            </bv-form-item>
           </bv-col>
         </bv-row>
         <bv-row v-show="showOptions">
           <bv-col>
-            <el-form-item label="选项个数" prop="optionsNum">
+            <bv-form-item label="选项个数" prop="optionsNum">
               <el-input-number v-model="optionsNum" :min="1" :max="10" label="请输入选项个数" @change="handleChange" />
-            </el-form-item>
+            </bv-form-item>
           </bv-col>
           <bv-col>
-            <el-form-item v-for="(option, index) in item.options"
+            <bv-form-item v-for="(option, index) in item.options"
                           :key="'options' + index"
                           label="选项内容"
                           :prop="'options.' + index + '.itemName'"
@@ -60,7 +60,7 @@
               <el-input v-model.trim="option.itemName">
                 <template slot="prepend">{{ index + 1 }}</template>
               </el-input>
-            </el-form-item>
+            </bv-form-item>
           </bv-col>
         </bv-row>
       </bv-form>

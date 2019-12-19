@@ -19,15 +19,15 @@
       <bv-form ref="dialogForm" :model="item" :rules="rules">
         <bv-row :layout="2">
           <bv-col>
-            <bv-form-item label="字典代码" prop="code">
+            <bv-form-item  label="字典代码" prop="code">
               <bv-input v-if="modifyType === 'create'" v-model.trim="item.code" />
               <span v-else v-text="item.code" />
-            </bv-form-item>
+            </bv-form-item >
           </bv-col>
           <bv-col>
-            <bv-form-item label="字典名称" prop="name">
+            <bv-form-item  label="字典名称" prop="name">
               <bv-input v-model.trim="item.name" />
-            </bv-form-item>
+            </bv-form-item >
           </bv-col>
         </bv-row>
         <bv-row>

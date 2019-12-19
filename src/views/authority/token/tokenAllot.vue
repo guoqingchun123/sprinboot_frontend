@@ -3,30 +3,30 @@
     <bv-table ref="table" title="用户一览" :pagination="true" :filter.sync="filter" :fetch-api="fetchUsers" @on-mounted="(table) => tableInstance = table">
       <div slot="search">
         <bv-col>
-          <el-form-item label="用户编号" prop="id">
+          <bv-form-item label="用户编号" prop="id">
             <el-input v-model="filter.id" />
-          </el-form-item>
+          </bv-form-item>
         </bv-col>
         <bv-col>
-          <el-form-item label="用户姓名" prop="name">
+          <bv-form-item label="用户姓名" prop="name">
             <el-input v-model="filter.name" />
-          </el-form-item>
+          </bv-form-item>
         </bv-col>
         <bv-col>
-          <el-form-item label="员工编号" prop="empId">
+          <bv-form-item label="员工编号" prop="empId">
             <el-input v-model="filter.empId" />
-          </el-form-item>
+          </bv-form-item>
         </bv-col>
       </div>
-      <el-table-column label="用户编号" prop="id" align="center" sortable="custom" />
-      <el-table-column label="用户姓名" prop="name" align="center" sortable="custom" />
-      <el-table-column label="员工编号" prop="empId" align="center" sortable="custom" />
-      <el-table-column label="用户状态" prop="status" align="center" :formatter="userStateFormatter" />
-      <el-table-column fixed="right" label="操作" align="center">
+      <bv-table-column label="用户编号" prop="id" align="center" sortable="custom" />
+      <bv-table-column label="用户姓名" prop="name" align="center" sortable="custom" />
+      <bv-table-column label="员工编号" prop="empId" align="center" sortable="custom" />
+      <bv-table-column label="用户状态" prop="status" align="center" :formatter="userStateFormatter" />
+      <bv-table-column fixed="right" label="操作" align="center">
         <template slot-scope="scope">
           <el-button view="details" type="text" @click="tokenManagement(scope.row)">管理令牌</el-button>
         </template>
-      </el-table-column>
+      </bv-table-column>
     </bv-table>
 
     <bv-dialog title="令牌管理" :visible.sync="dialogFormVisible">
@@ -41,9 +41,9 @@
           <bv-button v-if="startBackShow()" view="modify" @click="startBack()">收回</bv-button>
         </div>
         <bv-table-column type="selection"/>
-        <el-table-column label="序列号" prop="deviceSn" align="center" sortable="custom" />
-        <el-table-column label="状态" prop="state" align="center" sortable="custom" :formatter="perTokenStateFormatter" />
-        <el-table-column label="最后修改日期" prop="lastModifyDate" align="center" :formatter="dateFormatter" />
+        <bv-table-column label="序列号" prop="deviceSn" align="center" sortable="custom" />
+        <bv-table-column label="状态" prop="state" align="center" sortable="custom" :formatter="perTokenStateFormatter" />
+        <bv-table-column label="最后修改日期" prop="lastModifyDate" align="center" :formatter="dateFormatter" />
       </bv-table>
     </bv-dialog>
 
@@ -51,9 +51,9 @@
       <bv-form ref="verifyPassForm" :model="item" :rules="rules">
         <bv-row :layout="2">
           <bv-col>
-            <el-form-item label="动态令牌密码：" prop="devicePwd" style="white-space: nowrap">
+            <bv-form-item label="动态令牌密码：" prop="devicePwd" style="white-space: nowrap">
               <el-input v-model="item.devicePwd" placeholder="请输入动态令牌密码" />
-            </el-form-item>
+            </bv-form-item>
           </bv-col>
         </bv-row>
       </bv-form>
@@ -67,7 +67,7 @@
       <bv-form ref="tokenGrantForm" :model="unallotToken" :rules="rules">
         <bv-row :layout="2">
           <bv-col>
-            <el-form-item label="令牌序列号" prop="deviceSn" style="white-space: nowrap">
+            <bv-form-item label="令牌序列号" prop="deviceSn" style="white-space: nowrap">
               <el-select v-model="unallotToken.deviceSn" placeholder="请输入令牌序列号" filterable>
                 <el-option
                   v-for="itemToken in unallotTokenList"
@@ -76,7 +76,7 @@
                   :value="itemToken.deviceSn"
                 />
               </el-select>
-            </el-form-item>
+            </bv-form-item>
           </bv-col>
         </bv-row>
       </bv-form>
