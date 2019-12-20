@@ -1,13 +1,12 @@
 <template>
   <bv-scrollbar ref="scrollContainer" :vertical="false" class="scroll-container" @wheel.native.prevent="handleScroll">
-    <div class="scroll-collections">
-      <slot />
-    </div>
+    <slot />
   </bv-scrollbar>
 </template>
 
 <script>
 const tagAndTagSpacing = 4 // tagAndTagSpacing
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'ScrollPane',
@@ -17,8 +16,16 @@ export default {
     }
   },
   computed: {
+    ...mapGetters([
+      'sidebar'
+    ]),
     scrollWrapper() {
       return this.$refs.scrollContainer.$refs.wrap
+    },
+  },
+  watch: {
+    'sidebar.opened'() {
+      this.$refs.scrollContainer.update()
     }
   },
   methods: {
@@ -69,18 +76,21 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .scroll-container {
   white-space: nowrap;
   position: relative;
   overflow: hidden;
   width: 100%;
-  /deep/ {
-    .el-scrollbar__bar {
-      bottom: 0px;
-    }
-    .el-scrollbar__wrap {
-      height: 49px;
+  .el-scrollbar__bar {
+    bottom: 0px;
+  }
+  .el-scrollbar__wrap {
+    height: 49px;
+    width: 100%;
+
+    .el-scrollbar__view {
+      display: inline-block;
     }
   }
 }

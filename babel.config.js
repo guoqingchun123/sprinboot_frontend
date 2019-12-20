@@ -6,7 +6,7 @@ module.exports = {
     [
       "component",
       {
-        "libraryName": "element-ui",
+        "libraryName": "@bestvike/components",
         "styleLibraryName": "theme-chalk"
       }
     ]

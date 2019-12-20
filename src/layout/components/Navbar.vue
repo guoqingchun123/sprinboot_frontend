@@ -2,12 +2,18 @@
   <el-header :height="variables.headerHeight" class="navbar">
     <bv-hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
 
-    <bv-breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
+    <bv-breadcrumb id="breadcrumb-container" class="app-breadcrumb breadcrumb-container" />
+
+    <el-tooltip v-show="$route.meta && $route.meta.help" content="使用说明" effect="dark" placement="bottom">
+      <div id="help-container" @click="dialogHelpVisible = true">
+        <bv-icon icon-class="help" />
+      </div>
+    </el-tooltip>
 
     <div class="right-menu">
       <template v-if="device!=='mobile'">
-        <el-tooltip :content="$t('navbar.search')" effect="dark" placement="bottom">
-          <bv-search id="header-search" class="right-menu-item header-search" />
+        <el-tooltip content="全局检索" effect="dark" placement="bottom">
+          <bv-header-search id="header-search" class="right-menu-item header-search" />
         </el-tooltip>
         <el-tooltip :content="$store.getters.screenfull ? '退出全屏' : '全屏'" effect="dark" placement="bottom">
           <bv-screenfull id="screenfull" class="right-menu-item hover-effect" />
@@ -16,42 +22,119 @@
 
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
         <div class="avatar-wrapper">
-          <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
+          <el-avatar :size="40" :src="avatarUrl">
+            <img :src="defaultAvatar">
+          </el-avatar>
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown">
           <router-link to="/">
             <el-dropdown-item>
-              {{ $t('navbar.dashboard') }}
+              首页
             </el-dropdown-item>
           </router-link>
-          <router-link to="/user/setting">
+          <el-dropdown-item>
+            <span style="display:block;" @click="startModifyPassword">修改密码</span>
+          </el-dropdown-item>
+          <router-link to="/user/profile">
             <el-dropdown-item>
               用户中心
             </el-dropdown-item>
           </router-link>
           <el-dropdown-item divided>
-            <span style="display:block;" @click="logout">{{ $t('navbar.logOut') }}</span>
+            <span style="display:block;" @click="logout">退出登录</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
+    <bv-dialog title="修改密码" :visible.sync="modifyPasswordVisible" width="450px" @close="onDialogClose">
+      <bv-form ref="passwordForm" :inline="false" :model="item" :rules="rules">
+        <bv-form-item  label="原密码" prop="password">
+          <el-input
+            v-model="item.password"
+            placeholder="原密码"
+            type="password"
+          />
+        </bv-form-item >
+        <bv-form-item  label="新密码" prop="newPassword">
+          <el-input
+            v-model="item.newPassword"
+            placeholder="新密码"
+            type="password"
+          />
+        </bv-form-item >
+        <bv-form-item  label="确认密码" prop="confirmPassword">
+          <el-input
+            v-model="item.confirmPassword"
+            placeholder="确认密码"
+            type="password"
+          />
+        </bv-form-item >
+      </bv-form>
+      <div slot="footer">
+        <bv-button view="save" @click="savePassword">保存</bv-button>
+        <bv-button view="cancel" @click="modifyPasswordVisible = false">取消</bv-button>
+      </div>
+    </bv-dialog>
+    <el-dialog :visible.sync="dialogHelpVisible" top="5vh" width="1200px" @close="dialogHelpVisible = false">
+      <el-scrollbar>
+        <bv-help type="route" :path="$route.meta && $route.meta.help && require('@/assets/help/' + $route.meta.help)" />
+      </el-scrollbar>
+    </el-dialog>
   </el-header>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import BvBreadcrumb from '@/components/Breadcrumb'
-import BvScreenfull from '@/components/Screenfull'
-import BvSearch from '@/components/HeaderSearch'
+import { Avatar } from 'element-ui'
+import { Breadcrumb, Screenfull, HeaderSearch } from '@bestvike/components'
+import { modifyPassword } from '@/api/authority'
 import variables from '@/styles/variables.scss'
+import defaultAvatar from '@/assets/avatar.png'
 
 export default {
   name: 'BvNavbar',
   components: {
-    BvBreadcrumb,
-    BvScreenfull,
-    BvSearch
+    ElAvatar: Avatar,
+    BvBreadcrumb: Breadcrumb,
+    BvScreenfull: Screenfull,
+    BvHeaderSearch: HeaderSearch
+  },
+  data() {
+    const checkConfirmPassword = (rule, value, callback) => {
+      if (value !== this.item.newPassword) {
+        callback(new Error('两次输入密码不一致'));
+      } else {
+        callback();
+      }
+    }
+
+    return {
+      avatarUrl: '',
+      defaultAvatar,
+      modifyPasswordVisible: false,
+      dialogHelpVisible: false,
+      item: {
+        password: '',
+        newPassword: '',
+        confirmPassword: ''
+      },
+      rules: {
+        password: [
+          { required: true, message: '请输入密码', trigger: 'blur' },
+          { min: 6, message: '密码至少为6位', trigger: 'blur' }
+        ],
+        newPassword: [
+          { required: true, message: '请输入新密码', trigger: 'blur' },
+          { min: 6, message: '密码至少为6位', trigger: 'blur' }
+        ],
+        confirmPassword: [
+          { required: true, message: '请输入确认密码', trigger: 'blur' },
+          { min: 6, message: '密码至少为6位', trigger: 'blur' },
+          { validator: checkConfirmPassword, trigger: 'blur' }
+        ]
+      }
+    }
   },
   computed: {
     ...mapGetters([
@@ -64,20 +147,55 @@ export default {
       return variables
     }
   },
+  watch: {
+    avatar() {
+      this.avatarUrl = this.$APP_ROOT + '/file/view/' + this.avatar
+    }
+  },
+  mounted() {
+    if (this.avatar) {
+      this.avatarUrl = this.$APP_ROOT + '/file/view/' + this.avatar
+    }
+  },
   methods: {
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
     },
     async logout() {
+      const loading = this.$loading()
       await this.$store.dispatch('user/logout')
-      this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+      this.$store.dispatch('tagsView/delAllViews', null, { root: true })
+      this.$store.dispatch('message/closeSocket')
+      loading.close()
+      this.$router.push('/login')
+    },
+    onDialogClose() {
+      this.modifyPasswordVisible = false
+      // this.item.password = null
+      // this.item.newPassword = null
+      // this.item.confirmPassword = null
+      this.$refs.passwordForm.resetFields()
+    },
+    startModifyPassword() {
+      this.modifyPasswordVisible = true
+    },
+    savePassword() {
+      this.$refs.passwordForm.validate((valid) => {
+        if (!valid) {
+          return false
+        }
+        modifyPassword({...this.item}).then(() => {
+          this.modifyPasswordVisible = false
+          this.$refs.passwordForm.resetFields()
+        }).catch(() => {})
+      })
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import '../../styles/variables.scss';
+@import '@/styles/variables.scss';
 
 .navbar {
   height: $headerHeight;
@@ -86,8 +204,8 @@ export default {
   background: #fff;
   box-shadow: 0 1px 4px rgba(0,21,41,.08);
 
-  .hamburger-container {
-    line-height: 46px;
+  .hamburger-container, #help-container {
+    line-height: $headerHeight;
     height: 100%;
     float: left;
     cursor: pointer;
@@ -99,8 +217,14 @@ export default {
     }
   }
 
+  #help-container {
+    width: 40px;
+    text-align: center;
+  }
+
   .breadcrumb-container {
     float: left;
+    line-height: $headerHeight;
   }
 
   .errLog-container {
@@ -111,7 +235,7 @@ export default {
   .right-menu {
     float: right;
     height: 100%;
-    line-height: 50px;
+    line-height: $headerHeight;
 
     &:focus {
       outline: none;
@@ -141,13 +265,6 @@ export default {
       .avatar-wrapper {
         margin-top: 5px;
         position: relative;
-
-        .user-avatar {
-          cursor: pointer;
-          width: 40px;
-          height: 40px;
-          border-radius: 10px;
-        }
 
         .el-icon-caret-bottom {
           cursor: pointer;

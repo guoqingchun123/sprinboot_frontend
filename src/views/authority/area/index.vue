@@ -5,21 +5,15 @@
         <el-tree :data="items" node-key="code" :props="defaultProps" :expand-on-click-node="false" accordion />
       </bv-scrollbar>
     </el-col>
-    <el-col>
-      safsdsdfsdfsdf
-    </el-col>
+    <el-col />
   </el-row>
 </template>
 
 <script>
-  // import BvScrollbar from '@/components/Scrollbar'
   import { fetchAreas } from '@/api/authority'
 
   export default {
     name: 'ListArea',
-    /*components: {
-      BvScrollbar
-    },*/
     data() {
       return {
         items: null,

@@ -1,8 +1,8 @@
 import { shallowMount } from '@vue/test-utils'
-import SvgIcon from '@/components/SvgIcon/index.vue'
+import { BvSvgIcon } from '@bestvike/components'
 describe('SvgIcon.vue', () => {
   it('iconClass', () => {
-    const wrapper = shallowMount(SvgIcon, {
+    const wrapper = shallowMount(BvSvgIcon, {
       propsData: {
         iconClass: 'test'
       }
@@ -10,7 +10,7 @@ describe('SvgIcon.vue', () => {
     expect(wrapper.find('use').attributes().href).toBe('#icon-test')
   })
   it('className', () => {
-    const wrapper = shallowMount(SvgIcon, {
+    const wrapper = shallowMount(BvSvgIcon, {
       propsData: {
         iconClass: 'test'
       }

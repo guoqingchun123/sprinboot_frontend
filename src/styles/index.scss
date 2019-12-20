@@ -156,46 +156,6 @@ code {
   }
 }
 
-.table-header {
-  padding-bottom: 3px;
-  border-bottom: 1px solid $--border-color-lighter;
-
-  .operate {
-    text-align: right;
-  }
-
-  .filter-item {
-    display: inline-block;
-    vertical-align: middle;
-    margin-bottom: 10px;
-  }
-
-  h3 {
-    margin: 0;
-  }
-}
-.table-search {
-  display: flex;
-  padding-top: 3px;
-
-  > .search-switch {
-    flex: 1;
-    flex-basis: 40px;
-  }
-}
-// 模糊查询
-.table-fuzzy .el-form-item {
-  width: 100%;
-  margin-bottom: 5px;
-  > .el-form-item__content {
-    width: 100%;
-  }
-}
-// 精确查询
-.table-filter .el-form-item {
-  margin-bottom: 6px;
-}
-
 //refine vue-multiselect plugin
 .multiselect {
   line-height: 16px;

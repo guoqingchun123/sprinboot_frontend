@@ -10,13 +10,17 @@ const getters = {
   cachedViews: state => state.tagsView.cachedViews,
   token: state => state.user.token,
   avatar: state => state.user.avatar,
+  id: state => state.user.id,
   name: state => state.user.name,
-  introduction: state => state.user.introduction,
+  userId: state => state.user.empId,
+  settings: state => state.settings,
   roles: state => state.user.roles,
   routes: state => state.user.routes,
-  permissionRoutes: state => state.permission.routes,
-  addRoutes: state => state.permission.addRoutes,
-  // 刷新token用
-  refreshPromise: state => state.user.refreshPromise
+  asyncRoutes: state => state.permission.asyncRoutes,
+  needLogin: state => state.app.needLogin,
+  // 是否需要校验码
+  needValidateCode: state => state.user.needValidateCode,
+  needRefreshValidateCode: state => state.user.needRefreshValidateCode,
+  permissionRoutes: state => state.permission.routes
 }
 export default getters

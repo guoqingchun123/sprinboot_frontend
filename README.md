@@ -1,4 +1,4 @@
-# oa
+# HMIS
 
 ##指定私服地址
 ```
@@ -46,5 +46,8 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 ### 打包命令
 ```
 指定运行路径
-npx cross-env VUE_APP_ROOT=/oa vue-cli-service build
+http://xxx.com/ 对应打包命令
+npx cross-env VUE_APP_ROOT=/ vue-cli-service build --modern
+http://xxx.com 对应打包命令
+npx cross-env VUE_APP_ROOT=/ vue-cli-service build
 ```

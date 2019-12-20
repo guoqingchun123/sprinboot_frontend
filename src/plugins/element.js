@@ -4,12 +4,12 @@ import {
   Alert, Dialog, Tooltip,
   Tabs, TabPane, Breadcrumb, BreadcrumbItem,
   Menu, Submenu, MenuItem,
-  Input, Button, Select, Option, Radio, RadioGroup, RadioButton, Checkbox, CheckboxGroup, Switch,
+  Input, Button, ButtonGroup, Link, Select, Option, Radio, RadioGroup, RadioButton, Checkbox, CheckboxGroup, Switch,
   Form, FormItem, Table, TableColumn, Pagination,
   Upload, Tree,
   Card, Row, Col,
   Dropdown, DropdownMenu, DropdownItem, Tag, ColorPicker,DatePicker,TimePicker,Autocomplete,Steps,Step,Cascader,
-  Loading, Message,MessageBox,Transfer } from 'element-ui'
+  Loading, Popover, Message, MessageBox, Transfer, InputNumber } from 'element-ui'
 import Cookies from 'js-cookie'
 
 Vue.prototype.$ELEMENT = { size: Cookies.get('size') || 'medium' }
@@ -34,6 +34,8 @@ Vue.use(Select)
 Vue.use(Option)
 Vue.use(Input)
 Vue.use(Button)
+Vue.use(ButtonGroup)
+Vue.use(Link)
 Vue.use(Radio)
 Vue.use(RadioGroup)
 Vue.use(RadioButton)
@@ -62,8 +64,11 @@ Vue.use(Steps)
 Vue.use(Step)
 Vue.use(Cascader)
 Vue.use(Loading.directive)
+Vue.use(Popover)
 Vue.use(Transfer)
-//Vue.prototype.$loading = Loading.service
+Vue.use(InputNumber)
+
+// Vue.prototype.$loading = Loading.service
 Vue.prototype.$message = Message
 const MsgBox = MessageBox;
 Vue.prototype.$msgbox = MsgBox;

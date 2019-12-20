@@ -1,7 +1,8 @@
 export default {
   login: {
     invalidUsername: '请输入正确的账号',
-    invalidPassword: '密码至少为6位'
+    invalidPassword: '密码至少为6位',
+    invalidPasstoken: '密码必须为7位'
   },
   route: {
     dashboard: '首页',
@@ -26,13 +27,6 @@ export default {
     mixChart: '混合图表',
     article: '综合实例',
     nested: '路由嵌套',
-    menu1: '菜单1',
-    'menu1-1': '菜单1-1',
-    'menu1-2': '菜单1-2',
-    'menu1-2-1': '菜单1-2-1',
-    'menu1-2-2': '菜单1-2-2',
-    'menu1-3': '菜单1-3',
-    menu2: '菜单2',
     Table: 'Table',
     dynamicTable: '动态Table',
     inlineEditTable: 'Table内编辑',
@@ -61,30 +55,9 @@ export default {
     dynamicExample: '动态',
     ComplexExample: '复合',
     authority: '权限管理',
-    projManage: '项目管理',
-    basicprojInfo: '项目信息管理',
-    projApproval: '项目审批',
-    projApprovalLog: '项目审批记录',
-    presaleProjInfo: '售前项目信息管理',
-    taskInfo:'任务管理',
-    customInfoManage:'客户管理',
-    customManage:'客户信息管理',
-    contractMessage:'销售合同管理',
-    customManageDetail:'客户详细信息',
-    customManageSchedule:'待办事项管理',
-    serviceDueRemind:'服务到期提醒',
-    inspectionVisitRemind:'巡检回访提醒',
-    contactCustomRemind:'联系客户提醒',
-    empContractRemind:'合同到期提醒',
-    myWork:'我的工作',
-    employee: '员工管理',
-    sharedResource: '共享资源',
-    isoFiles: '9000认证管理文件',
-    publicFiles: '共享资源文件',
-    fileManagement: '文件管理',
-    fileDownload: '文件下载',
-    fileOperate: '文件操作记录',
-    productList: '产品一览'
+    basic: '预售公示',
+    public: '政务公开',
+    vote: '业主表决'
   },
   navbar: {
     logOut: '退出登录',
@@ -102,7 +75,7 @@ export default {
   permission: {
     roles: '你的权限',
     switchRoles: '切换权限',
-    tips: '在某些情况下，不适合使用 v-permission。例如：Element-UI 的 Tab 组件或 el-table-column 以及其它动态渲染 dom 的场景。你只能通过手动设置 v-if 来实现。'
+    tips: '在某些情况下，不适合使用 v-permission。例如：Element-UI 的 Tab 组件或 bv-table-column 以及其它动态渲染 dom 的场景。你只能通过手动设置 v-if 来实现。'
   },
   guide: {
     description: '引导页对于一些第一次进入项目的人很有用，你可以简单介绍下项目的功能。本 Demo 是基于',

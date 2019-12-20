@@ -5,7 +5,12 @@ const state = {
 
 const mutations = {
   ADD_VISITED_VIEW: (state, view) => {
-    if (state.visitedViews.some(v => v.path === view.path)) return
+    /// if (state.visitedViews.some(v => v.path === view.path)) return
+    if (process.env.VUE_APP_DETAIL_SEPRATE === 'false' && view.meta && view.meta.match) {
+      if (state.visitedViews.some(v => v.meta && v.meta.match && v.meta.match === view.meta.match)) return
+    } else {
+      if (state.visitedViews.some(v => v.path === view.path)) return
+    }
     state.visitedViews.push(
       Object.assign({}, view, {
         title: view.meta.title || 'no-name'
@@ -20,12 +25,27 @@ const mutations = {
   },
 
   DEL_VISITED_VIEW: (state, view) => {
-    for (const [i, v] of state.visitedViews.entries()) {
+    if (process.env.VUE_APP_DETAIL_SEPRATE === 'false' && view.meta && view.meta.match) {
+      for (const [i, v] of state.visitedViews.entries()) {
+        if (v.meta && v.meta.match && v.meta.match === view.meta.match) {
+          state.visitedViews.splice(i, 1)
+          break
+        }
+      }
+    } else {
+      for (const [i, v] of state.visitedViews.entries()) {
+        if (v.path === view.path) {
+          state.visitedViews.splice(i, 1)
+          break
+        }
+      }
+    }
+    /*for (const [i, v] of state.visitedViews.entries()) {
       if (v.path === view.path) {
         state.visitedViews.splice(i, 1)
         break
       }
-    }
+    }*/
   },
   DEL_CACHED_VIEW: (state, view) => {
     for (const i of state.cachedViews) {
@@ -38,9 +58,18 @@ const mutations = {
   },
 
   DEL_OTHERS_VISITED_VIEWS: (state, view) => {
-    state.visitedViews = state.visitedViews.filter(v => {
+    if (process.env.VUE_APP_DETAIL_SEPRATE === 'false' && view.meta && view.meta.match) {
+      state.visitedViews = state.visitedViews.filter(v => {
+        return v.meta.affix || (v.meta && v.meta.match && v.meta.match === view.meta.match)
+      })
+    } else {
+      state.visitedViews = state.visitedViews.filter(v => {
+        return v.meta.affix || v.path === view.path
+      })
+    }
+    /*state.visitedViews = state.visitedViews.filter(v => {
       return v.meta.affix || v.path === view.path
-    })
+    })*/
   },
   DEL_OTHERS_CACHED_VIEWS: (state, view) => {
     for (const i of state.cachedViews) {
@@ -62,12 +91,27 @@ const mutations = {
   },
 
   UPDATE_VISITED_VIEW: (state, view) => {
-    for (let v of state.visitedViews) {
+    if (process.env.VUE_APP_DETAIL_SEPRATE === 'false' && view.meta && view.meta.match) {
+      for (let v of state.visitedViews) {
+        if (v.meta && v.meta.match && v.meta.match === view.meta.match) {
+          v = Object.assign(v, view)
+          break
+        }
+      }
+    } else {
+      for (let v of state.visitedViews) {
+        if (v.path === view.path) {
+          v = Object.assign(v, view)
+          break
+        }
+      }
+    }
+    /*for (let v of state.visitedViews) {
       if (v.path === view.path) {
         v = Object.assign(v, view)
         break
       }
-    }
+    }*/
   }
 }
 
