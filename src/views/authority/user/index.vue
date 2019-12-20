@@ -5,20 +5,21 @@
         <bv-button show="one" view="grant" @click="startGrant()">授权</bv-button>
         <bv-button show="none" view="create" @click="startCreate()">新增</bv-button>
         <bv-button show="one" view="modify" @click="startModify()">修改</bv-button>
+        <bv-button show="one" svg-icon="token" @click="manageToken()">动态令牌</bv-button>
         <bv-button v-show="checkResetPass()" view="reset" @click="resetPass()">重置密码</bv-button>
         <bv-button v-show="checkRemove()" view="remove" authority="remove" @click="startRemove()">删除</bv-button>
       </div>
       <div slot="search">
         <bv-col>
-          <bv-form-item  label="用户姓名" prop="name">
+          <bv-form-item label="用户姓名" prop="name">
             <bv-input v-model="filter.name" />
-          </bv-form-item >
+          </bv-form-item>
         </bv-col>
         <!--
         <bv-col>
-          <bv-form-item  label="用户状态" prop="status">
+          <bv-form-item label="用户状态" prop="status">
             <bv-radio-group v-model="filter.status" store-action="app/fetchEnums" dict-code="userStatus" />
-          </bv-form-item >
+          </bv-form-item>
         </bv-col>
         -->
       </div>
@@ -39,48 +40,48 @@
     </bv-table>
     <bv-dialog title="维护用户信息" :visible.sync="dialogFormVisible">
       <bv-form ref="dialogForm" :model="user" :rules="rules">
-        <bv-row :layout="2">
+        <bv-row layout="dialog-2">
           <!--<bv-col>
-            <bv-form-item  label="用户登录名" prop="id">
+            <bv-form-item label="用户登录名" prop="id">
               <bv-input v-model="user.avatar" />
-            </bv-form-item >
+            </bv-form-item>
           </bv-col>
           <bv-col>
-            <bv-form-item  label="用户编号" prop="userId">
+            <bv-form-item label="用户编号" prop="userId">
               <bv-input v-if="modifyType === 'create'" v-model.trim="user.userId" />
               <span v-else v-text="user.userId" />
-            </bv-form-item >
+            </bv-form-item>
           </bv-col>-->
           <bv-col>
-            <bv-form-item  label="用户编号" prop="userId">
+            <bv-form-item label="用户编号" prop="userId">
               <div slot="help">登录用的编号，不能跟其他用户重复</div>
               <bv-input v-model="user.userId" />
-            </bv-form-item >
+            </bv-form-item>
           </bv-col>
           <bv-col>
-            <bv-form-item  label="用户姓名" prop="name">
+            <bv-form-item label="用户姓名" prop="name">
               <bv-input v-model="user.name" />
-            </bv-form-item >
+            </bv-form-item>
           </bv-col>
           <bv-col>
-            <bv-form-item  label="手机号" prop="mobile">
+            <bv-form-item label="手机号" prop="mobile">
               <bv-input v-model="user.mobile" />
-            </bv-form-item >
+            </bv-form-item>
           </bv-col>
           <bv-col>
-            <bv-form-item  label="电子邮箱" prop="email">
+            <bv-form-item label="电子邮箱" prop="email">
               <bv-input v-model="user.email" />
-            </bv-form-item >
+            </bv-form-item>
           </bv-col>
           <bv-col>
-            <bv-form-item  label="身份证号" prop="certNo">
+            <bv-form-item label="身份证号" prop="certNo">
               <bv-input v-model="user.certNo" />
-            </bv-form-item >
+            </bv-form-item>
           </bv-col>
           <bv-col layout="100%">
-            <bv-form-item  label="授权" prop="grants">
+            <bv-form-item label="授权" prop="grants">
               <el-transfer v-model="user.grants" :data="roles" :titles="['未授权','已授权']" />
-            </bv-form-item >
+            </bv-form-item>
           </bv-col>
         </bv-row>
       </bv-form>
@@ -97,6 +98,8 @@
         <bv-button view="cancel" @click="cancelGrant">取消</bv-button>
       </div>
     </bv-dialog>
+
+    <user-token v-if="userId" :visible.sync="tokenManageVisible" :user-id="userId" />
   </div>
 </template>
 
@@ -104,12 +107,14 @@
   import { Avatar } from 'element-ui'
   import { fetchAllRoles } from '@/api/authority/role'
   import { fetchUsers, createUser, modifyUser, removeUsers, resetPass, fetchGrants, saveGrants } from '@/api/authority/user'
+  import UserToken from './components/token'
   import defaultAvatar from '@/assets/avatar.png'
 
   export default {
     name: 'ListUser',
     components: {
-      ElAvatar: Avatar
+      ElAvatar: Avatar,
+      UserToken
     },
     data() {
       return {
@@ -123,11 +128,13 @@
         dialogFormVisible: false,
         dialogModifyDeptFormVisible: false,
         dialogGrantVisible: false,
+        tokenManageVisible: false,
         user: {
           id: null,
           // avatar: null,
           name: null
         },
+        userId: null,
         rules: {
           userId:[
             { required: true, message: '请输入用户编号' }
@@ -188,6 +195,10 @@
         this.user = user
         this.dialogFormVisible = true
         this.modifyType = 'modify'
+      },
+      manageToken() {
+        this.tokenManageVisible = true
+        this.userId = this.$refs.table.selection[0].userId
       },
       resetModify() {
         this.dialogFormVisible = false

@@ -5,16 +5,16 @@
         <bv-table-column type="selection" />
         <bv-table-column label="字典代码" prop="code" align="center">
           <template slot-scope="scope">
-            <bv-form-item  :prop="'details.' + scope.$index + '.code'" :rules="form.rules.code">
+            <bv-form-item :prop="'details.' + scope.$index + '.code'" :rules="form.rules.code">
               <bv-input v-model="scope.row.code" />
-            </bv-form-item >
+            </bv-form-item>
           </template>
         </bv-table-column>
         <bv-table-column label="字典名称" prop="name" align="center">
           <template slot-scope="scope">
-            <bv-form-item  :prop="'details.' + scope.$index + '.name'" :rules="form.rules.name">
+            <bv-form-item :prop="'details.' + scope.$index + '.name'" :rules="form.rules.name">
               <bv-input prop="name" v-model.trim="scope.row.name" />
-            </bv-form-item >
+            </bv-form-item>
           </template>
         </bv-table-column>
 

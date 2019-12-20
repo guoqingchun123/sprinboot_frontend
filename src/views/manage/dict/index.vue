@@ -2,7 +2,13 @@
   <el-row type="flex" class="fit-scroll">
     <el-col :sm="6">
       <bv-scrollbar>
-        <bv-tree ref="tree" :data="items" node-key="code" :default-expanded-keys="['root']" style="margin-bottom: 20px" @current-change="changeSelect">
+        <bv-input
+          placeholder="输入关键字进行过滤"
+          v-model="filter"
+          clearable
+          style="padding-right: 5px;"
+        />
+        <bv-tree ref="tree" :data="items" node-key="code" :default-expanded-keys="['root']" style="margin-bottom: 20px" @current-change="changeSelect" :filter-node-method="filterTree">
           <span slot-scope="{ node, data }" class="tree-node-operates">
             <span>{{ data.code === 'root' ? node.label : data.code + ' - ' + node.label }}</span>
           </span>
@@ -17,14 +23,14 @@
       <bv-form ref="itemForm" class="form-static" :title="formTitle" v-show="dictItemVisible">
         <bv-row>
             <bv-col>
-              <bv-form-item  label="字典代码" prop="code">
+              <bv-form-item label="字典代码" prop="code">
                 <bv-input v-text="item.code" />
-              </bv-form-item >
+              </bv-form-item>
             </bv-col>
             <bv-col>
-              <bv-form-item  label="字典名称" prop="name">
+              <bv-form-item label="字典名称" prop="name">
                 <bv-input v-text="item.name" />
-              </bv-form-item >
+              </bv-form-item>
             </bv-col>
           </bv-row>
       </bv-form>
@@ -48,6 +54,7 @@
         currentLevel: 0,
         currentItem: null,
 
+        filter: '',
         items: [],
         // details: [],
         dictDetailTitle: '',
@@ -68,12 +75,23 @@
         return (this.items && this.items.length > 0 && this.items[0].children) || []
       }
     },
+    watch: {
+      filter(value) {
+        this.$refs.tree.filter(value)
+      }
+    },
     created() {
       this.__currentNode = null
       // this.currentItem = null
       this.fetchTreeData()
     },
     methods: {
+      filterTree(value, data) {
+        if (!value) {
+          return true
+        }
+        return data.code.indexOf(value) !== -1 || data.name.indexOf(value) !== -1
+      },
       onDictCreated(item) {
         this.$refs.tree.append(item, this.__currentNode)
         this.__currentNode.expanded = true

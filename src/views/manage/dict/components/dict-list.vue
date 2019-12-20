@@ -3,8 +3,8 @@
     <bv-table
       ref="dictTable"
       title="字典一览"
-      :search="false"
       :data="items"
+      :inline-filter="inlineFilter"
     >
       <div slot="operates">
         <bv-button show="none" view="create" @click="startCreate()">新增</bv-button>
@@ -17,17 +17,17 @@
     </bv-table>
     <bv-dialog title="字典维护" :visible.sync="dialogFormVisible" v-if="dialogFormVisible">
       <bv-form ref="dialogForm" :model="item" :rules="rules">
-        <bv-row :layout="2">
+        <bv-row layout="dialog-2">
           <bv-col>
-            <bv-form-item  label="字典代码" prop="code">
+            <bv-form-item label="字典代码" prop="code">
               <bv-input v-if="modifyType === 'create'" v-model.trim="item.code" />
               <span v-else v-text="item.code" />
-            </bv-form-item >
+            </bv-form-item>
           </bv-col>
           <bv-col>
-            <bv-form-item  label="字典名称" prop="name">
+            <bv-form-item label="字典名称" prop="name">
               <bv-input v-model.trim="item.name" />
-            </bv-form-item >
+            </bv-form-item>
           </bv-col>
         </bv-row>
         <bv-row>
@@ -97,6 +97,9 @@
       fetchData() {
         this.$refs.dictTable.clearSelection()
         this.$refs.dictTable.fetchData()
+      },
+      inlineFilter(items, value) {
+        return items.filter(item => item.code.indexOf(value) !== -1 || item.name.indexOf(value) !== -1)
       },
       initItem() {
         this.item = {
