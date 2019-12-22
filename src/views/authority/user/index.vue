@@ -64,6 +64,11 @@
             </bv-form-item>
           </bv-col>
           <bv-col>
+            <bv-form-item label="用户类型" prop="userType">
+              <bv-select type="enum" dict-code="portal.userType" v-model="user.userType" />
+            </bv-form-item>
+          </bv-col>
+          <bv-col>
             <bv-form-item label="手机号" prop="mobile">
               <bv-input v-model="user.mobile" />
             </bv-form-item>
