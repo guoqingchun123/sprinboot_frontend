@@ -1,6 +1,6 @@
 <template>
-  <el-row type="flex" class="fit-scroll">
-    <el-col :sm="6">
+  <bv-row type="flex" class="fit-scroll">
+    <bv-col :sm="6">
       <bv-scrollbar>
         <bv-input
           placeholder="输入关键字进行过滤"
@@ -14,8 +14,8 @@
           </span>
         </bv-tree>
       </bv-scrollbar>
-    </el-col>
-    <el-col :sm="18">
+    </bv-col>
+    <bv-col :sm="18">
       <bv-scrollbar v-show="!dictItemVisible">
         <dict-list ref="dictList" v-show="dictListVisible" :items="dictItems" @on-dict-created="onDictCreated" @on-dict-modified="onDictModified" @on-dict-removed="onDictRemoved" />
         <dict-detail ref="dictDetail" v-show="dictDetailVisible" :title="dictDetailTitle" :show-save="true" :item="currentItem" @on-dict-modified="onDictModified" />
@@ -34,8 +34,8 @@
             </bv-col>
           </bv-row>
       </bv-form>
-    </el-col>
-  </el-row>
+    </bv-col>
+  </bv-row>
 </template>
 
 <script>

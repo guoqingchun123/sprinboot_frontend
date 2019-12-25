@@ -1,12 +1,12 @@
 <template>
-  <el-row type="flex" class="fit-scroll">
-    <el-col>
+  <bv-row type="flex" class="fit-scroll">
+    <bv-col>
       <bv-scrollbar>
         <el-tree :data="items" node-key="code" :props="defaultProps" :expand-on-click-node="false" accordion />
       </bv-scrollbar>
-    </el-col>
-    <el-col />
-  </el-row>
+    </bv-col>
+    <bv-col />
+  </bv-row>
 </template>
 
 <script>

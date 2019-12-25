@@ -58,20 +58,30 @@ export function showRegionRemoveBtn(ids) {
 }
 
 export function removeRegion(ids) {
-  return http.delete('/api/center/regions/' + ids)
+  return http.delete('/api/center/region/' + ids)
 }
 
 export function createRegion(data) {
-  return http.post('/api/center/regions', data)
+  return http.post('/api/center/region', data)
 }
 
 export function modifyRegion(data) {
-  return http.put('/api/center/regions', data)
+  return http.put('/api/center/region', data)
 }
 
+export function checkRegionName(regionName) {
+  return http.get('/api/center/checkRegionName/'+ regionName)
+}
 /*企业管理*/
 export function fetchCorp(query) {
   return http.get('/api/center/corps', {
+    params: query
+  })
+}
+
+/*未处理楼栋管理*/
+export function fetchBldinfo(query) {
+  return http.get('/api/center/fetchBldinfo', {
     params: query
   })
 }
@@ -87,9 +97,10 @@ export function fetchNoRegionProjects(query) {
     params: query
   })
 }
-
-export function removeRegionProjects(ids) {
-  return http.delete('/api/center/removeRegionProjects/' + ids)
+export function removeRegionProjects(data) {
+  return http.delete('/api/center/removeRegionProjects', {
+    params: data
+  })
 }
 
 export function addRegionProjects(data) {
@@ -103,7 +114,9 @@ export function modifyRegionLnglat(data) {
 export function updateRegionState(data) {
   return http.put('/api/center/regionState', data)
 }
-
+export function updateRegionCheck(data) {
+  return http.put('/api/center/regionCheck', data)
+}
 export function fetchRegionFiles(query) {
   return http.get('/api/portal/files', {
     params: query
@@ -111,7 +124,7 @@ export function fetchRegionFiles(query) {
 }
 
 export function fetchRegion(id) {
-  return http.get('/api/center/regions/' + id)
+  return http.get('/api/center/region/'+id)
 }
 
 export function addBldCoordinate(data) {

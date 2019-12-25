@@ -7,13 +7,13 @@
           <input id='tipinput' type="text" autocomplete="off" style="z-index:999">
           <div class="input-card" style='width: 24rem;'>
             <div class="input-item">
-              <input id="polygon" type="radio" name='func' value='polygon'>
+              <input id="polygon" type="radio" name='func' value='polygon' >
               <label for="polygon" class="input-text">划定小区范围</label>
             </div>
             <div class="input-item">
-              <bv-button id="clear" icon="el-icon-error" class="btn">清除</bv-button>
-              <bv-button id="close" icon="el-icon-circle-close" class="btn">关闭绘图</bv-button>
-              <bv-button id="save" icon="el-icon-success" class="btn">生成坐标</bv-button>
+              <bv-button id="clear" type="success" icon="el-icon-error" class="btn">清除</bv-button>
+              <bv-button id="close" type="success" icon="el-icon-circle-close" class="btn">关闭绘图</bv-button>
+              <bv-button id="save" type="success" icon="el-icon-success" class="btn">保存</bv-button>
             </div>
           </div>
         </div>
@@ -23,32 +23,34 @@
           <bv-row>
             <bv-col>
               <bv-form-item label="坐标" prop="lnglat">
-                <el-input v-model.trim="item.lnglat" :disabled="true"/>
+                <el-input v-model.trim="item.lnglat" :disabled="true" />
               </bv-form-item>
             </bv-col>
             <bv-col>
               <bv-form-item label="坐标组" prop="lnglats">
-                <el-input type="textarea" :rows="4" v-model.trim="item.lnglats" :disabled="true"/>
+                <el-input type="textarea" :rows="4" v-model.trim="item.lnglats" :disabled="true" />
               </bv-form-item>
             </bv-col>
             <bv-col class="upload-step">
               <bv-form-item label="上传小区logo" prop="uploadSeed">
                 <el-upload
-                  ref="uploadFile"
-                  drag
-                  class="upload-demo"
-                  :action="upload_url"
-                  :auto-upload="true"
-                  :file-list="fileList"
-                  :http-request="uploadImg"
-                  accept=".jpg,.jpeg,.png,.JPG,.JPEG"
-                  :limit="1"
+                   ref="uploadFile"
+                   drag
+                   class="upload-demo"
+                   :action="upload_url"
+                   :auto-upload="true"
+                   :file-list="fileList"
+                   :on-change="fileChange"
+                   :on-remove="fileRemove"
+                   :http-request="uploadImg"
+                   list-type="picture"
+                   accept=".jpg,.jpeg,.png,.JPG,.JPEG"
                 >
-                  <i class="el-icon-upload"/>
+                  <i class="el-icon-upload" />
                   <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
                   <div slot="tip" class="el-upload__tip">
                     <i class="el-icon-warning" style="color:red;margin-right:5px"></i>
-                    只能上传.jpg/.jpeg/.png/.JPG/.JPEG文件
+                    只能上传.jpg/.jpeg/.png/.JPG/.JPEG文件,且大小不超过15M
                   </div>
                 </el-upload>
               </bv-form-item>
@@ -67,7 +69,11 @@
 <script>
   import {modifyRegionLnglat, uploadFile} from '@/api/basic'
   import {lazyAMapApiLoaderInstance} from 'vue-amap';
-  
+
+  var regionMap;
+  var mouseTool;
+  var polygon;
+  var overlays = [];
   export default {
     name: 'RegionCoordinate',
     props: {
@@ -85,10 +91,10 @@
         },
         rules: {
           lnglat: [
-            {required: true, message: '小区坐标不能为空', trigger: 'blur'},
+            {required: true, message:'小区坐标不能为空', trigger: 'blur'},
           ],
           lnglats: [
-            {required: true, message: '小区区域坐标不能为空', trigger: 'blur'},
+            {required: true, message:'小区区域坐标不能为空', trigger: 'blur'},
           ]
         },
         //上传的文件列表
@@ -137,29 +143,27 @@
     mounted: function () {
       let _that = this;
       lazyAMapApiLoaderInstance.load().then(() => {
-        const regionMap = new AMap.Map('mapContainer', {
+        regionMap = new AMap.Map('mapContainer', {
           center: (this.region.x && this.region.y) ? [_that.region.x, _that.region.y] : [118.916202, 42.271235], //初始地图中心点
           resizeEnable: true, //是否监控地图容器尺寸变化
           zoom: 15,
           zooms: [10, 18]
         });
-        
-        var mouseTool = new AMap.MouseTool(regionMap);
+
+        mouseTool = new AMap.MouseTool(regionMap);
         //监听draw事件可获取画好的覆盖物
-        var overlays = [];
         mouseTool.on('draw', function (e) {
           overlays.push(e.obj);
         })
-        
+
         function draw() {
           mouseTool.polygon({
             fillColor: '#00b0ff',
             strokeColor: '#80d8ff'
             //同Polygon的Option设置
           });
-          
         }
-        
+
         var radios = document.getElementsByName('func');
         for (var i = 0; i < radios.length; i += 1) {
           radios[i].onchange = function (e) {
@@ -167,13 +171,15 @@
           }
         }
         document.getElementById('clear').onclick = function () {
+          //清空地图上的覆盖物
+          // regionMap.clearMap()
+          regionMap.remove(polygon)
           regionMap.remove(overlays)
           overlays = [];
         }
         document.getElementById('save').onclick = function () {
           if (overlays[0] != null) {
             var lnglatsMap = overlays[0].B.path;
-            console.log(lnglatsMap);
             var lnglats = '';
             for (var i = 0; i < lnglatsMap.length; i++) {
               lnglats += lnglatsMap[i].lng + ',' + lnglatsMap[i].lat;
@@ -190,12 +196,15 @@
           }
         }
         document.getElementById('close').onclick = function () {
-          mouseTool.close(true)//关闭，并清除覆盖物
+          //关闭，并清除覆盖物
+          // mouseTool.close(true)
+          //仅关闭画图功能
+          mouseTool.close()
           for (var i = 0; i < radios.length; i += 1) {
             radios[i].checked = false;
           }
         }
-        
+
         const marker = new AMap.Marker({
           position: regionMap.getCenter(),
           icon: '//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png',
@@ -207,7 +216,7 @@
         marker.on("dragend", function (e) {
           _that.item.lnglat = e.lnglat.getLng() + ',' + e.lnglat.getLat();
         });
-        
+
         //显示小区范围
         let lnglatList = []
         if (_that.region.lnglats) {
@@ -223,7 +232,7 @@
           [118.956839,42.252163]
         ]
         console.log(path)*/
-        var polygon = new AMap.Polygon({
+        polygon = new AMap.Polygon({
           path: lnglatList,
           strokeColor: "#FF33FF",
           strokeWeight: 6,
@@ -232,7 +241,7 @@
           fillColor: '#1791fc',
           zIndex: 50,
         })
-        
+
         regionMap.add(polygon)
         regionMap.setFitView([polygon])
         //输入提示
@@ -260,21 +269,42 @@
           });
         }
       });
-      
     },
     methods: {
-      //自定义上传接口
+      //点击上传文件列表移除时
+      fileRemove() {
+        this.logoPath = '';
+        this.viewPath = ''
+      },
+      fileChange() {
+        //不限制文件列表大小，但是每次上传先将文件列表置为空
+        this.fileList = []
+      },
+      //自定义上传接口,覆盖默认的上传行为
       uploadImg(item) {
         let _that = this;
         _that.loading = true;
-        let isLt = item.file.size / 1024 / 1024 < 10;
+        //校验文件大小
+        let isLt = item.file.size / 1024 / 1024 < 15;
         if (!isLt) {
-          this.$message.warning('上传文件大小不能超过10MB!');
+          this.$message.warning('上传文件大小不能超过15MB!');
+          _that.loading = false;
+          _that.fileList = [];
+          return;
+        }
+
+        //校验文件类型
+        let fileExt = item.file.name.replace(/.+\./, "")
+        if (['jpg','jpeg','png'].indexOf(fileExt.toLowerCase()) === -1){
+          this.$message({
+            type: 'warning',
+            message: '请上传后缀名为.jpg,.jpeg,.png,.JPG,.JPEG的文件！'
+          });
           _that.loading = false;
           _that.fileList = []
           return;
         }
-        
+
         let file = [item.file]
         let data = {
           name: item.file.name,
@@ -284,12 +314,19 @@
           subTypeName: '小区logo'
         }
         uploadFile(file, data).then(response => {
+          //添加当前上传的文件到列表中，前端文件列表中只显示当前上传成功的文件信息
+          const currFile = {
+            name: item.file.name,
+            url: response.data.thumbUrl
+          };
+          _that.fileList.push(currFile);
           _that.logoPath = response.data.thumbUrl;
           _that.viewPath = response.data.viewUrl;
           _that.loading = false;
         }).catch(() => {
           _that.$message.error('上传图片失败');
           _that.loading = false;
+          _that.fileList = [];
         })
       },
       saveRegionData() {
@@ -305,7 +342,32 @@
             viewPath: this.viewPath
           }
           modifyRegionLnglat(data).then(response => {
-            this.$message.success('保存成功')
+            this.$message.success('保存成功');
+
+            //清除后台回显描点范围，显示当前保存的描点范围
+            regionMap.remove(polygon);
+            regionMap.remove(overlays);
+            overlays = [];
+            //显示小区范围
+            let lnglatList = [];
+            if (this.item.lnglats) {
+              let pathLnglat = this.item.lnglats.split(';');
+              for (let i in pathLnglat) {
+                lnglatList.push(pathLnglat[i].split(","))
+              }
+            }
+            polygon = new AMap.Polygon({
+              path: lnglatList,
+              strokeColor: "#FF33FF",
+              strokeWeight: 6,
+              strokeOpacity: 0.2,
+              fillOpacity: 0.4,
+              fillColor: '#1791fc',
+              zIndex: 50,
+            });
+
+            regionMap.add(polygon);
+            regionMap.setFitView([polygon]);
           }).catch(() => {
             this.$message.error('保存失败')
           })
@@ -318,26 +380,23 @@
 <style lang="scss" scoped>
   #mapContainer {
     min-height: 600px;
-    
     .regionMap {
       position: absolute;
-      line-height: 30px;
       top: 12px;
       left: 15px;
       z-index: 999;
       background: white;
-      
+
       .input-text {
-        width: 5rem;
+        width:5rem;
         cursor: pointer;
       }
     }
   }
-  
   .el-upload.el-upload--text {
     width: 100%;
   }
-  
+
   .el-upload-dragger {
     width: 100%;
   }

@@ -3,7 +3,7 @@
     <bv-form>
       <bv-row :layout="1">
         <bv-col>
-          <el-form-item label="设备类型" prop="deviceType">
+          <bv-form-item label="设备类型" prop="deviceType">
             <el-select v-model="value" placeholder="请选择" style="width: 360px;">
               <el-option
                 v-for="item in options"
@@ -12,10 +12,10 @@
                 :value="item.value"
               />
             </el-select>
-          </el-form-item>
+          </bv-form-item>
         </bv-col>
         <bv-col>
-          <el-form-item label="请选择种子文件" prop="devicePwd" style="white-space: nowrap">
+          <bv-form-item label="请选择种子文件" prop="devicePwd" style="white-space: nowrap">
             <el-upload
               ref="uploadFile"
               class="upload-demo"
@@ -31,7 +31,7 @@
             </el-upload>
             <bv-button size="small" type="success" :disabled="saveAndUploadDisabled" @click="submitUpload">上传并导入</bv-button>
             <bv-button @click="cancleUpload">取消</bv-button>
-          </el-form-item>
+          </bv-form-item>
         </bv-col>
       </bv-row>
     </bv-form>

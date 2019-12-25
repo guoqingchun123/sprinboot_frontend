@@ -1,6 +1,6 @@
 <template>
-  <el-row>
-    <el-col :sm="12">
+  <bv-row>
+    <bv-col :sm="12">
       <bv-tree ref="tree" node-key="code" :ready="isCatalogReady" :default-expand-all="true" :accordion="false" :data="catalogs">
         <span class="tree-node-operates" :class="node.level === 1 && 'root-node'" slot-scope="{ node, data }">
           <span>{{ data.code | comboShow(data.name) }}</span>
@@ -17,7 +17,7 @@
           </span>
         </span>
       </bv-tree>
-    </el-col>
+    </bv-col>
     <bv-dialog title="图档类型维护" :visible.sync="dialogFormVisible" v-if="dialogFormVisible">
       <bv-form ref="dialogForm" :model="item" :rules="rules">
         <bv-row :layout="2">
@@ -51,7 +51,7 @@
         <bv-button view="cancel" @click="cancelModify()">取消</bv-button>
       </div>
     </bv-dialog>
-  </el-row>
+  </bv-row>
 </template>
 <script>
   import { fetchAllCatalogs, createCatalog, modifyCatalog, removeCatalog } from '@/api/file'

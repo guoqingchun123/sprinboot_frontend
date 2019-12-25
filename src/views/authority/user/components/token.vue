@@ -11,7 +11,7 @@
             <bv-form ref="allotForm" title="令牌发放" :model="token" :rules="tokenRules">
               <bv-row>
                 <bv-col>
-                  <el-form-item label="令牌序列号" prop="deviceSn">
+                  <bv-form-item label="令牌序列号" prop="deviceSn">
                     <el-select v-model="token.deviceSn" placeholder="请输入令牌序列号" filterable>
                       <el-option
                         v-for="itemToken in tokens"
@@ -20,7 +20,7 @@
                         :value="itemToken.deviceSn"
                       />
                     </el-select>
-                  </el-form-item>
+                  </bv-form-item>
                 </bv-col>
               </bv-row>
               <bv-row>

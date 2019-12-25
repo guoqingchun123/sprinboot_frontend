@@ -61,7 +61,7 @@
         </bv-form-item >
         
         <bv-form-item  v-if="needValidateCode" prop="validateCode">
-          <el-col :span="18" class="item-container">
+          <bv-col :span="18" class="item-container">
             <span class="svg-container">
               <bv-icon icon-class="validateCode"/>
             </span>
@@ -72,11 +72,11 @@
               type="text"
               tabindex="4"
             />
-          </el-col>
+          </bv-col>
           <el-tooltip content="点击刷新">
-            <el-col :span="6" class="validate-code-container">
+            <bv-col :span="6" class="validate-code-container">
               <img :src="validateCodeUrl" @click="refreshValidateCode">
-            </el-col>
+            </bv-col>
           </el-tooltip>
         </bv-form-item >
         

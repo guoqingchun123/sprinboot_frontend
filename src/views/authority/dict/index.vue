@@ -1,6 +1,6 @@
 <template>
-  <el-row type="flex" class="fit-scroll">
-    <el-col :sm="6">
+  <bv-row type="flex" class="fit-scroll">
+    <bv-col :sm="6">
       <bv-scrollbar>
         <bv-tree ref="tree" :data="items" node-key="code" :default-expanded-keys="['root']" style="margin-bottom: 20px" @current-change="changeSelect">
           <span slot-scope="{ node, data }" class="tree-node-operates">
@@ -8,8 +8,8 @@
           </span>
         </bv-tree>
       </bv-scrollbar>
-    </el-col>
-    <el-col :sm="18">
+    </bv-col>
+    <bv-col :sm="18">
       <bv-scrollbar>
         <bv-table v-show="tableVisible"
                   :title="tableTitle"
@@ -49,7 +49,7 @@
           </bv-row>
         </bv-form>
       </bv-scrollbar>
-    </el-col>
+    </bv-col>
 
     <bv-dialog title="字典维护" :visible.sync="dialogFormVisible">
       <bv-form ref="dialogForm" :model="item" :rules="rules">
@@ -72,7 +72,7 @@
         <bv-button view="cancel" @click="cancelModify()">取消</bv-button>
       </div>
     </bv-dialog>
-  </el-row>
+  </bv-row>
 </template>
 
 <script>

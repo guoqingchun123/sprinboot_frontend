@@ -2,8 +2,8 @@
   <div class="app-container">
     <bv-table title="项目一览" :pagination="true" :filter.sync="filter" :fetch-api="fetchProjs_" @on-mounted="(table) => tableInstance = table">
       <div slot="operates">
-        <bv-button view="create" @click="initProject()">新增项目</bv-button>
-        <bv-button icon="el-icon-back" @click="returnPre()">返回</bv-button>
+        <bv-button view="add" @click="initProject()">新增项目</bv-button>
+        <bv-button type="primary" icon="el-icon-back" @click="returnPre()">返回</bv-button>
       </div>
       <div slot="search">
         <bv-col>
@@ -23,9 +23,9 @@
     <bv-dialog title="新增项目" :visible.sync="dialogTableVisible">
       <bv-table ref="table" :pagination="true" :filter.sync="dialogFilter" :fetch-api="fetchNoRegionProjects" @on-mounted="(table) => dialogTableInstance = table">
         <div slot="operates">
-          <bv-button show="oneOrMore" view="create" @click="addRegionProjecs">新增</bv-button>
+          <bv-button show="oneOrMore" view="add" @click="addRegionProjecs">新增</bv-button>
         </div>
-        <bv-table-column type="selection" />
+        <bv-table-column type="selection" width="50" />
         <bv-table-column prop="projectId" label="项目编号" sortable />
         <bv-table-column prop="projectName" label="项目名称" sortable />
         <bv-table-column prop="address" label="项目地址" sortable />
@@ -80,7 +80,11 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        removeRegionProjects(row.projectId).then(response => {
+        let param = {
+          regionId: this.regionId,
+          projectId: row.projectId
+        }
+        removeRegionProjects(param).then(response => {
           if (this.tableInstance.fetchData) {
             this.tableInstance.fetchData()
           }

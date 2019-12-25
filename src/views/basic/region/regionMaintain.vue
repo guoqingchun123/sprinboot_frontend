@@ -1,16 +1,16 @@
 <template>
   <div class="app-container">
     <bv-row layout="table-header">
-      <el-col :span="12">
+      <bv-col :span="12">
         <div v-if="region.regionName">
           <h3>{{region.regionName}}档案信息</h3>
         </div>
-      </el-col>
-      <el-col :span="12" class="operates">
-        <bv-button type="primary" icon="el-icon-picture" @click="startPreview">小区预览</bv-button>
-        <bv-button type="success" icon="el-icon-position" @click="startPublise">发布</bv-button>
-        <bv-button icon="el-icon-back" @click="returnPrePage">返回</bv-button>
-      </el-col>
+      </bv-col>
+      <bv-col :span="12" class="operates">
+        <bv-button type="warning" icon="el-icon-picture" @click="startPreview">小区预览</bv-button>
+        <bv-button v-if="checkShow" type="primary" authority="Check" icon="el-icon-s-check" @click="startCheck">申报</bv-button>
+        <bv-button type="primary" icon="el-icon-back" @click="returnPrePage">返回</bv-button>
+      </bv-col>
     </bv-row>
     <el-tabs v-model="activeName" type="card" :before-leave="tabClick">
       <el-tab-pane label="小区坐标" name="regionCoordinate" lazy>
@@ -29,32 +29,12 @@
         <list-bld :region="region" />
       </el-tab-pane>
     </el-tabs>
-    <bv-dialog title="小区发布" :visible.sync="dialogVisible" width="40vw">
-      <div slot="footer">
-        <bv-form ref="dialogForm" :model="item" :rules="rules">
-          <bv-row>
-            <bv-col layout="100%">
-              <bv-form-item label="发布日期" prop="publishDate">
-                <el-date-picker
-                  v-model="item.publishDate"
-                  type="date"
-                  value-format="yyyy-MM-dd"
-                  placeholder="选择日期"
-                />
-              </bv-form-item>
-            </bv-col>
-          </bv-row>
-        </bv-form>
-        <bv-button view="save" @click="confirmPublise()">保存</bv-button>
-        <bv-button view="cancel" @click="cancelPublise()">取消</bv-button>
-      </div>
-    </bv-dialog>
   </div>
 </template>
 
 <script>
   import './child'
-  import {updateRegionState, fetchRegion} from '@/api/basic'
+  import {fetchRegion, updateRegionCheck} from '@/api/basic'
 
   export default {
     name: 'RegionMaintain',
@@ -67,52 +47,29 @@
     data() {
       return {
         activeName: 'regionCoordinate',
-        dialogVisible: false,
-        item: {},
-        rules: {
-          publishDate: [
-            {required: true, message: '请选择发布日期', trigger: 'blur'}
-          ]
-        },
-        regionSignImg: ''
+        regionSignImg: '',
+        checkShow: true
       }
     },
+    /*mounted() {
+      //按钮显示逻辑
+      const roles = this.$store.getters.roles;
+      if (roles) {
+        if (roles.indexOf("0001") != -1) {
+          //管理员
+          this.checkShow = true;
+        } else {
+          if (roles.indexOf("0003") != -1) {
+            //主管单位
+            this.checkShow = false;
+          } else {
+            //企业
+            this.checkShow = true;
+          }
+        }
+      }
+    },*/
     methods: {
-      // 弹窗用
-      initData() {
-        this.item = {}
-        this.$refs.dialogForm && this.$refs.dialogForm.clearValidate()
-      },
-      startPublise() {
-        this.initData()
-        this.dialogVisible = true
-      },
-      startPreview() {
-        // window.open('http://172.10.10.196:81/houses/sales/'+this.region.regionId)
-        window.open(process.env.VUE_APP_ADDR + '/houses/sales/'+this.region.regionId)
-      },
-      //确认发布
-      confirmPublise() {
-        this.$refs.dialogForm.validate((valid) => {
-          if (!valid) {
-            return false;
-          }
-          let data = {
-            regionId: this.region.regionId,
-            publishDate: this.item.publishDate
-          }
-          updateRegionState(data).then(response => {
-            this.$message.success('发布成功')
-          }).catch(() => {
-            this.$message.error('发布失败')
-          })
-          this.dialogVisible = false
-        })
-      },
-      //取消发布
-      cancelPublise() {
-        this.dialogVisible = false
-      },
       //返回
       returnPrePage() {
         this.$emit("on-region-return")
@@ -127,6 +84,30 @@
         } else {
           return true
         }
+      },
+      //申报
+      startCheck() {
+        this.$confirm('是否确定进行此操作?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          let data = {
+            regionId: this.region.regionId,
+            updateParam: '1000'
+          }
+          updateRegionCheck(data).then(response => {
+            this.$message.success('申报成功');
+            this.$emit("on-region-return");
+          })
+        }).catch(() => {
+          console.log('取消操作')
+        })
+      },
+      //小区预览
+      startPreview() {
+        // window.open('http://172.10.10.196:81/houses/sales/'+this.region.regionId)
+        window.open(process.env.VUE_APP_ADDR + '/sales/'+this.region.regionId)
       }
     }
   }

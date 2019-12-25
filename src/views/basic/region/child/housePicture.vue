@@ -6,9 +6,9 @@
       :titles="{dataTitle: '户型关系一览'}"
     />
 
-    <!--  v-loading="loading" class="app-container"
-    <el-row type="flex" class="fit-scroll">
-      <el-col :sm="6">
+  <!--<div v-loading="loading" class="app-container">
+    <bv-row type="flex" class="fit-scroll">
+      <bv-col :sm="6">
         <bv-scrollbar>
           <bv-tree ref="tree"
                    :data="items"
@@ -21,8 +21,8 @@
             </span>
           </bv-tree>
         </bv-scrollbar>
-      </el-col>
-      <el-col :sm="18">
+      </bv-col>
+      <bv-col :sm="18">
         <bv-scrollbar>
           <bv-table :title="tableTitle"
                     :pagination="true"
@@ -58,8 +58,8 @@
             </bv-table-column>
           </bv-table>
         </bv-scrollbar>
-      </el-col>
-    </el-row>-->
+      </bv-col>
+    </bv-row>-->
   </div>
 </template>
 
@@ -136,9 +136,21 @@
       uploadImg(item) {
         let _that = this;
         _that.loading = true;
-        let isLt = item.file.size / 1024 / 1024 < 10;
+        //检验上传文件大小
+        let isLt = item.file.size / 1024 / 1024 < 15;
         if (!isLt) {
-          this.$message.warning('上传文件大小不能超过10MB!');
+          this.$message.warning('上传文件大小不能超过15MB!');
+          _that.loading = false;
+          _that.fileList = []
+          return;
+        }
+        //校验文件类型
+        let fileExt = item.file.name.replace(/.+\./, "")
+        if (['jpg','jpeg','png'].indexOf(fileExt.toLowerCase()) === -1){
+          this.$message({
+            type: 'warning',
+            message: '请上传后缀名为.jpg,.jpeg,.png,.JPG,.JPEG的文件！'
+          });
           _that.loading = false;
           _that.fileList = []
           return;

@@ -3,11 +3,11 @@
     <bv-row layout="table-header">
       <el-col :span="12">
         <div v-if="bld.bldNo && region.regionName && floor.floorNo">
-          <h3>{{region.regionName}}-{{bld.bldNo}}{{floor.floorNo}}层单元维护</h3>
+          <h3>{{region.regionName}}/{{bld.bldNo}}/{{floor.floorNo}}层单元维护</h3>
         </div>
       </el-col>
       <el-col :span="12" class="operates">
-        <bv-button icon="el-icon-back" @click="returnPrePage">返回</bv-button>
+        <bv-button type="primary" icon="el-icon-back" @click="returnPrePage">返回</bv-button>
       </el-col>
     </bv-row>
     <el-tabs v-model="activeName" type="card" :before-leave="tabClick">
