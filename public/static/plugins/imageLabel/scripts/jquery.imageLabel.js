@@ -8,12 +8,12 @@ function imageLabel(e) {
   //下拉菜单查询接口
   var options = []
   $.get({
-    url: select.url,
-    async: false,
-    success: function (res) {
-      options = res
-    }
-  })
+          url: select.url,
+          async: false,
+          success: function (res) {
+            options = res
+          }
+        })
   function a() {
     function e() {
       var e = $(".imageLabel-imgdrop"),
@@ -27,12 +27,12 @@ function imageLabel(e) {
             t = n.width() * n.height(),
             l = 0;
           $.each(a,
-            function(e, a) {
-              t <= a && l++
-            }),
+                 function(e, a) {
+                   t <= a && l++
+                 }),
             n.css({
-              "z-index": l
-            })
+                    "z-index": l
+                  })
         })
     }
     function a() {
@@ -51,12 +51,12 @@ function imageLabel(e) {
           height: "100%"
       })*/
       i / n > t / l ? a.css({
-        width: "100%",
-        height: n / i * t
-      }) : a.css({
-        height: "100%",
-        width: i / n * l
-      })
+                              width: "100%",
+                              height: n / i * t
+                            }) : a.css({
+                                         height: "100%",
+                                         width: i / n * l
+                                       })
     }
 
     var t, s, o, d, c, g, m, r = $(".imageLabel-content"),
@@ -75,19 +75,19 @@ function imageLabel(e) {
         f.hide()
       }),
       $.each(n.data,
-        function(e, a) {
-          s = $('<div class="imageLabel-imgdrop ' + (a.name ? "imageLabel-drop-has": "") + '"><span class="imageLabel-imgdrop-font">' + (a.name || "") + '</span><div class="imageLable-i-s"></div></div>');
-          for (var i = 0; i < 8; i++) s.find(".imageLable-i-s").append('<i class="imageLable-i">');
-          if (n.shade) for (var t = 0; t < 4; t++) s.append('<em class="imageLable-em">');
-          var l = a;
-          s.css({
-            left: 100 * (l.ex - l.x > 0 ? l.x: l.ex) + "%",
-            top: 100 * (l.ey - l.y > 0 ? l.y: l.ey) + "%",
-            width: 100 * Math.abs(l.ex - l.x) + "%",
-            height: 100 * Math.abs(l.ey - l.y) + "%"
-          }).attr("data-json", JSON.stringify(a)),
-            r.append(s)
-        }),
+             function(e, a) {
+               s = $('<div class="imageLabel-imgdrop ' + (a.name ? "imageLabel-drop-has": "") + '"><span class="imageLabel-imgdrop-font">' + (a.name || "") + '</span><div class="imageLable-i-s"></div></div>');
+               for (var i = 0; i < 8; i++) s.find(".imageLable-i-s").append('<i class="imageLable-i">');
+               if (n.shade) for (var t = 0; t < 4; t++) s.append('<em class="imageLable-em">');
+               var l = a;
+               s.css({
+                       left: 100 * (l.ex - l.x > 0 ? l.x: l.ex) + "%",
+                       top: 100 * (l.ey - l.y > 0 ? l.y: l.ey) + "%",
+                       width: 100 * Math.abs(l.ex - l.x) + "%",
+                       height: 100 * Math.abs(l.ey - l.y) + "%"
+                     }).attr("data-json", JSON.stringify(a)),
+                 r.append(s)
+             }),
       e(),
       $(".imageLabel-content").mousedown(function(e) {
         if (d = e.button, 2 != e.button) {
@@ -109,14 +109,14 @@ function imageLabel(e) {
             s = $(e.target),
             c = JSON.parse(s.attr("data-json")),
             o = $.extend({},
-              c),
+                         c),
             n.startArea();
           else if ($(e.target).hasClass("imageLable-i")) v = !0,
             g = $(e.target),
             s = $(e.target).parents(".imageLabel-imgdrop"),
             c = JSON.parse(s.attr("data-json")),
             o = $.extend({},
-              c);
+                         c);
           else {
             m = (new Date).getTime(),
               p = !1,
@@ -129,12 +129,13 @@ function imageLabel(e) {
           s.addClass("imageLabel-drop-now"),
           n.only && $(this).find(".imageLabel-imgdrop").hide()
         } else $(e.target).hasClass("imageLabel-imgdrop") && (s = $(e.target), setTimeout(function() {
-            f.css({
-              left: e.clientX - 145,
-              top: e.clientY - 252
-            }).show()
-          },
-          0))
+                                                                                            //liuys TODO 编辑菜单位置可能会有偏移，手动修改此位置
+                                                                                            f.css({
+                                                                                                    left: e.clientX - 181,
+                                                                                                    top: e.clientY - 193
+                                                                                                  }).show()
+                                                                                          },
+                                                                                          0))
       }),
       $(".imageLabel-img-boxs").mousemove(function(e) {
         if (b) {
@@ -163,11 +164,11 @@ function imageLabel(e) {
           o.y > 1 && (o.y = 1),
           o.x > 1 && (o.x = 1),
             s.css({
-              left: 100 * (o.ex - o.x > 0 ? o.x: o.ex) + "%",
-              top: 100 * (o.ey - o.y > 0 ? o.y: o.ey) + "%",
-              width: 100 * Math.abs(o.ex - o.x) + "%",
-              height: 100 * Math.abs(o.ey - o.y) + "%"
-            }).addClass("imageLabel-drop-move")
+                    left: 100 * (o.ex - o.x > 0 ? o.x: o.ex) + "%",
+                    top: 100 * (o.ey - o.y > 0 ? o.y: o.ey) + "%",
+                    width: 100 * Math.abs(o.ex - o.x) + "%",
+                    height: 100 * Math.abs(o.ey - o.y) + "%"
+                  }).addClass("imageLabel-drop-move")
         }
       }).mouseup(function(a) {
         if (b) {
@@ -184,9 +185,9 @@ function imageLabel(e) {
             s.attr("data-json", JSON.stringify($.extend(o, i))),
             //Math.abs(a.clientX - t.cx) > 10 && Math.abs(a.clientY - t.cy) > 10 && !p && !v ? ($(".imageLabel-input").addClass("imageLabel-active"), n.edit(s)) : p || v || s.remove(),
             Math.abs(a.clientX - t.cx) > 10 && Math.abs(a.clientY - t.cy) > 10 && !p && !v ? (n.editPop && ($(".imageLabel-input").addClass("imageLabel-active").find("select").val(""), setTimeout(function() {
-                // $(".imageLabel-input").find("select").focus()[0].setSelectionRange( - 1, -1)
-              },
-              500)), n.edit(s)) : p || v || s.remove(),
+                                                                                                                                                                                                      // $(".imageLabel-input").find("select").focus()[0].setSelectionRange( - 1, -1)
+                                                                                                                                                                                                    },
+                                                                                                                                                                                                    500)), n.edit(s)) : p || v || s.remove(),
             b = !1,
             p = !1,
             v = !1,
@@ -227,9 +228,9 @@ function imageLabel(e) {
         n.edit(s),
           s.addClass("imageLabel-drop-edit").siblings().removeClass("imageLabel-drop-edit"),
         n.editPop && (y.addClass("imageLabel-active").find("select").val(s.find(".imageLabel-imgdrop-font").html()), setTimeout(function() {
-            //y.find("select").focus()[0].setSelectionRange( - 1, -1)
-          },
-          500)),
+                                                                                                                                  //y.find("select").focus()[0].setSelectionRange( - 1, -1)
+                                                                                                                                },
+                                                                                                                                500)),
           /* n.editPop && (y.addClass("imageLabel-active").find("input").val(s.find(".imageLabel-imgdrop-font").html()), setTimeout(function() {
                    y.find("input").focus()[0].setSelectionRange( - 1, -1)
                },
@@ -250,9 +251,9 @@ function imageLabel(e) {
       //$(window).resize(a),
       $(".imageLabel-closes").click(function() {
         n.close(i.getData()) && (l.removeClass("imageLabel-box-active"), setTimeout(function() {
-            l.remove()
-          },
-          500))
+                                                                                      l.remove()
+                                                                                    },
+                                                                                    500))
       }).next().click(function() {
         n.confirm(i.getData()) && l.removeClass("imageLabel-box-active")
       })
@@ -306,61 +307,60 @@ function imageLabel(e) {
   if (e.editText) {
     editTitle = e.editText
   }
-  var select = e.select
   var t = '<div class="imageLabel-box">\n ' +
-    '   <div class="imageLabel">\n  ' +
-    '      <div class="imageLabel-img-boxs">\n  ' +
-    '          <span class="imageLabel-img-body">\n   ' +
-    '             <div class="imageLabel-loading-body">\n      ' +
-    '              <div class="imageLabel-loading"></div>\n      ' +
-    '          </div>\n        ' +
-    '        <div class="imageLabel-jisuan" style="position: relative;overflow:hidden;height: 100%;width: 100%;">\n   ' +
-    '                 <img src="' + e.img + '" alt="" style=\'position: absolute;width:100%;height:100%;\' class="imageLabel-img">\n    ' +
-    '                <div class="imageLabel-content">\n\n      ' +
-    '              </div>\n        ' +
-    '        </div>\n       ' +
-    '    </span>\n        ' +
-    '    <ul class="imageLabel-drap-menu">\n      ' +
-    '          <div style=\'overflow: hidden;\'>\n          ' +
-    '          <div style="cursor: pointer;" class="imageLabel-delete btns">删除</div>\n      ' +
-    '              <div style="cursor: pointer;" class="imageLabel-edit btns">编辑</div>\n     ' +
-    '           </div>\n      ' +
-    '          \x3c!--\n\n                <li style=\'padding:10px;\'>\n                    <i></i>红色\n                </li>\n                <li style=\'padding:10px;\'>\n                    <i></i>红色\n                </li>\n                --\x3e\n      ' +
-    '      </ul>\n    ' +
-    '    </div>\n   ' +
-    '     <div class="imageLabel-input" style=\'background-color:rgba(255,255,255,0.3);\'>\n   ' +
-    '         <div class="imageLabel-input-box" style=\'width:250px;\'>\n      ' +
-    '          <div style=\'background-color: #333;\'>\n      ' +
-    '              <div style=\'color:#fff;overflow:hidden;line-height: 40px;\'>\n       ' +
-    '                 <span style=\'float: left;margin-left:20px;\'>'+editTitle+'</span>\n       ' +
-    '                 <span class="imageLabel-input-close" style=\'float:right;margin-right:20px;cursor: pointer;\'>X</span>\n      ' +
-    '              </div>\n     ' +
-    '           </div>\n\n      ' +
-    '          <div style=\'background: #fff;padding:20px;\'>\n     ' +
-    '               <select id="sel" style=\'width:100%;padding:5px;\'></select>'+
-    /*'               <input type="text" value=\'\' max=\'10\' style=\'width:100%;padding:5px;\'>\n     ' +*/
-    '               <div style=\'margin-top:20px;overflow:hidden;\'>\n       ' +
-    '                 <div class="imageLabel-input-close imageLabel-btn" style=\'float: left;width:90px;background-color: #959595;\'>取消</div>\n         ' +
-    '               <div class="imageLabel-input-ok imageLabel-btn" style=\'float: right;width:90px;\'>确定</div>\n       ' +
-    '             </div>\n     ' +
-    '           </div>\n     ' +
-    '       </div>\n   ' +
-    '     </div>\n ' +
-    '   </div>\n' +
-    '</div>';
+          '   <div class="imageLabel">\n  ' +
+          '      <div class="imageLabel-img-boxs">\n  ' +
+          '          <span class="imageLabel-img-body">\n   ' +
+          '             <div class="imageLabel-loading-body">\n      ' +
+          '              <div class="imageLabel-loading"></div>\n      ' +
+          '          </div>\n        ' +
+          '        <div class="imageLabel-jisuan" style="position: relative;overflow:hidden;height: 100%;width: 100%;">\n   ' +
+          '                 <img src="' + e.img + '" alt="" style=\'position: absolute;width:100%;height:100%;\' class="imageLabel-img">\n    ' +
+          '                <div class="imageLabel-content">\n\n      ' +
+          '              </div>\n        ' +
+          '        </div>\n       ' +
+          '    </span>\n        ' +
+          '    <ul class="imageLabel-drap-menu">\n      ' +
+          '          <div style=\'overflow: hidden;\'>\n          ' +
+          '          <div style="cursor: pointer;" class="imageLabel-delete btns">删除</div>\n      ' +
+          '              <div style="cursor: pointer;" class="imageLabel-edit btns">编辑</div>\n     ' +
+          '           </div>\n      ' +
+          '          \x3c!--\n\n                <li style=\'padding:10px;\'>\n                    <i></i>红色\n                </li>\n                <li style=\'padding:10px;\'>\n                    <i></i>红色\n                </li>\n                --\x3e\n      ' +
+          '      </ul>\n    ' +
+          '    </div>\n   ' +
+          '     <div class="imageLabel-input" style=\'background-color:rgba(255,255,255,0.3);\'>\n   ' +
+          '         <div class="imageLabel-input-box" style=\'width:250px;\'>\n      ' +
+          '          <div style=\'background-color: #333;\'>\n      ' +
+          '              <div style=\'color:#fff;overflow:hidden;line-height: 40px;\'>\n       ' +
+          '                 <span style=\'float: left;margin-left:20px;\'>'+editTitle+'</span>\n       ' +
+          '                 <span class="imageLabel-input-close" style=\'float:right;margin-right:20px;cursor: pointer;\'>X</span>\n      ' +
+          '              </div>\n     ' +
+          '           </div>\n\n      ' +
+          '          <div style=\'background: #fff;padding:20px;\'>\n     ' +
+          '               <select id="sel" style=\'width:100%;padding:5px;\'></select>'+
+          /*'               <input type="text" value=\'\' max=\'10\' style=\'width:100%;padding:5px;\'>\n     ' +*/
+          '               <div style=\'margin-top:20px;overflow:hidden;\'>\n       ' +
+          '                 <div class="imageLabel-input-close imageLabel-btn" style=\'float: left;width:90px;background-color: #959595;\'>取消</div>\n         ' +
+          '               <div class="imageLabel-input-ok imageLabel-btn" style=\'float: right;width:90px;\'>确定</div>\n       ' +
+          '             </div>\n     ' +
+          '           </div>\n     ' +
+          '       </div>\n   ' +
+          '     </div>\n ' +
+          '   </div>\n' +
+          '</div>';
   //t.innerHTML = domContainer
   //var t = $('#'+n.container).html(domContainer)
   var l = $(t);
   return l.find(".imageLabel-img").one("load",
-    function() {
-      l.appendTo("#"+n.container),
-        $(this).addClass("imageLabel-img-active"),
-        $(".imageLabel-loading-body").hide(),
-        a()
-    }),
+                                       function() {
+                                         l.appendTo("#"+n.container),
+                                           $(this).addClass("imageLabel-img-active"),
+                                           $(".imageLabel-loading-body").hide(),
+                                           a()
+                                       }),
     setTimeout(function() {
-        l.addClass("imageLabel-box-active")
-      },
-      0),
+                 l.addClass("imageLabel-box-active")
+               },
+               0),
     i
 }

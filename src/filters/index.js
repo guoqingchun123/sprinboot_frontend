@@ -45,7 +45,7 @@ export function uppercaseFirst(string) {
 }
 
 /**
- * 弹窗考勤时间格式化
+ * 格式化时间戳 yyyy-MM-dd
  * @param val
  * @returns {string}
  */
@@ -53,13 +53,35 @@ export function formatDateByAttendDialog(val) {
   let unixTime = val.toString()
   let a = unixTime.replace("/Date(", "").replace(")/", "");
   let date = new Date(parseInt(a));
+  var y = date.getFullYear();
+  var m = date.getMonth() + 1;
+  m = m < 10 ? ('0' + m) : m;
+  var d = date.getDate();
+  d = d < 10 ? ('0' + d) : d;
+  return y + '-' + m + '-' + d;
+}
+
+/**
+ * 格式化时间戳 yyyy-MM-dd HH:mm:ss
+ * @param val
+ * @returns {string}
+ */
+export function formatDateTime(val) {
+  let unixTime = val.toString()
+  let a = unixTime.replace("/Date(", "").replace(")/", "");
+  let date = new Date(parseInt(a));
+  var y = date.getFullYear();
+  var m = date.getMonth() + 1;
+  m = m < 10 ? ('0' + m) : m;
+  var d = date.getDate();
+  d = d < 10 ? ('0' + d) : d;
   let h = date.getHours();
   h = h < 10 ? ('0' + h) : h;
   let minute = date.getMinutes();
   let second = date.getSeconds();
   minute = minute < 10 ? ('0' + minute) : minute;
   second = second < 10 ? ('0' + second) : second;
-  return h + ':' + minute + ':' + second;
+  return y + '-' + m + '-' + d+' '+h + ':' + minute + ':' + second;
 }
 
 /**
@@ -69,36 +91,5 @@ export function comboShow(code, name) {
   if (!code) {
     return name
   }
-  if (!name) {
-    return code
-  }
   return '（' + code + '）' + name
-}
-
-export function file(value) {
-  var unitArr = ['B', 'KB', 'MB', 'GB', 'TB', 'PB']
-  var index = 0
-  var srcSize = parseFloat(value)
-  index = Math.floor(Math.log(srcSize) / Math.log(1024))
-  var size = srcSize / Math.pow(1024, index)
-  size = size.toFixed(2)
-  return size + unitArr[index]
-}
-
-export function currency(value, precision) {
-  if (precision === undefined) {
-    precision = 2
-  }
-  if (!value) {
-    value = 0
-  }
-  value = parseFloat(value)
-  return (value.toFixed(precision) + '').replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, '$&,')
-}
-
-export function ellipsis(value, length) {
-  if (!value || value.length <= length) {
-    return value
-  }
-  return value.slice(0, length - 3) + '...'
 }

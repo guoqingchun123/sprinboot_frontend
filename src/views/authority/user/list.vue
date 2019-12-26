@@ -29,7 +29,7 @@
     <!--新增，修改用户信息-->
     <user-edit :visible="dialogFormVisible" :item="item" @on-edit="userEdited" />
     <!--授权-->
-    <user-grant :visible="dialogGrantVisible" :grants="grants" :user-id="userId" :roles="roles" @on-grant="userEdited" />
+    <user-grant :visible="dialogGrantVisible" :grants="grants" :user-id="userId" :roles="roles" @on-grant="userEdited" @on-change-grant="changeGrants" />
   </div>
 </template>
 
@@ -77,8 +77,6 @@
         this.editType = 'add';
         // 展示弹窗
         this.dialogFormVisible = true;
-        // 表单重置，表单验证重置
-        this.$refs.dialogForm && this.$refs.dialogForm.clearValidate()
       },
       // 修改用户，弹窗
       initUserEdit() {
@@ -101,8 +99,6 @@
         });
         // 展示弹窗
         this.dialogFormVisible = true;
-        // 表单重置，表单验证重置
-        this.$refs.dialogForm && this.$refs.dialogForm.clearValidate()
       },
       // 关闭弹出框
       userEdited(refresh) {
@@ -172,6 +168,9 @@
             return this.userStatusDict[i].name
           }
         }
+      },
+      changeGrants(val) {
+        this.grants = val;
       }
     }
   }

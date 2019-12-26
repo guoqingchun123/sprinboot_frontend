@@ -3,6 +3,7 @@ import { login as loginApi, logout as logoutApi, getInfo as getInfoApi } from '@
 import { modifyAvatar } from '@/api/authority/user'
 import { auth } from '@bestvike/utils'
 import { resetRouter } from '@/router'
+import {delAllViews} from '@/layout/components/util'
 
 const state = {
   token: auth.getToken(),
@@ -122,7 +123,7 @@ const actions = {
         auth.removeToken()
         auth.removeRefreshToken()
         resetRouter()
-
+        delAllViews()
         resolve()
       }).catch(error => {
         reject(error)

@@ -8,7 +8,6 @@
           </bv-form-item>
         </bv-col>
       </div>
-      <bv-table-column type="selection" />
       <bv-table-column label="企业编号" prop="corpId" align="center" sortable="custom" />
       <bv-table-column label="企业名称" prop="compName" align="center" sortable="custom" />
     </bv-table>

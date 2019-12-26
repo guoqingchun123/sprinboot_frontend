@@ -52,6 +52,8 @@
     methods: {
       cancelModify() {
         this.$emit('on-edit',false)
+        // 表单重置，表单验证重置
+        this.$refs.dialogForm && this.$refs.dialogForm.clearValidate()
       },
       confirmModify() {
         // 表单验证
@@ -74,6 +76,8 @@
               this.$emit('on-edit', true)
             })
           }
+          // 表单重置，表单验证重置
+          this.$refs.dialogForm && this.$refs.dialogForm.clearValidate()
         })
       }
     }

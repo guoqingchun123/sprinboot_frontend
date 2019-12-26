@@ -212,8 +212,9 @@
       },
       //刷新
       refreshTokenTable() {
-       console.log(this.tableInstanceDialog)
-       this.tableInstanceDialog.fetchData()
+        if (this.tableInstanceDialog.fetchData) {
+          this.tableInstanceDialog.fetchData()
+        }
         },
       //令牌管理
       tokenManagement(row) {

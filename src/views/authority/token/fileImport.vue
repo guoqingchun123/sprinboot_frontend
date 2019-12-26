@@ -4,7 +4,7 @@
       <h3>种子信息导入</h3>
     </div>
     <bv-col>
-      <el-form ref="role" :rules="rules" :model="role" label-width="110px" label-position="right" label-suffix=":">
+      <el-form ref="role" label-width="110px" label-position="right" label-suffix=":">
         <bv-col>
           <bv-form-item label="设备类型" prop="deviceType">
             <el-select v-model="value" placeholder="请选择" style="width: 360px;">
@@ -54,7 +54,8 @@
         value: '1102',
         //上传的文件列表
         fileList: [],
-        saveAndUploadDisabled:false
+        saveAndUploadDisabled:false,
+        upload_url: 'url'
       }
     },
     methods:{

@@ -203,7 +203,9 @@
               }*/
               this.$store.dispatch('message/initSocket').then(() => {
               })
-              this.$router.push({path: this.redirect || '/dashboard', query: this.otherQuery})
+              // this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
+              //重新登录不记忆上次打开的最后标签页，防止未授权404
+              this.$router.push({ path: '/', query: this.otherQuery })
               this.loading = false
             })
             .catch(() => {
