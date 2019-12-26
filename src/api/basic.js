@@ -1,5 +1,12 @@
 import http from '@/utils/http-center'
 
+export function configUrl(url) {
+  if (process.env.VUE_APP_CENTER_API !== '/' && url && url.indexOf(process.env.VUE_APP_CENTER_API) !== 0) {
+    return process.env.VUE_APP_CENTER_API + url
+  }
+  return url
+}
+
 //文件上传通用接口
 export function uploadFile(file, data) {
   return http.upload('/api/portal/files/upload', file, data)
