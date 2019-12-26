@@ -86,6 +86,13 @@ export function fetchCorp(query) {
   })
 }
 
+/*预售证管理*/
+export function fetchProSaleCard(query) {
+  return http.get('/api/center/fetchProSaleCard', {
+    params: query
+  })
+}
+
 /*未处理楼栋管理*/
 export function fetchBldinfo(query) {
   return http.get('/api/center/fetchBldinfo', {
