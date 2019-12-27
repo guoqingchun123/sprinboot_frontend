@@ -7,7 +7,7 @@
         </div>
       </el-col>
       <el-col :span="12" class="operates">
-        <bv-button type="primary" icon="el-icon-back" @click="returnPrePage">返回</bv-button>
+        <bv-button type="success" icon="el-icon-back" @click="returnPrePage">返回</bv-button>
       </el-col>
     </bv-row>
     <el-tabs v-model="activeName" type="card" :before-leave="tabClick">

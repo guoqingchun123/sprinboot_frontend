@@ -2,6 +2,9 @@
   <div class="app-container">
     <bv-table title="楼层一览" :pagination="true" :filter.sync="filter" :fetch-api="fetchFloors_"
               @on-mounted="(table) => tableInstance = table">
+      <div slot="operates">
+        <bv-button type="success" icon="el-icon-back" @click="returnBld()">返回</bv-button>
+      </div>
       <bv-table-column label="项目编号" prop="projectId" align="center" sortable="custom"/>
       <bv-table-column label="楼号" prop="bldNo" align="center" sortable="custom"/>
       <bv-table-column label="楼层" prop="floorNo" align="center" sortable="custom"/>
@@ -42,6 +45,9 @@
         data.projectId = this.bld.projectId;
         data.bldNo = this.bld.bldNo;
         return fetchBldFloors(data)
+      },
+      returnBld() {
+        this.$emit('on-bld-return')
       },
       handleFloorInfo(row) {
         this.$emit('on-maintain-floor', row)

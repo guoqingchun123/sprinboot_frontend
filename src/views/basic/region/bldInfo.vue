@@ -1,6 +1,9 @@
 <template>
   <div class="app-container">
     <bv-table title="未处理的楼栋" :pagination="true" :filter.sync="filter" :fetch-api="fetchBldinfo" @on-mounted="(table) => tableInstance = table">
+      <div slot="operates">
+        <bv-button type="primary" icon="el-icon-back" @click="returnRegion()">返回</bv-button>
+      </div>
       <div slot="search">
         <bv-col>
           <el-form-item label="楼栋名称" prop="bldName">
@@ -34,6 +37,10 @@
     created() {
     },
     methods: {
+      //返回小区列表页面
+      returnRegion() {
+        this.$emit('on-bld-return')
+      },
 
     }
   }

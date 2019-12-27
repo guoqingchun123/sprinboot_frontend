@@ -9,6 +9,7 @@
         <bv-button show="none" type="success" view="create" authority="create" @click="startCreate()">新增</bv-button>
         <bv-button v-show="modifyShow()" type="success" view="modify" authority="modify" @click="startModify()">修改</bv-button>
         <bv-button v-if="deleteShow()" type="warning" view="remove" authority="remove" @click="startRemove()">删除</bv-button>
+        <bv-button show="none" type="success" view="create" authority="bldInfo" @click="queryBldInfo()">查看未处理</bv-button>
       </div>
       <div slot="search">
         <bv-col>
@@ -556,6 +557,10 @@
       //维护小区档案
       handleRegionInfo(row) {
         this.$emit('on-query-region', row)
+      },
+      //查看未处理的楼栋
+      queryBldInfo() {
+        this.$emit('on-query-bld')
       }
     }
   }

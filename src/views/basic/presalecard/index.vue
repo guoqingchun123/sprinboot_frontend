@@ -3,6 +3,11 @@
     <bv-table title="预售证管理" :pagination="true" :filter.sync="filter" :fetch-api="fetchProSaleCard" @on-mounted="(table) => tableInstance = table">
       <div slot="search">
         <bv-col>
+          <bv-form-item label="楼栋编号" prop="bldNO">
+            <el-input v-model="filter.bldNo" />
+          </bv-form-item>
+        </bv-col>
+        <bv-col>
           <bv-form-item label="预售证号" prop="presaleNo">
             <el-input v-model="filter.presaleNo" />
           </bv-form-item>
@@ -13,6 +18,7 @@
           </bv-form-item>
         </bv-col>
       </div>
+      <bv-table-column label="楼栋编号" prop="bldNo" align="center" sortable="custom" />
       <bv-table-column label="预售证号" prop="presaleNo" align="center" sortable="custom" />
       <bv-table-column label="楼盘坐落" prop="address" align="center" sortable="custom" />
       <bv-table-column label="规划用途" prop="bldFunction" align="center" sortable="custom" />

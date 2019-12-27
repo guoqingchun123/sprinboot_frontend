@@ -25,19 +25,30 @@
       <el-tab-pane label="楼栋坐标" name="bldCoordinate" lazy>
         <bld-coordinate :region="region" :region-sign-img="regionSignImg" />
       </el-tab-pane>
-      <el-tab-pane label="楼栋详情" name="bldInfo" lazy>
-        <list-bld :region="region" />
+      <el-tab-pane label="楼栋详情" name="bldIndex" lazy>
+        <bld-index :region="region" />
       </el-tab-pane>
     </el-tabs>
   </div>
 </template>
 
 <script>
-  import './child'
+  import bldCoordinate from './child/bldCoordinate'
+  import bldIndex from './child/bldIndex'
+  import housePicture from './child/housePicture'
+  import projectImages from './child/projectImages'
+  import regionCoordinate from './child/regionCoordinate'
   import {fetchRegion, updateRegionCheck} from '@/api/basic'
 
   export default {
     name: 'RegionMaintain',
+    components: {
+      bldCoordinate,
+      bldIndex,
+      housePicture,
+      projectImages,
+      regionCoordinate,
+    },
     props: {
       region: {
         type: Object,
@@ -75,13 +86,13 @@
         this.$emit("on-region-return")
       },
       //切换tab事件
-      tabClick(activeName) {
+        tabClick(activeName) {
         let _that = this;
         if (activeName && activeName == 'bldCoordinate') {
            return fetchRegion(this.region.regionId).then(response => {
             _that.regionSignImg = response.data.viewPath;
           })
-        } else {
+        }else {
           return true
         }
       },
