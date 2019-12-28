@@ -7,13 +7,13 @@ export function configUrl(url) {
   return url
 }
 
-//文件上传通用接口
-export function uploadFile(file, data) {
-  return http.upload('/api/portal/files/upload', file, data)
+//文件上传后数据接口
+export function fileUploadSuccess(data) {
+  return http.post('/api/file/datas', data)
 }
 
-export function deleteFile(ids) {
-  return http.delete('/api/portal/files/' + ids)
+export function fileDeleteSuccess(ids) {
+  return http.delete('/api/file/datas/' + ids)
 }
 
 /*行政区域管理*/

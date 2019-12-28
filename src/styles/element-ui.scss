@@ -167,7 +167,10 @@
   }
 }
 .el-date-editor.el-input.el-input--suffix {
-  width: 217px;
+  width: 185px;
+}
+.el-select .el-input--suffix .el-input__inner {
+  padding-right: 15px;
 }
 
 // 按钮调整图标显示位置

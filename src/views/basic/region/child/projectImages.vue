@@ -1,19 +1,19 @@
 <template>
   <div>
     <bv-file
-      catalog-types="project-image"
+      catalog-types="region-Image"
       :key-id="region.regionId"
       :titles="{dataTitle: '项目相册一览'}"
-      :upload-action="uploadUrl"
-      :remove-batch-api="removeBatchApi"
+      @on-remove-success="onRemoveSuccess"
+      @on-upload-success="onUploadSuccess"
     />
   </div>
 </template>
 
 <script>
   import {File} from '@bestvike/components'
-  import {configUrl} from '@/api/basic'
-  
+  import {fileUploadSuccess, fileDeleteSuccess} from '@/api/basic'
+
   export default {
     name: 'ProjectImages',
     components: {
@@ -27,12 +27,19 @@
     },
     data() {
       return {
-        uploadUrl: configUrl("/api/center/file/uploads")
+
       }
     },
     methods: {
-      removeBatchApi(ids) {
-        console.info(ids);
+      onUploadSuccess(data) {
+        // 发送图档上送成功请求到后台
+        fileUploadSuccess(data).then(() => {
+          this.$message.success('图片上传成功...');
+        })
+      },
+      onRemoveSuccess(ids) {
+        // 发送图档上送成功请求到后台
+        fileDeleteSuccess(ids);
       }
     }
   }

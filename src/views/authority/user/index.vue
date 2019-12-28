@@ -12,7 +12,7 @@
       <div slot="search">
         <bv-col>
           <bv-form-item label="用户姓名" prop="name">
-            <bv-input v-model="filter.name" />
+            <bv-input v-model="filter.name"/>
           </bv-form-item>
         </bv-col>
         <!--
@@ -23,8 +23,8 @@
         </bv-col>
         -->
       </div>
-      <bv-table-column type="selection" />
-      <bv-table-column label="用户编号" prop="userId" sortable="custom" />
+      <bv-table-column type="selection"/>
+      <bv-table-column label="用户编号" prop="userId" sortable="custom"/>
       <!--<bv-table-column label="用户登录名" prop="avatar" align="center" sortable="custom" />-->
       <bv-table-column label="用户姓名" prop="name" sortable="custom" class-name="with-image">
         <template slot-scope="scope">
@@ -34,13 +34,13 @@
           <div>{{ scope.row.name }}</div>
         </template>
       </bv-table-column>
-      <bv-table-column label="手机号" prop="mobile" />
-      <bv-table-column label="电子邮箱" prop="email" />
-      <bv-table-column label="身份证号" prop="certNo" />
+      <bv-table-column label="手机号" prop="mobile"/>
+      <bv-table-column label="电子邮箱" prop="email"/>
+      <bv-table-column label="身份证号" prop="certNo"/>
     </bv-table>
     <bv-dialog title="维护用户信息" :visible.sync="dialogFormVisible">
-      <bv-form ref="dialogForm" :model="user" :rules="rules">
-        <bv-row layout="dialog-2">
+      <bv-form ref="dialogForm" :model="user" :rules="rules" label-width="120px">
+        <bv-row :layout="2">
           <!--<bv-col>
             <bv-form-item label="用户登录名" prop="id">
               <bv-input v-model="user.avatar" />
@@ -55,37 +55,37 @@
           <bv-col>
             <bv-form-item label="用户编号" prop="userId">
               <div slot="help">登录用的编号，不能跟其他用户重复</div>
-              <bv-input v-model="user.userId" />
+              <bv-input v-model="user.userId"/>
             </bv-form-item>
           </bv-col>
           <bv-col>
             <bv-form-item label="用户姓名" prop="name">
-              <bv-input v-model="user.name" />
+              <bv-input v-model="user.name"/>
             </bv-form-item>
           </bv-col>
           <bv-col>
             <bv-form-item label="用户类型" prop="userType">
-              <bv-select type="enum" dict-code="portal.userType" v-model="user.userType" />
+              <bv-select type="enum" dict-code="portal.userType" v-model="user.userType"/>
             </bv-form-item>
           </bv-col>
           <bv-col>
             <bv-form-item label="手机号" prop="mobile">
-              <bv-input v-model="user.mobile" />
+              <bv-input v-model="user.mobile"/>
             </bv-form-item>
           </bv-col>
           <bv-col>
             <bv-form-item label="电子邮箱" prop="email">
-              <bv-input v-model="user.email" />
+              <bv-input v-model="user.email"/>
             </bv-form-item>
           </bv-col>
           <bv-col>
             <bv-form-item label="身份证号" prop="certNo">
-              <bv-input v-model="user.certNo" />
+              <bv-input v-model="user.certNo"/>
             </bv-form-item>
           </bv-col>
           <bv-col layout="100%">
             <bv-form-item label="授权" prop="grants">
-              <el-transfer v-model="user.grants" :data="roles" :titles="['未授权','已授权']" />
+              <el-transfer v-model="user.grants" :data="roles" :titles="['未授权','已授权']"/>
             </bv-form-item>
           </bv-col>
         </bv-row>
@@ -97,21 +97,29 @@
     </bv-dialog>
 
     <bv-dialog title="用户授权" width="550px" :visible.sync="dialogGrantVisible">
-      <el-transfer v-model="grants" :data="roles" :titles="['未授权','已授权']" />
+      <el-transfer v-model="grants" :data="roles" :titles="['未授权','已授权']"/>
       <div slot="footer">
         <bv-button view="save" @click="saveGrant">保存</bv-button>
         <bv-button view="cancel" @click="cancelGrant">取消</bv-button>
       </div>
     </bv-dialog>
 
-    <user-token v-if="userId" :visible.sync="tokenManageVisible" :user-id="userId" />
+    <user-token v-if="userId" :visible.sync="tokenManageVisible" :user-id="userId"/>
   </div>
 </template>
 
 <script>
-  import { Avatar } from 'element-ui'
-  import { fetchAllRoles } from '@/api/authority/role'
-  import { fetchUsers, createUser, modifyUser, removeUsers, resetPass, fetchGrants, saveGrants } from '@/api/authority/user'
+  import {Avatar} from 'element-ui'
+  import {fetchAllRoles} from '@/api/authority/role'
+  import {
+    fetchUsers,
+    createUser,
+    modifyUser,
+    removeUsers,
+    resetPass,
+    fetchGrants,
+    saveGrants
+  } from '@/api/authority/user'
   import UserToken from './components/token'
   import defaultAvatar from '@/assets/avatar.png'
 
@@ -141,11 +149,11 @@
         },
         userId: null,
         rules: {
-          userId:[
-            { required: true, message: '请输入用户编号' }
+          userId: [
+            {required: true, message: '请输入用户编号'}
           ],
-          name:[
-            { required: true, message: '请输入用户姓名' }
+          name: [
+            {required: true, message: '请输入用户姓名'}
           ]
         },
         // 授权用
@@ -168,7 +176,8 @@
           })
         }
         this.roles = roles
-      }).catch(() => {})
+      }).catch(() => {
+      })
     },
     methods: {
       checkResetPass() {
@@ -179,7 +188,7 @@
       },
       // 弹窗用
       initUser() {
-        this.user ={
+        this.user = {
           id: null,
           // avatar: null,
           deptId: this.currentDeptId,
@@ -289,7 +298,7 @@
         this.roles = []
         this.grants = []
         // 授权
-        fetchGrants(this.$refs.table.selection[0].id).then((response) =>{
+        fetchGrants(this.$refs.table.selection[0].id).then((response) => {
           let roles = response.data.roles
           for (let i in roles) {
             this.roles.push({
@@ -308,7 +317,7 @@
       },
       // 保存授权
       saveGrant() {
-        saveGrants(this.$refs.table.selection[0].id, this.grants).then(() =>{
+        saveGrants(this.$refs.table.selection[0].id, this.grants).then(() => {
           this.dialogGrantVisible = false
           this.$refs.table.fetchData()
           this.$message({
@@ -334,6 +343,7 @@
           max-width: 30px;
           height: 30px;
         }
+
         > div {
           margin-left: 5px;
         }
@@ -341,4 +351,3 @@
     }
   }
 </style>
-
