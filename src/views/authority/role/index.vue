@@ -39,7 +39,7 @@
             </bv-form-item >
           </bv-col>
           <bv-col layout="100%">
-            <bv-form-item  class="form-item-fill" label="授权" prop="grants">
+            <bv-form-item class="form-item-fill" label="授权" prop="grants">
               <el-tree ref="formTree" :data="routes" node-key="id" :props="{label: showLabel}" show-checkbox :default-expand-all="true">
                 <span slot-scope="{ node, data }" class="tree-node-operates">
                   <span>{{ node.label }}</span>
@@ -290,7 +290,7 @@
           // collapseTree(this.$refs.tree)
           this.$refs.tree.setCheckedNodes([])
         })
-        
+
       },
       changeSelectAll(value, data) {
         if (value) {

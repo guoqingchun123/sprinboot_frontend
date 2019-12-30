@@ -16,6 +16,15 @@ export function fileDeleteSuccess(ids) {
   return http.delete('/api/file/datas/' + ids)
 }
 
+/*用户管理*/
+export function saveUserCorps(data) {
+  return http.put('/api/center/userCorps', data)
+}
+
+export function selectUserCorps(userId) {
+  return http.get('/api/center/'+ userId +'/userCorps')
+}
+
 /*行政区域管理*/
 export function fetchDivisions(query) {
   return http.get('/api/center/divisions', {
@@ -80,6 +89,10 @@ export function checkRegionName(regionName) {
   return http.get('/api/center/checkRegionName/'+ regionName)
 }
 /*企业管理*/
+export function fetchAllCorps() {
+  return http.get('/api/center/allCorps')
+}
+
 export function fetchCorp(query) {
   return http.get('/api/center/corps', {
     params: query

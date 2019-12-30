@@ -34,7 +34,7 @@
           <div>{{ scope.row.name }}</div>
         </template>
       </bv-table-column>
-      <bv-table-column label="手机号" prop="mobile"/>
+      <bv-table-column label="手机号码" prop="mobile"/>
       <bv-table-column label="电子邮箱" prop="email"/>
       <bv-table-column label="身份证号" prop="certNo"/>
     </bv-table>
@@ -65,12 +65,20 @@
           </bv-col>
           <bv-col>
             <bv-form-item label="用户类型" prop="userType">
-              <bv-select type="enum" dict-code="portal.userType" v-model="user.userType"/>
+              <bv-select type="enum" dict-code="portal.userType" v-model="user.userType" @change="userTypeChange"/>
             </bv-form-item>
           </bv-col>
           <bv-col>
             <bv-form-item label="手机号" prop="mobile">
               <bv-input v-model="user.mobile"/>
+            </bv-form-item>
+          </bv-col>
+          <bv-col v-show="corpUser" layout="100%">
+            <bv-form-item label="所属企业" prop="corps" class="form-item-fill">
+              <el-cascader v-model="user.corps"
+                           :options="corpsOptions"
+                           :show-all-levels="false"
+                           clearable filterable style="width: 100%"/>
             </bv-form-item>
           </bv-col>
           <bv-col>
@@ -110,6 +118,7 @@
 
 <script>
   import {Avatar} from 'element-ui'
+  import {fetchAllCorps, saveUserCorps, selectUserCorps} from '@/api/basic'
   import {fetchAllRoles} from '@/api/authority/role'
   import {
     fetchUsers,
@@ -132,6 +141,7 @@
     data() {
       return {
         items: [],
+        corpUser: false,
         currentDeptId: null,
         currentDeptName: null,
         modifyType: null,
@@ -160,7 +170,8 @@
         roles: [],
         grants: [],
         fetchUsers,
-        defaultAvatar
+        defaultAvatar,
+        corpsOptions: []
       }
     },
     created() {
@@ -178,8 +189,47 @@
         this.roles = roles
       }).catch(() => {
       })
+      fetchAllCorps().then((res) => {
+        this.corpsOptions = res.data
+      })
     },
     methods: {
+      userTypeChange(userType) {
+        let vm = this;
+        vm.corpUser = false;
+        if (userType != 0) {
+          if (userType === 1) {
+            vm.corpUser = true;
+            vm.rules = Object.assign({}, vm.rules, {
+              corps: [
+                {required: true, message: '请选择所属企业'}
+              ]
+            })
+          }
+          // 非主管单位用户，手机号、身份证号必填
+          vm.rules = Object.assign({}, vm.rules, {
+            certNo: [
+              {required: true, message: '请输入身份证号码'}
+            ],
+            mobile: [
+              {required: true, message: '请输入手机号码'}
+            ]
+          })
+        } else {
+          // 主管单位用户，手机号、身份证号不设置必填
+          vm.rules = Object.assign({}, vm.rules, {
+            certNo: [
+              {required: false}
+            ],
+            mobile: [
+              {required: false}
+            ],
+            corps: [
+              {required: false}
+            ],
+          })
+        }
+      },
       checkResetPass() {
         return this.$refs.table && this.$refs.table.selection && this.$refs.table.selection.length === 1 && this.$refs.table.selection[0].userId != 'admin' && this.$refs.table.selection[0].userId != '0000'
       },
@@ -193,7 +243,8 @@
           // avatar: null,
           deptId: this.currentDeptId,
           name: null,
-          grants: []
+          grants: [],
+          corpUser: false
         }
       },
       startCreate() {
@@ -206,8 +257,20 @@
         if (user.grants == null) {
           user.grants = []
         }
-        this.user = user
-        this.dialogFormVisible = true
+        this.user = user;
+        let vm = this;
+        // 如果是企业用户查询三级级联企业
+        if (this.user.userType === 1) {
+          selectUserCorps(this.user.userId).then((response) => {
+            if (response.data) {
+              vm.user = Object.assign({}, vm.user, {
+                corps: response.data.corps
+              })
+            }
+            this.userTypeChange(this.user.userType);
+          })
+        }
+        this.dialogFormVisible = true;
         this.modifyType = 'modify'
       },
       manageToken() {
@@ -230,15 +293,21 @@
           const loading = this.$loading(event)
           if (this.modifyType === 'modify') {
             modifyUser(this.user).then(() => {
-              this.$refs.table.clearSelection()
-              this.afterModify()
-              loading.hide()
-            }).catch(() => loading.close())
+              // 修改完成，执行用户企业表更新
+              saveUserCorps(this.user).then(() => {
+                this.$refs.table.clearSelection()
+                this.afterModify()
+                loading.hide()
+              }).catch(() => loading.close())
+            })
           } else {
             createUser(this.user).then(() => {
-              this.afterModify()
-              loading.hide()
-            }).catch(() => loading.close())
+              // 新增完成，执行用户企业表新增
+              saveUserCorps(this.user).then(() => {
+                this.afterModify()
+                loading.hide()
+              }).catch(() => loading.close())
+            })
           }
         })
       },
