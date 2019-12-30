@@ -8,9 +8,12 @@
           </bv-form-item>
         </bv-col>
       </div>
-      <bv-table-column label="企业编号" prop="corpId" align="center" sortable="custom" />
-      <bv-table-column label="企业名称" prop="compName" align="center" sortable="custom" />
-      <bv-table-column label="注册地址" prop="registerAddress" align="center" sortable="custom" />
+      <bv-table-column label="企业名称" prop="corpId" align="left" sortable="custom">
+        <template slot-scope="scope">
+          {{ scope.row.corpId | comboShow(scope.row.compName) }}
+        </template>
+      </bv-table-column>
+      <bv-table-column label="注册地址" prop="registerAddress" align="left" sortable="custom" />
       <bv-table-column label="联系人" prop="linkMan" align="center" sortable="custom" />
       <bv-table-column label="联系电话" prop="linkPhone" align="center" sortable="custom" />
     </bv-table>
