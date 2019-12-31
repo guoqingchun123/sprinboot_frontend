@@ -1,6 +1,6 @@
 <template>
-  <bv-row>
-    <bv-col :sm="12">
+  <el-row>
+    <el-col :sm="12">
       <bv-tree ref="tree" node-key="code" :ready="isCatalogReady" :default-expand-all="true" :accordion="false" :data="catalogs">
         <span class="tree-node-operates" :class="node.level === 1 && 'root-node'" slot-scope="{ node, data }">
           <span>{{ data.code | comboShow(data.name) }}</span>
@@ -17,32 +17,48 @@
           </span>
         </span>
       </bv-tree>
-    </bv-col>
+    </el-col>
     <bv-dialog title="图档类型维护" :visible.sync="dialogFormVisible" v-if="dialogFormVisible">
       <bv-form ref="dialogForm" :model="item" :rules="rules">
-        <bv-row :layout="2">
+        <bv-row layout="dialog-2">
           <bv-col>
-            <bv-form-item  v-if="modifyType === 'create'" label="编号" prop="code">
+            <bv-form-item v-if="modifyType === 'create'" label="编号" prop="code">
               <bv-input v-model.trim="item.code" />
-            </bv-form-item >
-            <bv-form-item  v-else label="编号">
+            </bv-form-item>
+            <bv-form-item v-else label="编号">
               <span v-text="item.code" />
-            </bv-form-item >
+            </bv-form-item>
           </bv-col>
           <bv-col>
-            <bv-form-item  label="名称" prop="name">
+            <bv-form-item label="名称" prop="name">
               <bv-input v-model.trim="item.name" />
-            </bv-form-item >
+            </bv-form-item>
           </bv-col>
           <bv-col v-if="(modifyType === 'create' && currentLevel > 1) || (modifyType === 'modify' && currentLevel > 2)">
-            <bv-form-item  label="大类" prop="keyType">
+            <bv-form-item label="大类" prop="keyType">
               <span>{{ item.keyType | comboShow(item.keyTypeName) }}</span>
-            </bv-form-item >
+            </bv-form-item>
           </bv-col>
           <bv-col v-if="(modifyType === 'create' && currentLevel > 2) || (modifyType === 'modify' && currentLevel > 3)">
-            <bv-form-item  label="小类" prop="subType">
+            <bv-form-item label="小类" prop="subType">
               <span>{{ item.subType | comboShow(item.subTypeName) }}</span>
-            </bv-form-item >
+            </bv-form-item>
+          </bv-col>
+          <bv-col>
+            <bv-form-item label="是否添加水印">
+              <el-switch v-model="item.needWatermark" @change="onNeedWatermarkChange" />
+            </bv-form-item>
+          </bv-col>
+          <bv-col v-if="item.needWatermark" layout="100%">
+            <bv-row :layout="3">
+              <bv-col v-for="el in watermarks" :key="el.id">
+                <bv-form-item :label="el.name">
+                  <a class="choose-watermark" :class="el.id === item.watermarkId && 'active'" @click="selectWatermark(el)">
+                    <el-image :src="el.url" />
+                  </a>
+                </bv-form-item>
+              </bv-col>
+            </bv-row>
           </bv-col>
         </bv-row>
       </bv-form>
@@ -51,13 +67,19 @@
         <bv-button view="cancel" @click="cancelModify()">取消</bv-button>
       </div>
     </bv-dialog>
-  </bv-row>
+  </el-row>
 </template>
 <script>
+  import { Image } from 'element-ui'
+  import { getCacheBlob, createCache, removeCache } from '@bestvike/utils/lib'
   import { fetchAllCatalogs, createCatalog, modifyCatalog, removeCatalog } from '@/api/file'
+  import { fetchWatermarks } from '@/api/manage/watermark'
 
   export default {
     name: 'ListCatalog',
+    components: {
+      ElImage: Image
+    },
     data() {
       const checkCode = ((rule, value, callback) => {
         // 判断value是否重复
@@ -74,6 +96,7 @@
       return {
         isCatalogReady: false,
         catalogs: [],
+        watermarks: [],
         dialogFormVisible: false,
         modifyType: null,
         item: {},
@@ -98,6 +121,15 @@
         ]
         this.isCatalogReady = true
       }).catch()
+    },
+    beforeDestroy() {
+      if (this.watermarks && this.watermarks.length > 0) {
+        for (let item of this.watermarks) {
+          if (item.url) {
+            removeCache(item.url)
+          }
+        }
+      }
     },
     methods: {
       createCatalog(node, data) {
@@ -124,6 +156,7 @@
           id: data.id,
           code: data.code,
           name: data.name,
+          watermarkId: data.watermarkId,
           keyType: data.keyType,
           subType: data.subType
         }
@@ -132,6 +165,10 @@
         } else if (node.level === 4) {
           this.item.keyTypeName = node.parent.parent.data.name
           this.item.subTypeName = node.parent.data.name
+        }
+        if (this.item.watermarkId) {
+          this.$set(this.item, 'needWatermark', true)
+          this.onNeedWatermarkChange(true)
         }
         this.dialogFormVisible = true
       },
@@ -183,7 +220,42 @@
         this.dialogFormVisible = false
         this.modifyType = null
         this.item = {}
+      },
+
+      onNeedWatermarkChange(value) {
+        if (value && (!this.watermarks || this.watermarks.length === 0)) {
+          fetchWatermarks().then(async res => {
+            try {
+              let watermarks = []
+              if (res.data && res.data.length > 0) {
+                for (let item of res.data) {
+                  if (item.content) {
+                    let blob = await getCacheBlob('data:image/jpg;base64,' + item.content)
+                    item.url = createCache(blob)
+                  }
+                  watermarks.push(item)
+                }
+              }
+              this.watermarks = watermarks
+            } catch (e) {
+              console.log(e)
+            }
+          })
+        }
+      },
+      selectWatermark(watermark) {
+        this.$set(this.item, 'watermarkId', watermark.id)
+        // this.item.watermarkId = watermark.id
       }
     }
   }
 </script>
+<style lang="scss" scoped>
+  .choose-watermark {
+    display: inline-block;
+    padding: 3px;
+    &:hover, &.active {
+      border: 1px solid #3693f3;
+    }
+  }
+</style>

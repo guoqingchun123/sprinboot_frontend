@@ -9,7 +9,7 @@
       <div slot="search">
         <bv-col>
           <bv-form-item label="信息类别" prop="publishType">
-            <el-select v-model="filter.dataType" placeholder="请选择信息类别">
+            <el-select v-model="filter.publishType" placeholder="请选择信息类别">
               <el-option
                 v-for="item in publishTypes"
                 :key="item.code"
@@ -26,18 +26,18 @@
         </bv-col>
       </div>
       <bv-table-column type="selection" />
-      <bv-table-column label="信息类别" prop="dataType" align="center" :formatter="dataTypeFormatter" />
+      <bv-table-column label="信息类别" prop="publishType" align="center" :formatter="publishTypeFormatter" />
       <bv-table-column label="标题" prop="title" align="center" sortable="custom" />
       <bv-table-column label="发布日期" prop="publishDate" align="center" sortable="custom" />
       <bv-table-column label="发布用户" prop="createUser" align="center" sortable="custom" />
     </bv-table>
-    
+
     <bv-dialog v-if="dialogFormVisible" title="公开信息维护" :visible.sync="dialogFormVisible">
       <bv-form ref="dialogForm" :model="item" :rules="rules">
         <bv-row :layout="2">
           <bv-col>
-            <bv-form-item label="信息类别" prop="dataType">
-              <el-select v-model="item.dataType" placeholder="请选择信息类别">
+            <bv-form-item label="信息类别" prop="publishType">
+              <el-select v-model="item.publishType" placeholder="请选择信息类别">
                 <el-option
                   v-for="item in publishTypes"
                   :key="item.code"
@@ -57,21 +57,19 @@
               />
             </bv-form-item>
           </bv-col>
-        </bv-row>
-        <bv-row :layout="1">
-          <bv-col>
-            <bv-form-item label="标题" prop="title">
-              <el-input v-model="item.title" style="width: 35.3vw;" />
+          <bv-col layout="100%">
+            <bv-form-item label="标题" prop="title" class="form-item-fill">
+              <el-input v-model="item.title" />
             </bv-form-item>
           </bv-col>
-          <bv-col>
-            <bv-form-item label="摘要" prop="summary">
-              <el-input v-model.trim="item.summary" type="textarea" :rows="1" style="width: 35.3vw;" />
+          <bv-col layout="100%">
+            <bv-form-item label="摘要" prop="summary" class="form-item-fill">
+              <el-input v-model.trim="item.summary" type="textarea" :rows="1" />
             </bv-form-item>
           </bv-col>
-          <bv-col>
-            <bv-form-item label="内容" prop="content">
-              <bv-editor v-model="item.content" upload-action="/file/uploads" style="width: 35.3vw;" />
+          <bv-col layout="100%">
+            <bv-form-item label="内容" prop="content" class="form-item-fill">
+              <bv-editor v-model="item.content" upload-action="/file/uploads" />
             </bv-form-item>
           </bv-col>
         </bv-row>
@@ -85,10 +83,10 @@
 </template>
 
 <script>
-  
+
   import {fetchPublishes, createPublish, modifyPublish, removePublish} from '@/api/public'
   import {Editor} from '@bestvike/components'
-  
+
   export default {
     name: 'ListPublish',
     components: {
@@ -102,7 +100,7 @@
         fetchPublishes,
         publishTypes: [],
         rules: {
-          dataType: [
+          publishType: [
             {required: true, message: '请选择信息类别', trigger: 'blur'}
           ],
           publishDate: [
@@ -132,7 +130,7 @@
       initData() {
         this.item = {}
       },
-      dataTypeFormatter(row, column, cellValue) {
+      publishTypeFormatter(row, column, cellValue) {
         for (let i in this.publishTypes) {
           if (cellValue == this.publishTypes[i].code) {
             return this.publishTypes[i].name
