@@ -26,6 +26,22 @@ export function selectUserCorps(userId) {
 }
 
 /*行政区域管理*/
+export function fetchDivisionsTree() {
+  return http.get('/api/center/divisions/all')
+}
+
+export function removeDivisionTree(ids) {
+  return http.delete('/api/center/division/' + ids)
+}
+
+export function createDivisionTree(data) {
+  return http.post('/api/center/division', data)
+}
+
+export function modifyDivisionTree(data) {
+  return http.put('/api/center/division', data)
+}
+
 export function fetchDivisions(query) {
   return http.get('/api/center/divisions', {
     params: query
