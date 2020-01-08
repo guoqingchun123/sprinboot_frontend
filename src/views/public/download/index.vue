@@ -36,6 +36,7 @@
                 :action="uploadUrl"
                 :auto-upload="true"
                 :limit="1"
+                :file-list="fileList"
                 :on-success="uploadSuccess"
               >
                 <i class="el-icon-upload"/>
@@ -67,6 +68,7 @@
         tableInstance: {},
         item: {},
         fetchDownloads,
+        fileList: [],
         rules: {
           title: [
             {required: true, message: '请输入标题', trigger: 'blur'}
@@ -86,7 +88,8 @@
     methods: {
       // 弹窗用
       initData() {
-        this.item = {}
+        this.item = {};
+        this.fileList = []
       },
       deleteShow() {
         if (!this.tableInstance || !this.tableInstance.selection || this.tableInstance.selection.length === 0) {
@@ -104,6 +107,10 @@
         this.item = {...this.tableInstance.table.selection[0]};
         this.dialogFormVisible = true;
         this.modifyType = 'modify';
+        this.fileList = [{
+          name: this.item.fileName,
+          url: this.item.filePath
+        }];
         this.$refs.dialogForm && this.$refs.dialogForm.clearValidate();
       },
       cancelModify() {
