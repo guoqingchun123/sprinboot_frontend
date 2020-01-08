@@ -106,7 +106,11 @@ export function checkRegionName(regionName) {
 }
 /*企业管理*/
 export function fetchAllCorps() {
-  return http.get('/api/center/allCorps')
+  return http.get('/api/center/corps/all')
+}
+
+export function fetchCascaderCorps() {
+  return http.get('/api/center/corps/cascader')
 }
 
 export function fetchCorp(query) {
@@ -123,8 +127,8 @@ export function fetchProSaleCard(query) {
 }
 
 /*未处理楼栋管理*/
-export function fetchBldinfo(query) {
-  return http.get('/api/center/fetchBldinfo', {
+export function fetchBldInfo(query) {
+  return http.get('/api/center/fetchBldInfo', {
     params: query
   })
 }

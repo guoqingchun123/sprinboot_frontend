@@ -1,9 +1,11 @@
 <template>
   <div class="app-container">
-    <bv-table title="调查问卷一览" :pagination="true" :filter.sync="filter" :fetch-api="fetchSurveys" @on-mounted="(table) => tableInstance = table">
+    <bv-table title="调查问卷一览" :pagination="true" :filter.sync="filter" :fetch-api="fetchSurveys"
+              @on-mounted="(table) => tableInstance = table">
       <div slot="operates">
         <bv-button show="none" view="create" authority="create" @click="startCreate()">新增</bv-button>
-        <bv-button show="one" type="success" icon="el-icon-position" authority="publish" @click="startPublish()">发布</bv-button>
+        <bv-button show="one" type="success" icon="el-icon-position" authority="publish" @click="startPublish()">发布
+        </bv-button>
         <bv-button show="one" view="modify" authority="modify" @click="startModify()">修改</bv-button>
         <bv-button v-if="deleteShow()" view="remove" authority="remove" @click="startRemove()">删除</bv-button>
       </div>
@@ -19,16 +21,19 @@
           </bv-form-item>
         </bv-col>
       </div>
-      <bv-table-column :selectable="selectable" type="selection" />
+      <bv-table-column :selectable="selectable" type="selection"/>
       <bv-table-column label="问卷标题" prop="title" align="center" sortable="custom"/>
       <bv-table-column label="问卷摘要" prop="summary" align="center" sortable="custom"/>
-      <bv-table-column label="问卷状态" prop="surveyStatus" align="center" sortable="custom" :formatter="surveyStatusFormatter"/>
+      <bv-table-column label="问卷状态" prop="surveyStatus" align="center" sortable="custom"
+                       :formatter="surveyStatusFormatter"/>
       <bv-table-column label="经办人" prop="agentPerson" align="center" sortable="custom"/>
       <bv-table-column label="开始日期" prop="startDate" align="center" sortable="custom"/>
       <bv-table-column label="结束日期" prop="stopDate" align="center" sortable="custom"/>
       <bv-table-column fixed="right" label="操作" align="center">
         <template slot-scope="scope">
-          <bv-button view="details" :disabled="scope.row.surveyStatus === '0001'" authority="maintain" @click="startSurveyItems(scope.row)">维护问卷明细</bv-button>
+          <bv-button view="details" :disabled="scope.row.surveyStatus === '0001'" authority="maintain"
+                     @click="startSurveyItems(scope.row)">维护问卷明细
+          </bv-button>
           <bv-button view="view" @click="startView(scope.row)">预览</bv-button>
         </template>
       </bv-table-column>
@@ -38,22 +43,21 @@
       <bv-form ref="dialogForm" :model="item" :rules="rules">
         <bv-row :layout="1">
           <bv-col>
-            <bv-form-item label="标题" prop="title">
-              <el-input v-model="item.title" style="width: 35.3vw;"/>
+            <bv-form-item label="标题" prop="title" class="form-item-fill">
+              <el-input v-model="item.title"/>
             </bv-form-item>
           </bv-col>
           <bv-col>
-            <bv-form-item label="摘要" prop="summary">
-              <el-input v-model.trim="item.summary" type="textarea" :rows="1" style="width: 35.3vw;"/>
+            <bv-form-item label="摘要" prop="summary" class="form-item-fill">
+              <el-input v-model.trim="item.summary" type="textarea" :rows="1"/>
             </bv-form-item>
           </bv-col>
-        </bv-row>
-        <bv-row :layout="1">
           <bv-col>
-            <bv-form-item label="调查范围" prop="surveyScopes">
+            <bv-form-item label="调查范围" prop="surveyScopes" class="form-item-fill">
               <el-cascader v-model="item.surveyScopes"
                            :options="surveyScopesOptions"
-                           :props="{ checkStrictly: true }" clearable filterable style="width: 35.3vw;"/>
+                           style="width:100%"
+                           :props="{ checkStrictly: true }" clearable filterable/>
             </bv-form-item>
           </bv-col>
         </bv-row>
@@ -103,12 +107,16 @@
         </div>
         <div>
           <el-radio-group v-if="surveyItem.questionType === '0001'" v-model="surveyItem.result">
-            <el-radio v-for="(option, index) in surveyItem.options" :key="'option' + index" :label="index">{{ option.itemName }}</el-radio>
+            <el-radio v-for="(option, index) in surveyItem.options" :key="'option' + index" :label="index">
+              {{option.itemName }}
+            </el-radio>
           </el-radio-group>
           <el-checkbox-group v-else-if="surveyItem.questionType === '0002'" v-model="surveyItem.results">
-            <el-checkbox v-for="(option, index) in surveyItem.options" :key="'option' + index" :label="index">{{ option.itemName }}</el-checkbox>
+            <el-checkbox v-for="(option, index) in surveyItem.options" :key="'option' + index" :label="index">
+              {{option.itemName }}
+            </el-checkbox>
           </el-checkbox-group>
-          <el-input v-else v-model="surveyItem.result" type="textarea" :rows="1" style="width: 35.3vw;"/>
+          <el-input v-else v-model="surveyItem.result" type="textarea" :rows="1"/>
         </div>
       </el-card>
       <div slot="footer">

@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <bv-table title="未处理的楼栋" :pagination="true" :filter.sync="filter" :fetch-api="fetchBldinfo" @on-mounted="(table) => tableInstance = table">
+    <bv-table title="已预售未发布楼栋" :pagination="true" :filter.sync="filter" :fetch-api="fetchBldInfo" @on-mounted="(table) => tableInstance = table">
       <div slot="operates">
         <bv-button type="primary" icon="el-icon-back" @click="returnRegion()">返回</bv-button>
       </div>
@@ -22,16 +22,16 @@
 
 <script>
 
-  import {fetchBldinfo} from '@/api/basic'
+  import {fetchBldInfo} from '@/api/basic'
 
   export default {
-    name: 'Bldinfo',
+    name: 'BldInfo',
     data() {
       return {
         filter: {},
         tableInstance: {},
         item: {},
-        fetchBldinfo,
+        fetchBldInfo,
       }
     },
     created() {

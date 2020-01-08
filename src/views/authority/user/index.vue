@@ -78,7 +78,7 @@
               <el-cascader v-model="user.corps"
                            :options="corpsOptions"
                            :show-all-levels="false"
-                           clearable filterable style="width: 100%"/>
+                           clearable filterable/>
             </bv-form-item>
           </bv-col>
           <bv-col>
@@ -118,7 +118,7 @@
 
 <script>
   import {Avatar} from 'element-ui'
-  import {fetchAllCorps, saveUserCorps, selectUserCorps} from '@/api/basic'
+  import {fetchCascaderCorps, saveUserCorps, selectUserCorps} from '@/api/basic'
   import {fetchAllRoles} from '@/api/authority/role'
   import {
     fetchUsers,
@@ -189,7 +189,7 @@
         this.roles = roles
       }).catch(() => {
       })
-      fetchAllCorps().then((res) => {
+      fetchCascaderCorps().then((res) => {
         this.corpsOptions = res.data
       })
     },

@@ -3,13 +3,16 @@
     <bv-table title="小区一览" :pagination="true" :filter.sync="filter" :fetch-api="fetchRegions"
               @on-mounted="(table) => tableInstance = table">
       <div slot="operates">
-        <bv-button v-show="publiseShow()" type="success" icon="el-icon-position" @click="startPublise">发布</bv-button>
-        <bv-button v-show="publiseShow()" type="warning" svg-icon="cancel" @click="checkCancel">审核不通过</bv-button>
+        <bv-button v-show="publishShow()" type="success" icon="el-icon-position" @click="startPublise">发布</bv-button>
+        <bv-button v-show="publishShow()" type="warning" svg-icon="cancel" @click="checkCancel">审核不通过</bv-button>
         <bv-button v-show="cancelShow()" type="warning" svg-icon="cancel" @click="publishCancel">撤销发布</bv-button>
         <bv-button show="none" type="success" view="create" authority="create" @click="startCreate()">新增</bv-button>
-        <bv-button v-show="modifyShow()" type="success" view="modify" authority="modify" @click="startModify()">修改</bv-button>
-        <bv-button v-if="deleteShow()" type="warning" view="remove" authority="remove" @click="startRemove()">删除</bv-button>
-        <bv-button show="none" type="primary" view="create" authority="bldInfo" @click="queryBldInfo()">已预售未发布楼栋</bv-button>
+        <bv-button v-show="modifyShow()" type="success" view="modify" authority="modify" @click="startModify()">修改
+        </bv-button>
+        <bv-button v-if="deleteShow()" type="warning" view="remove" authority="remove" @click="startRemove()">删除
+        </bv-button>
+        <bv-button show="none" type="primary" view="create" authority="bldInfo" @click="queryBldInfo()">已预售未发布楼栋
+        </bv-button>
       </div>
       <div slot="search">
         <bv-col>
@@ -23,13 +26,19 @@
       <bv-table-column label="小区地址" prop="address" align="center" sortable="custom"/>
       <bv-table-column label="所属行政区" prop="divisionCode" :formatter="divisionFormat" align="center" sortable="custom"/>
       <bv-table-column label="预售许可日期" prop="preSaleDate" align="center" sortable="custom"/>
-      <bv-table-column label="发布日期" prop="publishDate" align="center" sortable="custom" />
+      <bv-table-column label="发布日期" prop="publishDate" align="center" sortable="custom"/>
       <bv-table-column label="状态" prop="state" :formatter="stateFormat" align="center" sortable="custom"/>
       <bv-table-column align="center" label="操作">
         <template slot-scope="scope">
-          <bv-button v-show="!maintainShow(scope.row)" icon="el-icon-picture" type="text" @click="startPreview(scope.row)">小区预览</bv-button>
-          <bv-button v-show="maintainShow(scope.row)" icon="el-icon-paperclip" type="text" @click="queryProjInfo(scope.row)">维护项目列表</bv-button>
-          <bv-button v-show="maintainShow(scope.row)" icon="el-icon-edit-outline" type="text" @click="handleRegionInfo(scope.row)">维护小区档案</bv-button>
+          <bv-button v-show="!maintainShow(scope.row)" icon="el-icon-picture" type="text"
+                     @click="startPreview(scope.row)">小区预览
+          </bv-button>
+          <bv-button v-show="maintainShow(scope.row)" icon="el-icon-paperclip" type="text"
+                     @click="queryProjInfo(scope.row)">维护项目列表
+          </bv-button>
+          <bv-button v-show="maintainShow(scope.row)" icon="el-icon-edit-outline" type="text"
+                     @click="handleRegionInfo(scope.row)">维护小区档案
+          </bv-button>
         </template>
       </bv-table-column>
     </bv-table>
@@ -37,26 +46,39 @@
     <bv-dialog title="小区信息维护" :visible.sync="dialogFormVisible" top="5vh" @close="dialogClose">
       <bv-form ref="dialogForm" :model="item" :rules="rules" class="dialog-form" label-width="120px"
                label-position="right">
-        <bv-row>
+        <bv-row :layout="1">
           <bv-col>
-            <bv-form-item label="小区名称" prop="regionName">
-              <el-input v-model.trim="item.regionName" style="width: 36vw"/>
+            <bv-form-item label="小区名称" prop="regionName" class="form-item-fill">
+              <el-input v-model.trim="item.regionName"/>
             </bv-form-item>
           </bv-col>
-        </bv-row>
-        <bv-row>
           <bv-col>
-            <bv-form-item label="所属行政区" prop="divisionCode">
-              <el-select v-model="item.divisionCode" placeholder="请选择所属行政区">
+            <bv-form-item label="小区地址" prop="address" class="form-item-fill">
+              <el-input v-model.trim="item.address" type="textarea" :rows="1"/>
+            </bv-form-item>
+          </bv-col>
+          <bv-col>
+            <bv-form-item label="所属行政区" prop="divisionCode" class="form-item-fill">
+              <el-cascader v-model="item.divisionCode"
+                           :options="divisions"
+                           :show-all-levels="false"
+                           clearable filterable/>
+            </bv-form-item>
+          </bv-col>
+          <bv-col>
+            <bv-form-item label="开发企业" prop="developNo" class="form-item-fill">
+              <el-select v-model="item.developNo" placeholder="请选择开发企业">
                 <el-option
-                  v-for="division in divisions"
-                  :key="division.divisionCode"
-                  :label="division.divisionName"
-                  :value="division.divisionCode"
+                  v-for="corp in corps"
+                  :key="corp.corpId"
+                  :label="corp.compName"
+                  :value="corp.corpId"
                 />
               </el-select>
             </bv-form-item>
           </bv-col>
+        </bv-row>
+        <bv-row :layout="2">
           <bv-col>
             <bv-form-item label="预售许可日期" prop="preSaleDate">
               <el-date-picker
@@ -67,17 +89,13 @@
               />
             </bv-form-item>
           </bv-col>
-        </bv-row>
-        <bv-row>
           <bv-col>
             <bv-form-item label="监控点编号数量" prop="optionsNum">
               <el-input-number v-model="optionsNum" :min="0" :max="99" label="监控点编号不能为空" @change="handleChange"/>
             </bv-form-item>
           </bv-col>
-          <bv-col>
-            <bv-form-item v-for="(option, index) in item.options"
-                          :key="'options' + index"
-                          label="监控点编号"
+          <bv-col :key="'options' + index" v-for="(option, index) in item.options">
+            <bv-form-item label="监控点编号"
                           :prop="'options.' + index + '.itemName'"
                           :rules="{
                             required: true, message: '监控点编号不能为空', trigger: 'blur'
@@ -86,13 +104,6 @@
               <el-input v-model.trim="option.itemName">
                 <template slot="prepend">{{ index + 1 }}</template>
               </el-input>
-            </bv-form-item>
-          </bv-col>
-        </bv-row>
-        <bv-row>
-          <bv-col>
-            <bv-form-item label="小区地址" prop="address">
-              <el-input v-model.trim="item.address" type="textarea" :rows="1" style="width: 36vw"/>
             </bv-form-item>
           </bv-col>
         </bv-row>
@@ -117,26 +128,6 @@
                 />
               </bv-form-item>
             </bv-col>
-            <!--<bv-col :span="11">
-              <bv-form-item prop="publishDate">
-                <el-date-picker
-                  v-model="publishItem.publishDate"
-                  type="date"
-                  value-format="yyyy-MM-dd"
-                  placeholder="选择日期"
-                />
-              </bv-form-item>
-            </bv-col>
-            <bv-col :span="2" class="time-case">—</bv-col>
-            <bv-col :span="11">
-              <bv-form-item prop="publishTime">
-                <el-time-picker
-                  v-model="publishItem.publishTime"
-                  value-format="HH:mm:ss"
-                  placeholder="选择时间"
-                />
-              </bv-form-item>
-            </bv-col>-->
           </bv-row>
         </bv-form-item>
       </bv-form>
@@ -149,7 +140,17 @@
 </template>
 
 <script>
-  import {fetchRegions, fetchAllDivisions, createRegion, modifyRegion, removeRegion, updateRegionState, updateRegionCheck, checkRegionName} from '@/api/basic'
+  import {
+    fetchRegions,
+    fetchDivisionsTree,
+    fetchAllCorps,
+    createRegion,
+    modifyRegion,
+    removeRegion,
+    updateRegionState,
+    updateRegionCheck,
+    checkRegionName
+  } from '@/api/basic'
 
   var regionName__;
   export default {
@@ -212,7 +213,7 @@
             {min: 1, max: 10, message: '长度必须小于10个字', trigger: 'blur'}
           ],
           preSaleDate: [
-            { type: 'string', required: true, message: '请选择日期', trigger: 'change' }
+            {type: 'string', required: true, message: '请选择日期', trigger: 'change'}
           ],
           address: [
             {required: true, message: '请输入小区地址', trigger: 'blur'},
@@ -221,22 +222,26 @@
         },
         publishRules: {
           publishDate: [
-            { type: 'string', required: true, message: '请选择日期', trigger: 'change' }
+            {type: 'string', required: true, message: '请选择日期', trigger: 'change'}
           ],
           publishTime: [
-            { type: 'string', required: true, message: '请选择时间', trigger: 'change' }
+            {type: 'string', required: true, message: '请选择时间', trigger: 'change'}
           ]
         },
         dialogFormVisible: false,
         dialogVisible: false,
         modifyType: null,
         divisions: [],
+        corps: [],
         optionsNum: 0
       }
     },
     mounted() {
-      fetchAllDivisions().then((res) => {
+      fetchDivisionsTree().then((res) => {
         this.divisions = res.data;
+      })
+      fetchAllCorps().then((res) => {
+        this.corps = res.data;
       })
     },
     methods: {
@@ -268,7 +273,7 @@
             // publishDate: this.publishItem.publishDate+" "+this.publishItem.publishTime
             publishDate: this.publishItem.publishDate
           }
-          updateRegionState(data).then(response => {
+          updateRegionState(data).then(() => {
             this.$message.success('发布成功');
             this.tableInstance.fetchData();
           }).catch(() => {
@@ -293,7 +298,7 @@
             regionId: region.regionId,
             updateParam: '2000'
           }
-          updateRegionCheck(data).then(response => {
+          updateRegionCheck(data).then(() => {
             this.$message.success('操作成功');
             this.tableInstance.fetchData();
           })
@@ -313,7 +318,7 @@
             regionId: region.regionId,
             updateParam: '9999'
           }
-          updateRegionCheck(data).then(response => {
+          updateRegionCheck(data).then(() => {
             this.$message.success('操作成功');
             this.tableInstance.fetchData();
           })
@@ -360,28 +365,6 @@
           }
         }
       },
-      //新增按钮显示逻辑
-      createShow() {
-        if (!this.tableInstance || !this.tableInstance.selection || this.tableInstance.selection.length > 0) {
-          return false
-        }
-        //根据角色区分
-        const roles = this.$store.getters.roles;
-        if (roles) {
-          if (roles.indexOf("0001") != -1) {
-            //管理员
-            return true
-          } else {
-            if (roles.indexOf("0003") != -1) {
-              //主管单位
-              return false
-            } else {
-              //企业
-              return true
-            }
-          }
-        }
-      },
       //修改按钮显示逻辑
       modifyShow() {
         if (!this.tableInstance || !this.tableInstance.selection || this.tableInstance.selection.length != 1) {
@@ -407,7 +390,7 @@
       //小区预览
       startPreview(row) {
         // window.open('http://172.10.10.196:81/houses/sales/'+this.region.regionId)
-        window.open(process.env.VUE_APP_ADDR + '/sales/'+row.regionId)
+        window.open(process.env.VUE_APP_ADDR + '/sales/' + row.regionId)
       },
       //删除按钮显示逻辑
       deleteShow() {
@@ -423,32 +406,32 @@
         return true
       },
       //发布、审核不通过按钮显示逻辑
-      publiseShow() {
-            //判断当前小区状态
-            if (!this.tableInstance || !this.tableInstance.selection || this.tableInstance.selection.length != 1) {
-              return false
-            }
-            const selection = this.tableInstance.selection
-            if (selection[0].state == '1000') {
-              //待审核状态
-              return true
-            } else {
-              return false
-            }
+      publishShow() {
+        //判断当前小区状态
+        if (!this.tableInstance || !this.tableInstance.selection || this.tableInstance.selection.length != 1) {
+          return false
+        }
+        const selection = this.tableInstance.selection
+        if (selection[0].state == '1000') {
+          //待审核状态
+          return true
+        } else {
+          return false
+        }
       },
       //撤销发布按钮显示逻辑
       cancelShow() {
-            //判断当前小区状态
-            if (!this.tableInstance || !this.tableInstance.selection || this.tableInstance.selection.length != 1) {
-              return false
-            }
-            const selection = this.tableInstance.selection
-            if (selection[0].state == '0000') {
-              //发布状态
-              return true
-            } else {
-              return false
-            }
+        //判断当前小区状态
+        if (!this.tableInstance || !this.tableInstance.selection || this.tableInstance.selection.length != 1) {
+          return false
+        }
+        const selection = this.tableInstance.selection
+        if (selection[0].state == '0000') {
+          //发布状态
+          return true
+        } else {
+          return false
+        }
       },
       startCreate() {
         this.dialogFormVisible = true;
@@ -459,13 +442,13 @@
         this.item = {...this.tableInstance.table.selection[0]};
         regionName__ = this.item.regionName;
         let videoList = [];
-        if(this.item.videoNo) {
+        if (this.item.videoNo) {
           videoList = this.item.videoNo.split(',');
         }
         let options = [];
         for (let i in videoList) {
           options.push({
-            itemValue: Number(i)+1,
+            itemValue: Number(i) + 1,
             itemName: videoList[i]
           })
         }

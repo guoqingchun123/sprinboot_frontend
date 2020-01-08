@@ -8,7 +8,7 @@
       </bv-col>
       <bv-col :span="12" class="operates">
         <bv-button type="warning" icon="el-icon-picture" @click="startPreview">小区预览</bv-button>
-        <bv-button v-if="checkShow" type="primary" authority="Check" icon="el-icon-s-check" @click="startCheck">申报</bv-button>
+        <bv-button v-if="checkShow" type="primary" authority="declare" icon="el-icon-s-check" @click="startCheck">申报</bv-button>
         <bv-button type="primary" icon="el-icon-back" @click="returnPrePage">返回</bv-button>
       </bv-col>
     </bv-row>
@@ -107,7 +107,7 @@
             regionId: this.region.regionId,
             updateParam: '1000'
           }
-          updateRegionCheck(data).then(response => {
+          updateRegionCheck(data).then(() => {
             this.$message.success('申报成功');
             this.$emit("on-region-return");
           })

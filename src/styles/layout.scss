@@ -228,7 +228,7 @@
 
   .el-tooltip.el-link {
     width: 100%;
-  
+
     > .el-link--inner {
       width: 100%;
     }
@@ -279,14 +279,14 @@
       width: 100%;
       padding-right: 15px;
       justify-content: space-between;
-    
+
       > .operates-container {
         display: flex;
-    
+
         &.show-on-hover, &.show-on-current {
           display: none;
         }
-    
+
         .el-button--text {
           padding-top: 0;
           padding-bottom: 0;
@@ -409,4 +409,8 @@ body.lg-on {
 
 .button-popover + .el-button {
   margin-right: 10px;
+}
+
+.form-item-fill .el-cascader {
+  width: 100%
 }

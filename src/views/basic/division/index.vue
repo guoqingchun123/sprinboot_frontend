@@ -165,7 +165,7 @@
               if (!this.currentData.children) {
                 this.$set(this.currentData, 'children', [])
               }
-              this.$set(this.item, 'divisionCode', data)
+              this.$set(this.item, 'divisionCode', data.divisionCode)
               this.currentData.children.push(this.item)
               // eslint-disable-next-line
             } catch (e) {

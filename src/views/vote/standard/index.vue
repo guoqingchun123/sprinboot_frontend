@@ -8,82 +8,92 @@
       </div>
       <div slot="search">
         <bv-col>
-          <bv-form-item label="表决事项" prop="voteClass">
-            <el-select v-model="filter.voteClass" placeholder="请选择表决事项">
+          <bv-form-item label="表决事项" prop="itemGuid">
+            <el-select v-model="filter.itemGuid" placeholder="请选择表决事项">
               <el-option
-                v-for="item in voteClasses"
-                :key="item.code"
-                :label="item.name"
-                :value="item.code"
+                v-for="item in voteItems"
+                :key="item.sysGuid"
+                :label="item.itemName"
+                :value="item.sysGuid"
               />
             </el-select>
           </bv-form-item>
         </bv-col>
+        <bv-col>
+          <bv-form-item  label="表决名称" prop="stdName">
+            <el-input v-model="filter.stdName" />
+          </bv-form-item >
+        </bv-col>
+        <bv-col>
+          <bv-form-item  label="执行标准" prop="stdDesc">
+            <el-input v-model="filter.stdDesc" />
+          </bv-form-item >
+        </bv-col>
       </div>
       <bv-table-column type="selection" />
-      <bv-table-column label="表决事项" prop="voteClass" align="center" :formatter="voteClassFormatter" />
+      <bv-table-column label="表决事项" prop="itemGuid" align="center" :formatter="voteItemFormatter" />
       <bv-table-column label="表决名称" prop="stdName" align="center" sortable="custom" />
       <bv-table-column label="执行标准" prop="stdDesc" align="center" sortable="custom" />
-      <bv-table-column label="维护时间" prop="manageTime" align="center" sortable="custom" :formatter="dateFormatter"/>
+      <bv-table-column label="维护时间" prop="manageTime" align="center" sortable="custom"/>
       <bv-table-column label="维护用户" prop="manageUser" align="center" sortable="custom" />
     </bv-table>
-    
+
     <bv-dialog v-if="dialogFormVisible" title="表决标准维护" :visible.sync="dialogFormVisible">
       <bv-form ref="dialogForm" :model="item" :rules="rules">
         <bv-row :layout="1">
           <bv-col>
-            <bv-form-item label="表决模式" prop="voteMode">
+            <bv-form-item label="表决模式" prop="voteMode" class="form-item-fill">
               <el-radio-group v-model="item.voteMode" placeholder="请选择表决事项" @change="initDescribe">
                 <el-radio-button v-for="item in voteModes" :key="item.code" :label="item.code">{{ item.name }}</el-radio-button>
               </el-radio-group>
             </bv-form-item>
           </bv-col>
           <bv-col>
-            <bv-form-item label="执行标准" prop="stdDesc">
-              <el-input v-model="item.stdDesc" style="width: 35.3vw;" :disabled="true" placeholder="根据事项模式及其他页面输入项自动生成" />
+            <bv-form-item label="执行标准" prop="stdDesc" class="form-item-fill">
+              <el-input v-model="item.stdDesc" :disabled="true" placeholder="根据事项模式及其他页面输入项自动生成" />
             </bv-form-item>
           </bv-col>
           <bv-col>
-            <bv-form-item label="表决事项" prop="voteClass">
-              <el-select v-model="item.voteClass" style="width: 35.3vw;" placeholder="请选择表决事项">
+            <bv-form-item label="表决事项" prop="itemGuid" class="form-item-fill">
+              <el-select v-model="item.itemGuid" placeholder="请选择表决事项">
                 <el-option
-                  v-for="item in voteClasses"
-                  :key="item.code"
-                  :label="item.name"
-                  :value="item.code"
+                  v-for="item in voteItems"
+                  :key="item.sysGuid"
+                  :label="item.itemName"
+                  :value="item.sysGuid"
                 />
               </el-select>
             </bv-form-item>
           </bv-col>
           <bv-col>
-            <bv-form-item label="表决名称" prop="stdName">
-              <el-input v-model="item.stdName" style="width: 35.3vw;" />
+            <bv-form-item label="表决名称" prop="stdName" class="form-item-fill">
+              <el-input v-model="item.stdName" />
             </bv-form-item>
           </bv-col>
           <bv-col v-show="showCalculate">
-            <bv-form-item label="表决方式" prop="calculateGist">
+            <bv-form-item label="表决方式" prop="calculateGist" class="form-item-fill">
               <el-radio-group v-model="item.calculateGist" placeholder="请选择表决方式" @change="initDescribe">
                 <el-radio-button v-for="item in calculateGists" :key="item.code" :label="item.code">{{ item.name }}</el-radio-button>
               </el-radio-group>
             </bv-form-item>
           </bv-col>
           <bv-col v-show="showCalculate">
-            <bv-form-item label="表决类型" prop="voteType">
+            <bv-form-item label="表决类型" prop="voteType" class="form-item-fill">
               <el-radio-group v-model="item.voteType" placeholder="请选择表决类型" @change="initDescribe">
                 <el-radio-button v-for="item in voteTypes" :key="item.code" :label="item.code">{{ item.name }}</el-radio-button>
               </el-radio-group>
             </bv-form-item>
           </bv-col>
           <bv-col v-show="showCalculate">
-            <bv-form-item label="计算方式" prop="calculateType">
+            <bv-form-item label="计算方式" prop="calculateType" class="form-item-fill">
               <el-radio-group v-model="item.calculateType" placeholder="请选择计算方式" @change="initDescribe">
                 <el-radio-button v-for="item in calculateTypes" :key="item.code" :label="item.code">{{ item.name }}</el-radio-button>
               </el-radio-group>
             </bv-form-item>
           </bv-col>
           <bv-col>
-            <bv-form-item label="计算基数" prop="denominator">
-              <el-input v-model="item.denominator" style="width: 35.3vw;" placeholder="表决类请填写表决通过比例，例如：2/3表示比例达到2/3视为表决通过;选举类请填写入围数，例如：2表示候选人或物比例最高的前2名视为入围"
+            <bv-form-item label="计算基数" prop="denominator" class="form-item-fill">
+              <el-input v-model="item.denominator" placeholder="表决类请填写表决通过比例，例如：2/3表示比例达到2/3视为表决通过;选举类请填写入围数，例如：2表示候选人或物比例最高的前2名视为入围"
                         @input="initDescribe"
               />
             </bv-form-item>
@@ -99,13 +109,12 @@
 </template>
 
 <script>
-  
-  import {fetchVoteStandards, createVoteStandard, modifyVoteStandard, removeVoteStandard} from '@/api/vote'
+
+  import {fetchVoteStandards, createVoteStandard, modifyVoteStandard, removeVoteStandard, fetchAllVoteItems} from '@/api/vote'
   import {isEmpty} from 'element-ui/src/utils/util';
-  import moment from 'moment'
-  
+
   export default {
-    name: 'ListStandard',
+    name: 'ListVoteStandard',
     components: {},
     data() {
       return {
@@ -113,14 +122,14 @@
         tableInstance: {},
         item: {},
         fetchVoteStandards,
-        voteClasses: [],
+        voteItems: [],
         voteModes: [],
         voteTypes: [],
         calculateGists: [],
         calculateTypes: [],
         showCalculate: false,
         rules: {
-          voteClass: [
+          itemGuid: [
             {required: true, message: '请选择表决事项', trigger: 'blur'}
           ],
           stdName: [
@@ -147,9 +156,9 @@
       }
     },
     created() {
-      this.$store.dispatch('app/fetchDicts', 'voteClass').then(data => {
-        this.voteClasses = data
-      });
+      fetchAllVoteItems().then((res) => {
+        this.voteItems = res.data
+      })
       this.$store.dispatch('app/fetchDicts', 'voteMode').then(data => {
         this.voteModes = data
       });
@@ -168,21 +177,18 @@
       initData() {
         this.item = {}
       },
-      dateFormatter(row) {
-        return moment(row.lastModifyDate).format('YYYY-MM-DD hh:mm:ss')
-      },
       initDescribe() {
         let vm = this;
-        let itemsName = "";
+        let describe = "";
         if (vm.item.voteMode === '2') { // 选举类
           vm.showCalculate = false;
-          itemsName = "以获得选票数由高到低排序，前#{计算基数}名候选项，视为入选";
+          describe = "以获得选票数由高到低排序，前#{计算基数}名候选项，视为入选";
           if (!isEmpty(vm.item.denominator)) {
-            itemsName = "以获得选票数由高到低排序，前" + vm.item.denominator + "名候选项，视为入选";
+            describe = "以获得选票数由高到低排序，前" + vm.item.denominator + "名候选项，视为入选";
           }
         } else if (vm.item.voteMode === '1') { // 表决类
           vm.showCalculate = true;
-          itemsName = "";
+          describe = "";
           let calculateGist = "";
           let voteTypeMsg = "";
           let denominator = isEmpty(vm.item.denominator) ? "#{计算基数}" : vm.item.denominator;
@@ -216,19 +222,19 @@
           } else {
             voteTypeMsg += "按#{表决类型}计算" + calculateType;
           }
-          itemsName = calculateGist + voteTypeMsg + "的，视为表决通过";
+          describe = calculateGist + voteTypeMsg + "的，视为表决通过";
         }
-        if (isEmpty(itemsName)) {
-          itemsName = "根据事项模式及其他页面输入项自动生成";
+        if (isEmpty(describe)) {
+          describe = "根据事项模式及其他页面输入项自动生成";
         }
         vm.item = Object.assign({}, vm.item, {
-          stdDesc: itemsName
+          stdDesc: describe
         })
       },
-      voteClassFormatter(row, column, cellValue) {
-        for (let i in this.voteClasses) {
-          if (cellValue == this.voteClasses[i].code) {
-            return this.voteClasses[i].name
+      voteItemFormatter(row, column, cellValue) {
+        for (let i in this.voteItems) {
+          if (cellValue == this.voteItems[i].sysGuid) {
+            return this.voteItems[i].itemName
           }
         }
       },
@@ -293,7 +299,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          removeVoteStandard(this.tableInstance.table.selection.map(item => item.sysGuid).join()).then(() => {
+          removeVoteStandard(this.tableInstance.table.selection.map(item => item.sysId).join()).then(() => {
             this.$message({
               message: '删除成功',
               type: 'success'
