@@ -146,6 +146,9 @@
           summary: [
             {required: true, message: '请输入摘要', trigger: 'blur'}
           ],
+          surveyScopes: [
+            {required: true, message: '请选择调查范围', trigger: 'blur'}
+          ],
           startDate: [
             {required: true, message: '请选择开始日期', trigger: 'blur'}
           ],
