@@ -27,49 +27,23 @@ export function selectUserCorps(userId) {
 
 /*行政区域管理*/
 export function fetchDivisionsTree() {
+  return http.get('/api/center/divisions/tree')
+}
+
+export function fetchAllDivisions() {
   return http.get('/api/center/divisions/all')
 }
 
 export function removeDivisionTree(ids) {
-  return http.delete('/api/center/division/' + ids)
-}
-
-export function createDivisionTree(data) {
-  return http.post('/api/center/division', data)
-}
-
-export function modifyDivisionTree(data) {
-  return http.put('/api/center/division', data)
-}
-
-export function fetchDivisions(query) {
-  return http.get('/api/center/divisions', {
-    params: query
-  })
-}
-
-export function showRemoveBtn(ids) {
-  return http.get('/api/center/showRemoveBtn/' + ids)
-}
-
-export function removeDivisions(ids) {
   return http.delete('/api/center/divisions/' + ids)
 }
 
-export function createDivision(data) {
+export function createDivisionTree(data) {
   return http.post('/api/center/divisions', data)
 }
 
-export function modifyDivision(data) {
+export function modifyDivisionTree(data) {
   return http.put('/api/center/divisions', data)
-}
-
-export function fetchAllDivisions() {
-  return http.get('/api/center/fetchAllDivisions')
-}
-
-export function fetchCityDivisionRegions() {
-  return http.get('/api/center/cityDivisionRegions')
 }
 
 /*小区管理*/

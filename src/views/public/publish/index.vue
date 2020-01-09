@@ -69,7 +69,7 @@
           </bv-col>
           <bv-col layout="100%">
             <bv-form-item label="内容" prop="content" class="form-item-fill">
-              <bv-editor v-model="item.content" upload-action="/file/uploads" />
+              <bv-editor v-model="item.content" :upload-action="uploadUrl" />
             </bv-form-item>
           </bv-col>
         </bv-row>
@@ -84,7 +84,7 @@
 
 <script>
 
-  import {fetchPublishes, createPublish, modifyPublish, removePublish} from '@/api/public'
+  import {fetchPublishes, createPublish, modifyPublish, removePublish, configUrl} from '@/api/public'
   import {Editor} from '@bestvike/components'
 
   export default {
@@ -117,13 +117,15 @@
           ]
         },
         dialogFormVisible: false,
-        modifyType: null
+        modifyType: null,
+        uploadUrl: ''
       }
     },
     created() {
       this.$store.dispatch('app/fetchDicts', 'publishType').then(data => {
         this.publishTypes = data
-      })
+      });
+      this.uploadUrl = configUrl("/api/public/uploads");
     },
     methods: {
       // 弹窗用

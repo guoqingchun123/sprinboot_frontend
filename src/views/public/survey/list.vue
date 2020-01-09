@@ -60,6 +60,7 @@
                            :props="{ checkStrictly: true }" clearable filterable/>
             </bv-form-item>
           </bv-col>
+
         </bv-row>
         <bv-row :layout="2">
           <bv-col>
@@ -129,7 +130,7 @@
 <script>
 
   import {fetchSurveys, createSurvey, modifySurvey, removeSurvey, selectSurvey, publishSurvey} from '@/api/public'
-  import {fetchCityDivisionRegions} from '@/api/basic'
+  import {fetchDivisionsTree} from '@/api/basic'
 
   export default {
     name: 'ListSurvey',
@@ -173,7 +174,7 @@
       this.$store.dispatch('app/fetchDicts', 'surveyStatus').then(data => {
         this.surveyStatuses = data
       });
-      fetchCityDivisionRegions().then((res) => {
+      fetchDivisionsTree().then((res) => {
         this.surveyScopesOptions = res.data
       })
     },

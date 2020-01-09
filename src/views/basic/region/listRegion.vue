@@ -142,7 +142,7 @@
 <script>
   import {
     fetchRegions,
-    fetchDivisionsTree,
+    fetchAllDivisions,
     fetchAllCorps,
     createRegion,
     modifyRegion,
@@ -237,7 +237,7 @@
       }
     },
     mounted() {
-      fetchDivisionsTree().then((res) => {
+      fetchAllDivisions().then((res) => {
         this.divisions = res.data;
       })
       fetchAllCorps().then((res) => {
