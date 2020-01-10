@@ -53,6 +53,18 @@ export function fetchRegions(query) {
   })
 }
 
+/*查询未分配设备号的小区*/
+export function fetchRegionsNoDevice(query) {
+  return http.get('/api/center/fetchRegionsNoDevice', {
+    params: query
+  })
+}
+
+/*查询未分配设备号的小区及当前小区*/
+export function fetchRegionsNoDeviceCur(id) {
+  return http.get('/api/center/fetchRegionsNoDeviceCur/' +id)
+}
+
 export function fetchAllRegions(query) {
   return http.get('/api/center/fetchAllRegions', {
     params: query
@@ -99,6 +111,27 @@ export function fetchProSaleCard(query) {
     params: query
   })
 }
+
+/*设备号管理*/
+export function fetchDeviceInfo(query) {
+  return http.get('/api/center/deviceInfo', {
+    params: query
+  })
+}
+//批量新增设备号
+export function creatDeviceInfo(data) {
+  return http.post('/api/center/deviceInfo', data)
+}
+//分配设备号
+export function allotDeviceInfo(data) {
+  return http.post('/api/center/allotDeviceInfo', data)
+}
+
+//删除设备号
+export function deleteDeviceInfo(ids) {
+  return http.delete('/api/center/deviceInfo/'+ids)
+}
+
 
 /*未处理楼栋管理*/
 export function fetchBldInfo(query) {
