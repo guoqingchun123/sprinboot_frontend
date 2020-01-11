@@ -49,5 +49,5 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 http://xxx.com/ 对应打包命令
 npx cross-env VUE_APP_ROOT=/ vue-cli-service build --modern
 http://xxx.com 对应打包命令
-npx cross-env VUE_APP_ROOT=/ vue-cli-service build
+npx cross-env VUE_APP_ROOT=/ VUE_APP_CENTER_API=/center VUE_APP_PUBLIC_API=/public vue-cli-service build
 ```
