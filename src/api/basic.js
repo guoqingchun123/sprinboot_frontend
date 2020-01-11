@@ -177,3 +177,7 @@ export function fetchFloor(query) {
     params: query
   })
 }
+
+export function queryBldView(projectId, bldNo) {
+  return http.get('/api/center/queryBldView/' + projectId + "/" + bldNo);
+}

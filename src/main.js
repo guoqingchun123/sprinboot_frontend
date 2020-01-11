@@ -13,6 +13,7 @@ import './plugins/amap'
 
 // import '@/styles/variables.scss'
 import ('@/styles/' + process.env.VUE_APP_THEME + '/index.scss') // global css
+import ('@/styles/building.scss')
 
 import App from './App'
 import store from './store'

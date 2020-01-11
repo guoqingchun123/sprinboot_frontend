@@ -1,0 +1,553 @@
+.bv-building {
+  width: 100%;
+  overflow: auto;
+}
+
+.view-legends {
+  display: flex;
+
+  > .view-legend {
+    margin: 1px;
+  }
+
+  .head {
+    display: inline-block;
+    text-align: center;
+    width: 118px;
+    height: 23px;
+    line-height: 23px;
+    font-size: 14px;
+  }
+}
+.view-config {
+  .el-form-item {
+    margin-bottom: 0;
+  }
+}
+
+.view-properties {
+  > .view-property {
+    margin-bottom: 15px;
+
+    > .operate {
+      display: flex;
+
+      > .head {
+        width: 100px;
+      }
+    }
+  }
+}
+
+.building {
+  display: flex;
+  flex-shrink: 0;
+  font-size: 14px;
+
+  > .floors {
+    width: 64px;
+    min-width: 64px;
+    border: 1px solid #D4D0C8;
+
+    > .floor {
+      height: 28px;
+      line-height: 28px;
+      background-color: #F1F1F3;
+      margin: 1px 0;
+
+      &.rowspan-2 {
+        height: 62px;
+        line-height: 62px;
+      }
+      &.rowspan-3 {
+        height: 92px;
+        line-height: 92px;
+      }
+      &.rowspan-4 {
+        height: 122px;
+        line-height: 122px;
+      }
+      &.rowspan-5 {
+        height: 152px;
+        line-height: 152px;
+      }
+      &.rowspan-6 {
+        height: 182px;
+        line-height: 182px;
+      }
+      &.rowspan-7 {
+        height: 212px;
+        line-height: 212px;
+      }
+      &.rowspan-8 {
+        height: 242px;
+        line-height: 242px;
+      }
+      &.rowspan-9 {
+        height: 272px;
+        line-height: 272px;
+      }
+
+      > .el-checkbox {
+        > .el-checkbox__input {
+          /* position: relative; */
+          left: 5px;
+        }
+        > .el-checkbox__label {
+          width: 40px;
+          text-align: right;
+        }
+      }
+    }
+
+    > .floor-head {
+      height: 28px;
+      line-height: 28px;
+      background-color: #F1F1F3;
+
+      &.rowspan-2 {
+        height: 73px;
+        line-height: 73px;
+      }
+      &.rowspan-3 {
+        height: 97px;
+        line-height: 97px;
+      }
+      &.rowspan-4 {
+        height: 121px;
+        line-height: 121px;
+      }
+      &.rowspan-5 {
+        height: 145px;
+        line-height: 145px;
+      }
+      &.rowspan-6 {
+        height: 169px;
+        line-height: 169px;
+      }
+      &.rowspan-7 {
+        height: 193px;
+        line-height: 193px;
+      }
+      &.rowspan-8 {
+        height: 217px;
+        line-height: 217px;
+      }
+      &.rowspan-9 {
+        height: 241px;
+        line-height: 241px;
+      }
+    }
+  }
+
+  > .cells {
+    display: flex;
+    align-items: flex-end;
+    flex-shrink: 0;
+
+    > .cell {
+      border: 1px solid #D4D0C8;
+      margin: 0 3px;
+      min-width: 100px;
+      
+      > .cell-floor {
+        max-width: 1224px;
+        display: flex;
+        flex-wrap: wrap;
+        align-content: flex-start;
+        height: 29px;
+
+        &.rowspan-2 {
+          height: 62px;
+        }
+        &.rowspan-3 {
+          height: 92px;
+        }
+        &.rowspan-4 {
+          height: 122px;
+        }
+        &.rowspan-5 {
+          height: 152px;
+        }
+        &.rowspan-6 {
+          height: 182px;
+        }
+        &.rowspan-7 {
+          height: 212px;
+        }
+        &.rowspan-8 {
+          height: 242px;
+        }
+        &.rowspan-9 {
+          height: 272px;
+        }
+
+        > .house {
+          margin: 1px;
+          height: 28px;
+          line-height: 28px;
+          width: 100px;
+          text-align: center;
+
+          &.colspan-2 {
+            width: 162px;
+          }
+          &.rowspan-2 {
+            height: 47px;
+            line-height: 47px;
+            margin-top: -23px;
+          }
+
+          > .el-checkbox {
+            width: 100%;
+
+            > .el-checkbox__input {
+              padding-left: 5px;
+            }
+            > .el-checkbox__label {
+              text-align: right;
+              width: 40px;
+            }
+          }
+        }
+      }
+      >.cell-head {
+        max-width: 1224px;
+
+        &.allow-col {
+          height: 50px;
+
+          &.rowspan-2 {
+            height: 73px;
+
+            > .cell-col {
+              height: 50px;
+            }
+          }
+          &.rowspan-3 {
+            height: 116px;
+
+            > .cell-col {
+              height: 73px;
+            }
+          }
+          &.rowspan-4 {
+            height: 139px;
+
+            > .cell-col {
+              height: 96px;
+            }
+          }
+          &.rowspan-5 {
+            height: 162px;
+
+            > .cell-col {
+              height: 119px;
+            }
+          }
+          &.rowspan-6 {
+            height: 185px;
+
+            > .cell-col {
+              height: 142px;
+            }
+          }
+          &.rowspan-7 {
+            height: 208px;
+
+            > .cell-col {
+              height: 165px;
+            }
+          }
+          &.rowspan-8 {
+            height: 231px;
+
+            > .cell-col {
+              height: 188px;
+            }
+          }
+          &.rowspan-9 {
+            height: 254px;
+
+            > .cell-col {
+              height: 211px;
+            }
+          }
+        }
+        > .cell-col {
+          display: flex;
+          flex-wrap: wrap;
+          height: 25px;
+
+          > .col-select {
+            width: 80px;
+            margin: 1px;
+            background-color: #F1F1F3;
+
+            > .el-checkbox {
+              width: 100%;
+              height: 23px;
+              line-height: 23px;
+              text-align: center;
+
+              > .el-checkbox__input {
+                position: absolute;
+                top: 3px;
+                left: 5px;
+              }
+              > .el-checkbox__label {
+                text-align: center;
+              }
+            }
+          }
+        }
+        > .cell-name {
+          text-align: center;
+          background-color: #F1F1F3;
+          height: 30px;
+          line-height: 30px;
+
+          > .el-checkbox {
+            > .el-checkbox__label {
+              padding-left: 3px;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  &.no-select-floor {
+    > .floors {
+      > .floor {
+        > .floor-name {
+          display: inline-block;
+          width: 40px;
+          text-align: right;
+        }
+      }
+    }
+  }
+}
+
+.detail-3 {
+  .building {
+    .floors {
+      > .floor {
+        height: 69px;
+        line-height: 69px;
+
+        &.rowspan-2 {
+          height: 142px;
+          line-height: 142px;
+        }
+        &.rowspan-3 {
+          height: 213px;
+          line-height: 213px;
+        }
+        &.rowspan-4 {
+          height: 284px;
+          line-height: 284px;
+        }
+        &.rowspan-5 {
+          height: 355px;
+          line-height: 355px;
+        }
+        &.rowspan-6 {
+          height: 426px;
+          line-height: 426px;
+        }
+        &.rowspan-7 {
+          height: 497px;
+          line-height: 497px;
+        }
+        &.rowspan-8 {
+          height: 568px;
+          line-height: 568px;
+        }
+        &.rowspan-9 {
+          height: 639px;
+          line-height: 639px;
+        }
+      }
+
+      > .floor-head {
+        &.allow-col {
+          height: 48px;
+          line-height: 48px;
+        }
+
+        &.rowspan-2 {
+          height: 73px;
+          line-height: 73px;
+        }
+        &.rowspan-3 {
+          height: 98px;
+          line-height: 98px;
+        }
+        &.rowspan-4 {
+          height: 123px;
+          line-height: 123px;
+        }
+        &.rowspan-5 {
+          height: 148px;
+          line-height: 148px;
+        }
+        &.rowspan-6 {
+          height: 173px;
+          line-height: 173px;
+        }
+        &.rowspan-7 {
+          height: 198px;
+          line-height: 198px;
+        }
+        &.rowspan-8 {
+          height: 223px;
+          line-height: 223px;
+        }
+        &.rowspan-9 {
+          height: 248px;
+          line-height: 248px;
+        }
+      }
+    }
+
+    .cells {
+      > .cell {
+        > .cell-floor {
+          height: 70px;
+          max-width: 1946px;
+
+          &.rowspan-2 {
+            height: 142px;
+          }
+          &.rowspan-3 {
+            height: 213px;
+          }
+          &.rowspan-4 {
+            height: 284px;
+          }
+          &.rowspan-5 {
+            height: 355px;
+          }
+          &.rowspan-6 {
+            height: 426px;
+          }
+          &.rowspan-7 {
+            height: 497px;
+          }
+          &.rowspan-8 {
+            height: 568px;
+          }
+          &.rowspan-9 {
+            height: 639px;
+          }
+
+          > .house {
+            width: 160px;
+            height: 69px;
+            padding-top: 6px;
+
+            &.colspan-2 {
+              width: 322px;
+            }
+            &.rowspan-2 {
+              height: 139px;
+              margin-top: -69px;
+
+              > .el-checkbox {
+                padding-top: 35px;
+              }
+            }
+
+            > .el-checkbox {
+              > .el-checkbox__input {
+                margin-top: -39px;
+              }
+            }
+          }
+        }
+        > .cell-head {
+          max-width: 1946px;
+          margin-top: 1px;
+
+          > .cell-col {
+            > .col-select {
+              width: 160px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.no-select {
+  .building {
+    > .floors {
+      > .floor {
+        > .floor-name {
+          display: inline-block;
+          width: 100%;
+          text-align: center;
+        }
+      }
+    }
+    > .cells {
+      > .cell {
+        > .cell-floor {
+          > .house {
+            > span {
+              display: inline-block;
+              width: 95%;
+              text-align: center;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  &.detail-3 {
+    .building {
+      > .floors {
+        > .floor-head {
+          height: 28px;
+          line-height: 28px;
+        }
+      }
+      > .cells {
+        > .cell {
+          > .cell-floor {
+            > .house {
+              padding-top: 0;
+
+              > span {
+                display: inline-block;
+                width: 100%;
+                text-align: left;
+                padding-left: 5px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.newCreate {
+  background-color: #91FC82;
+}
+.notDeposit {
+  background-color: #97EBFA;
+}
+.enoughDeposit {
+  background-color: #B3B1F3;
+}
+.notEnoughDeposit {
+  background-color: #EECBE7;
+}
+.freeDeposit {
+  background-color: #8E8E38;
+}
