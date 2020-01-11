@@ -214,3 +214,8 @@ export function fetchFloor(query) {
 export function queryBldView(projectId, bldNo) {
   return http.get('/api/center/queryBldView/' + projectId + "/" + bldNo);
 }
+
+//文件上传通用接口
+export function uploadFile(file, data) {
+  return http.upload('/api/file/uploads', file, data)
+}
