@@ -135,7 +135,7 @@ export function deleteDeviceInfo(ids) {
 
 /*未处理楼栋管理*/
 export function fetchBldInfo(query) {
-  return http.get('/api/center/fetchBldInfo', {
+  return http.get('/api/center/fetchNoRegionBld', {
     params: query
   })
 }
