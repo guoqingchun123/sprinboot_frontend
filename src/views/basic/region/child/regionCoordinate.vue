@@ -341,7 +341,7 @@
             logoPath: this.logoPath,
             viewPath: this.viewPath
           }
-          modifyRegionLnglat(data).then(response => {
+          modifyRegionLnglat(data).then(() => {
             this.$message.success('保存成功');
             
             //清除后台回显描点范围，显示当前保存的描点范围

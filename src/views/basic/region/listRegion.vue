@@ -59,10 +59,14 @@
           </bv-col>
           <bv-col>
             <bv-form-item label="所属行政区" prop="divisionCode" class="form-item-fill">
-              <el-cascader v-model="item.divisionCode"
-                           :options="divisions"
-                           :show-all-levels="false"
-                           clearable filterable/>
+              <el-select v-model="item.divisionCode" placeholder="请选择开发企业">
+                <el-option
+                  v-for="corp in divisions"
+                  :key="corp.divisionCode"
+                  :label="corp.divisionName"
+                  :value="corp.divisionCode"
+                />
+              </el-select>
             </bv-form-item>
           </bv-col>
           <bv-col>
@@ -476,6 +480,7 @@
           }
           let videoNo = this.item.options.map(item => item.itemName).join(',');
           this.item.videoNo = videoNo;
+          debugger
           this.dialogFormVisible = false;
           if (this.modifyType === 'modify') {
             modifyRegion(this.item).then(() => {

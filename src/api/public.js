@@ -91,3 +91,10 @@ export function modifySurveyItem(data) {
 export function removeSurveyItem(ids) {
   return http.delete('/api/public/surveyItems/' + ids)
 }
+
+/*工单信息*/
+export function fetchOrders(query) {
+  return http.get('/api/public/orders', {
+    params: query
+  })
+}
