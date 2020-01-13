@@ -16,20 +16,28 @@
   </div>
 </template>
 <style type="text/css">
-.wh {
-  background-color: #246480;
+.noSaled {
+  background-color: #00dd02;
 }
 
-.ws {
-  background-color: #4e803b;
+.mortgage {
+  background-color: #ddb400;
 }
 
-.lh {
-  background-color: #805028;
+.close {
+  background-color: #dd8800;
 }
 
-.ls {
-  background-color: #eecbe7;
+.frozen {
+  background-color: #dd6600;
+}
+
+.sell {
+  background-color: #ff0000;
+}
+
+.noSale {
+  background-color: #959595;
 }
 </style>
 <script>
@@ -59,7 +67,38 @@ export default {
         select: false
       },
       title: "",
-      legends: [],
+      legends: [
+        {
+          className: "noSaled",
+          head: "未售",
+          title: null
+        },
+        {
+          className: "sell",
+          head: "已售",
+          title: null
+        },
+        {
+          className: "mortgage",
+          head: "抵押",
+          title: null
+        },
+        {
+          className: "close",
+          head: "查封",
+          title: null
+        },
+        {
+          className: "frozen",
+          head: "关闭",
+          title: null
+        },
+        {
+          className: "noSale",
+          head: "自留/非卖",
+          title: null
+        }
+      ],
       properties: [],
       showHouse(house, viewType) {
         if (house && house.skipNum !== -1) {

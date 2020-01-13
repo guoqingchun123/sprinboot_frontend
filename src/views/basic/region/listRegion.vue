@@ -59,7 +59,7 @@
           </bv-col>
           <bv-col>
             <bv-form-item label="所属行政区" prop="divisionCode" class="form-item-fill">
-              <el-select v-model="item.divisionCode" placeholder="请选择开发企业">
+              <el-select v-model="item.divisionCode" placeholder="请选择所属行政区">
                 <el-option
                   v-for="corp in divisions"
                   :key="corp.divisionCode"
