@@ -4,31 +4,13 @@
       title="工单任务一览"
       :pagination="true"
       :filter.sync="filter"
-      :fetch-api="fetchPublishes"
+      :fetch-api="fetchOrders"
       @on-mounted="table => (tableInstance = table)"
     >
       <div slot="operates">
-        <bv-button
-          show="none"
-          view="create"
-          authority="create"
-          @click="startCreate()"
-          >新增</bv-button
-        >
-        <bv-button
-          show="one"
-          view="modify"
-          authority="modify"
-          @click="startModify()"
-          >修改</bv-button
-        >
-        <bv-button
-          v-if="deleteShow()"
-          view="remove"
-          authority="remove"
-          @click="startRemove()"
-          >删除</bv-button
-        >
+        <bv-button show="none" view="create" authority="create" @click="startCreate()">新增</bv-button>
+        <bv-button show="one" view="modify" authority="modify" @click="startModify()">修改</bv-button>
+        <bv-button v-if="deleteShow()" view="remove" authority="remove" @click="startRemove()">删除</bv-button>
       </div>
       <div slot="search">
         <bv-col>
@@ -56,17 +38,13 @@
         align="center"
         :formatter="ordersTypeFormatter"
       />
-      <bv-table-column
-        label="工单内容"
-        prop="summary"
-        align="center"
-        sortable="custom"
-      />
+      <bv-table-column label="工单内容" prop="summary" align="center" sortable="custom" />
       <bv-table-column
         label="工单状态"
         prop="ordersStatus"
         align="center"
         sortable="custom"
+        :formatter="ordersStatusFormatter"
       />
       <bv-table-column
         label="工单来源"
@@ -75,31 +53,12 @@
         sortable="custom"
         :formatter="ordersSourceFormatter"
       />
-      <bv-table-column
-        label="反映人"
-        prop="requesterName"
-        align="center"
-        sortable="custom"
-      />
-      <bv-table-column
-        label="反映人电话"
-        prop="publishDate"
-        align="center"
-        sortable="custom"
-      />
-      <bv-table-column
-        label="反映时间"
-        prop="requestTime"
-        align="center"
-        sortable="custom"
-      />
+      <bv-table-column label="反映人" prop="requesterName" align="center" sortable="custom" />
+      <bv-table-column label="反映人电话" prop="requesterPhone" align="center" sortable="custom" />
+      <bv-table-column label="反映时间" prop="requestTime" align="center" sortable="custom" />
     </bv-table>
 
-    <bv-dialog
-      v-if="dialogFormVisible"
-      title="工单信息维护"
-      :visible.sync="dialogFormVisible"
-    >
+    <bv-dialog v-if="dialogFormVisible" title="工单信息维护" :visible.sync="dialogFormVisible">
       <bv-form ref="dialogForm" :model="item" :rules="rules">
         <bv-row :layout="1">
           <bv-col>
@@ -122,14 +81,8 @@
         </bv-row>
         <bv-row :layout="2">
           <bv-col>
-            <bv-form-item
-              label="反映来源"
-              prop="ordersSource"
-            >
-              <el-select
-                v-model="item.ordersSource"
-                placeholder="请选择工单类别"
-              >
+            <bv-form-item label="反映来源" prop="ordersSource">
+              <el-select v-model="item.ordersSource" placeholder="请选择工单类别">
                 <el-option
                   v-for="item in ordersSources"
                   :key="item.code"
@@ -140,27 +93,24 @@
             </bv-form-item>
           </bv-col>
           <bv-col>
-            <bv-form-item
-              label="反映人"
-              prop="requesterName"
-            >
+            <bv-form-item label="反映人" prop="requesterName">
               <el-input v-model.trim="item.requesterName" />
             </bv-form-item>
           </bv-col>
           <bv-col>
-            <bv-form-item
-              label="反映人手机"
-              prop="requesterPhone"
-            >
+            <bv-form-item label="反映人手机号" prop="requesterPhone">
               <el-input v-model.trim="item.requesterPhone" />
             </bv-form-item>
           </bv-col>
           <bv-col>
-            <bv-form-item
-              label="反映人证件号码"
-              prop="requesterCertNo"
-            >
-              <el-input v-model.trim="item.requesterCertNo" />
+            <bv-form-item label="反映时间" prop="requestTime">
+              <el-date-picker
+                v-model="item.requestTime"
+                type="datetime"
+                placeholder="选择日期时间"
+                :default-value="new Date()"
+                value-format="yyyy-MM-dd HH:mm:ss"
+              />
             </bv-form-item>
           </bv-col>
         </bv-row>
@@ -177,8 +127,8 @@
 import {
   fetchOrders,
   createOrders,
-  modifyPublish,
-  removePublish
+  modifyOrders,
+  removeOrders
 } from "@/api/public";
 
 export default {
@@ -192,6 +142,7 @@ export default {
       fetchOrders,
       ordersTypes: [],
       ordersSources: [],
+      ordersStatuses: [],
       rules: {
         ordersType: [
           { required: true, message: "请选择工单类别", trigger: "blur" }
@@ -200,8 +151,12 @@ export default {
           { required: true, message: "请选择反映来源", trigger: "blur" }
         ],
         summary: [{ required: true, message: "请输入摘要", trigger: "blur" }],
-        requesterName: [{ required: true, message: "请输入反映人姓名", trigger: "blur" }],
-        requesterPhone: [{ required: true, message: "请输入反映人电话", trigger: "blur" }]
+        requesterName: [
+          { required: true, message: "请输入反映人姓名", trigger: "blur" }
+        ],
+        requesterPhone: [
+          { required: true, message: "请输入反映人电话", trigger: "blur" }
+        ]
       },
       dialogFormVisible: false,
       modifyType: null,
@@ -212,8 +167,11 @@ export default {
     this.$store.dispatch("app/fetchDicts", "ordersType").then(data => {
       this.ordersTypes = data;
     });
-    this.$store.dispatch("app/fetchDicts", "ordersSources").then(data => {
+    this.$store.dispatch("app/fetchDicts", "ordersSource").then(data => {
       this.ordersSources = data;
+    });
+    this.$store.dispatch("app/fetchDicts", "ordersStatus").then(data => {
+      this.ordersStatuses = data;
     });
   },
   methods: {
@@ -232,6 +190,13 @@ export default {
       for (let i in this.ordersSources) {
         if (cellValue == this.ordersSources[i].code) {
           return this.ordersSources[i].name;
+        }
+      }
+    },
+    ordersStatusFormatter(row, column, cellValue) {
+      for (let i in this.ordersStatuses) {
+        if (cellValue == this.ordersStatuses[i].code) {
+          return this.ordersStatuses[i].name;
         }
       }
     },
@@ -268,7 +233,7 @@ export default {
           return false;
         }
         if (this.modifyType === "modify") {
-          modifyPublish(this.item).then(() => {
+          modifyOrders(this.item).then(() => {
             this.tableInstance.table.clearSelection();
             this.afterModify();
           });
@@ -296,7 +261,7 @@ export default {
         type: "warning"
       })
         .then(() => {
-          removePublish(
+          removeOrders(
             this.tableInstance.table.selection.map(item => item.sysGuid).join()
           ).then(() => {
             this.$message({

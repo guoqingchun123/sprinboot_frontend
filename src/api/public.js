@@ -98,3 +98,15 @@ export function fetchOrders(query) {
     params: query
   })
 }
+
+export function createOrders(data) {
+  return http.post('/api/public/orders', data)
+}
+
+export function modifyOrders(data) {
+  return http.put('/api/public/orders', data)
+}
+
+export function removeOrders(ids) {
+  return http.delete('/api/public/orders/' + ids)
+}
